@@ -45,6 +45,10 @@
   color: var(--Secondary-400);
 }
 
+.btn--primary:active {
+  background-color: #1f2937;
+}
+
 /* variant: secondary */
 .btn--secondary {
   background-color: var(--Secondary-100);
@@ -59,6 +63,10 @@
 .btn--secondary:disabled {
   background-color: var(--Secondary-100);
   color: var(--Secondary-400);
+}
+
+.btn--secondary:active {
+  background-color: var(--Secondary-200);
 }
 
 /* variant: outline */
@@ -76,4 +84,8 @@
 .btn--outline:disabled {
   border-color: var(--Secondary-200);
   color: var(--Secondary-400);
+}
+
+.btn--outline:active {
+  background-color: var(--Secondary-100);
 }
