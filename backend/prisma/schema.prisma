@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Company {
+  id                        String   @id @db.VarChar(6)
+  name                      String   @unique @db.VarChar(30)
+  description               String   @db.VarChar(1000)
+  category                  String   @db.VarChar(20)
+  actualInvestmentAmount    BigInt
+  revenue                   BigInt
+  employeeCount             Int
+  myCompanySelectCount      Int      @default(0)
+  compareCompanySelectCount Int      @default(0)
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+
+  investments Investment[]
+}
+
+model Investment {
+  id           String   @id @db.VarChar(6)
+  companyId    String   @db.VarChar(6)
+  investorName String   @db.VarChar(40)
+  amount       BigInt
+  comment      String?  @db.VarChar(1000)
+  password     String   @db.VarChar(255)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id])
+}
