@@ -1,31 +1,38 @@
+@import url('../fonts/font.css');
+
 :root {
     /* color */
-	--main_color: #3692FF;
-    --main_color_ml: #E6F2FF;
-    --main_color_mid: #1967D6;
-    --main_color_dark: #1251AA;
+	--main_color: #EB5230;
+     
+    --black_100: #131313;
+    --black_200: #212121;
+    --black_300: #282828;
+    --black_400: #131313;
 
-    --text_title_color: #3A362E;
-    --Secondary-100: #F3F4F6;
-    --Secondary-200: #E5E7EB;
-    --Secondary-400: #9CA3AF;
-    --Secondary-700: #374151;
-    --Secondary-800: #1F2937; 
-    --Secondary-900: #111827; 
+    --gray_100: #d8d8d8;
+    --gray_200: #747474;
+    --gray_300: #4b4b4b;
+    --gray_400: #333333;
 
-    --warning_light_color: #ffc7c7;
+    --warning_color: #C41013;
+
+    --safe_color: #558FFF;
 }
 
 
-body > .wrap {
+ 
+#root > .wrap {
     overflow-y: auto;
+    background-color: var(--black_400) !important;
+    min-height: 100vh;
 }
 
-body > .wrap * {
+#root > .wrap * {
     font-family: 'Pretendard', sans-serif;
+    color: #fff;
 }
 
-body > .wrap a{
+#root > .wrap a{
     cursor: pointer;
 }
 
