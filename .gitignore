@@ -10,7 +10,7 @@ lerna-debug.log*
 dist
 dist-ssr
 *.local
-/node_modules
+node_modules/
 
 # Editor directories and files
 .vscode/*
@@ -23,10 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
-# Vite
-node_modules/
-dist/
+# Env
 .env
 .env.*
-!.env.example
-.DS_Store
