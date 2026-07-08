@@ -13,18 +13,18 @@ const NAV_ITEMS = [
 function GlobalNav() {
   return (
     <header className="gnb">
-      <NavLink to="/" className="gnb__logo">
+      <NavLink to="/" className="gnb_logo">
         <img src={logoImg} alt="View my startup" />
       </NavLink>
 
-      <nav className="gnb__nav">
+      <nav className="gnb_nav">
         <ul>
           {NAV_ITEMS.map(({ label, to }) => (
             <li key={to}>
               <NavLink
                 to={to}
                 className={({ isActive }) =>
-                  isActive ? 'gnb__link is-active' : 'gnb__link'
+                  isActive ? 'gnb_link is-active' : 'gnb_link'
                 }
               >
                 {label}
