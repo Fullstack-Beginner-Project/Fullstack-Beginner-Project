@@ -1,0 +1,91 @@
+/* base */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+}
+
+/* size */
+.btn--large {
+  padding: 1rem 1.5rem;
+  font-size: 16px;
+}
+
+.btn--medium {
+  padding: 0.75rem 1.25rem;
+  font-size: 14px;
+}
+
+.btn--small {
+  padding: 0.5rem 1rem;
+  font-size: 13px;
+}
+
+/* variant: primary */
+.btn--primary {
+  background-color: var(--Secondary-700);
+  color: #fff;
+}
+
+.btn--primary.is-selected {
+  background-color: var(--main_color);
+}
+
+.btn--primary:disabled {
+  background-color: var(--Secondary-200);
+  color: var(--Secondary-400);
+}
+
+.btn--primary:active {
+  background-color: #1f2937;
+}
+
+/* variant: secondary */
+.btn--secondary {
+  background-color: var(--Secondary-100);
+  color: var(--Secondary-700);
+}
+
+.btn--secondary.is-selected {
+  background-color: var(--main_color);
+  color: #fff;
+}
+
+.btn--secondary:disabled {
+  background-color: var(--Secondary-100);
+  color: var(--Secondary-400);
+}
+
+.btn--secondary:active {
+  background-color: var(--Secondary-200);
+}
+
+/* variant: outline */
+.btn--outline {
+  background-color: transparent;
+  border-color: var(--Secondary-400);
+  color: var(--Secondary-700);
+}
+
+.btn--outline.is-selected {
+  border-color: var(--main_color);
+  color: var(--main_color);
+}
+
+.btn--outline:disabled {
+  border-color: var(--Secondary-200);
+  color: var(--Secondary-400);
+}
+
+.btn--outline:active {
+  background-color: var(--Secondary-100);
+}
