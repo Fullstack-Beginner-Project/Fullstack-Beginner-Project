@@ -7,9 +7,9 @@
   align-items: center;
   gap: 40px;
   width: 100%;
-  height: 64px;
-  padding: 0 24px;
-  background-color: var(--Secondary-900);
+  height: 60px;
+  padding: 0 250px;
+  background-color: var(--black_400);
 }
 
 .gnb_wrap .gnb_logo {
@@ -30,7 +30,7 @@
 .gnb_wrap .gnb_link {
   font-size: 14px;
   font-weight: 600;
-  color: var(--Secondary-400);
+  color: var(--gray_100);
 }
 
 .gnb_wrap .gnb_link:hover {
@@ -41,12 +41,12 @@
   color: #fff;
 }
 
-/* Tablet (iPad mini 기준) */
-@media (max-width: 1024px) {
+/* Tablet (1280px) */
+@media (max-width: 1280px) {
   .gnb_wrap {
     gap: 24px;
-    height: 56px;
-    padding: 0 16px;
+    height: 60px;
+    padding: 0 24px;
   }
 
   .gnb_wrap .gnb_logo img {
@@ -62,12 +62,12 @@
   }
 }
 
-/* Mobile */
-@media (max-width: 480px) {
+/* Mobile (768px) */
+@media (max-width: 768px) {
   .gnb_wrap {
     gap: 12px;
-    height: 48px;
-    padding: 0 12px;
+    height: 56px;
+    padding: 0 16px;
   }
 
   .gnb_wrap .gnb_logo img {
