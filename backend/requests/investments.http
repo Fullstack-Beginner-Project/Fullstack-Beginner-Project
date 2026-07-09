@@ -7,8 +7,8 @@ Content-Type: application/json
   "investorName": "홍길동",
   "amount": 5000000,
   "comment": "성장 가능성이 좋아 보여요.",
-  "password": "Ab@12345cd",
-  "passwordConfirmation": "f2i3if"//가짜
+  "password": "Ab232ffcd",
+  "passwordConfirmation": "Ab232ffcd"
 }
 
 ### 가상 투자 생성 성공 - 실제 데이터 느낌
@@ -20,8 +20,8 @@ Content-Type: application/json
   "investorName": "최유진",
   "amount": 35000000,
   "comment": "지역 커뮤니티 기반 서비스는 사용자의 생활 반경 안에서 꾸준히 쓰일 가능성이 높다고 판단했습니다.",
-  "password": "Yj@7mK_42p",
-  "passwordConfirmation": "dnjefo@o"//가짜
+  "password": "Ab232ffcd",
+  "passwordConfirmation": "Ab232ffcd"
 }
 
 ### 잘못된 body 요청
