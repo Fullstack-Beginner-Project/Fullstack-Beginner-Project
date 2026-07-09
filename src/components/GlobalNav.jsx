@@ -12,7 +12,7 @@ const NAV_ITEMS = [
 
 function GlobalNav() {
   return (
-    <header className="gnb">
+    <header className="gnb_wrap">
       <NavLink to="/" className="gnb_logo">
         <img src={logoImg} alt="View my startup" />
       </NavLink>
