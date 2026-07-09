@@ -14,7 +14,7 @@ const MAX_COMMENT_LENGTH = 1000;
 
 
 
-export function validateCompanyIdParam(companyId){
+function validateCompanyIdParam(companyId){
   if (typeof companyId !== 'string' || !COMPANY_ID_REGEX.text(companyId)) {
     return '기업 ID 형식이 올바르지 않습니다.';
   }
@@ -22,7 +22,7 @@ export function validateCompanyIdParam(companyId){
   return null;
 }
 
-export function validateCreateInvestmentBody(body) {
+function validateCreateInvestmentBody(body) {
   const {
     investorName,
     amount,
@@ -73,7 +73,7 @@ export function validateCreateInvestmentBody(body) {
     return '비밀번호는 10자 이상 32자 이하로 입력해주세요.';
   }
 
-  if (!PASSWORD_REGEX.text(password)) {
+  if (!PASSWORD_REGEX.test(password)) {
     return '비밀번호에 허용되지 않은 문자가 포함되어 있습니다.';
   }
 
