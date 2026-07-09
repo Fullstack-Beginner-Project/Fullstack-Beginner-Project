@@ -9,7 +9,7 @@
     --black_300: #282828;
     --black_400: #131313;
  
-    --gray_200: #D8D8D8;
+    --gray_100: #D8D8D8;
     --gray_200: #747474;
     --gray_300: #4b4b4b;
     --gray_400: #333333;
@@ -242,8 +242,6 @@
 .input_wrap.pw .hs.show_pw {
     background: url('../images/icon_eye_show.svg') no-repeat center;
 }
-
-
 /* input end */
 
 
