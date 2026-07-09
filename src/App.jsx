@@ -1,11 +1,11 @@
 import './assets/css/reset.css'
 import './assets/css/common.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Lobby from './pages/lobby.jsx';
-import My_company_compare from './pages/my-company-compare.jsx';
-import Compare_overview from './pages/compare-overview.jsx';
-import Investment_status from './pages/investment-status.jsx';
-import Company_detail from './pages/company-detail.jsx';
+import Lobby from './pages/Lobby.jsx';
+import MyCompanyCompare from './pages/MyCompanyCompare.jsx';
+import CompareOverview from './pages/CompareOverview.jsx';
+import InvestmentStatus from './pages/InvestmentStatus.jsx';
+import CompanyDetail from './pages/CompanyDetail.jsx';
 
 function App() {
   
@@ -13,10 +13,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Lobby/>}/>
-        <Route path="/my-company-compare" element={<My_company_compare/>}/>
-        <Route path="/compare-overview" element={<Compare_overview/>}/>
-        <Route path="/investment-status" element={<Investment_status/>}/>
-        <Route path="/company/:id" element={<Company_detail />} />
+        <Route path="/my-company-compare" element={<MyCompanyCompare/>}/>
+        <Route path="/compare-overview" element={<CompareOverview/>}/>
+        <Route path="/investment-status" element={<InvestmentStatus/>}/>
+        <Route path="/company/:id" element={<CompanyDetail />} />
       </Routes>
     </BrowserRouter>
   );
