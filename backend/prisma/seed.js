@@ -1,19 +1,6 @@
 import 'dotenv/config';
 import bcrypt from 'bcryptjs';
-import { PrismaClient } from '@prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
-
-
-
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL 환경변수가 설정되어 있지 않습니다.");
-}
-
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL,
-});
-
-const prisma = new PrismaClient({ adapter });
+import prisma from '../src/lib/prisma.js';
 
 const companies = [
   {
@@ -145,7 +132,7 @@ const investments = [
     investorName: '김민준',
     amount: 800000000n,
     comment: '금융 앱 안에서 여러 서비스를 연결하는 확장성이 크다고 판단했습니다.',
-    plainPassword: 'Rt@7mQ_2vL',
+    plainPassword: process.env.SEED_PASSWORD_F8Q2MZ,
   },
   {
     id: 'n4z8kp',
@@ -153,7 +140,7 @@ const investments = [
     investorName: '이서연',
     amount: 3000000n,
     comment: '지역 기반 커뮤니티 서비스라 사용자 충성도가 높아 보입니다.',
-    plainPassword: 'Dg#42pL+zA',
+    plainPassword: process.env.SEED_PASSWORD_K3P9AV,
   },
   {
     id: 'v1c6tr',
@@ -161,7 +148,7 @@ const investments = [
     investorName: '김민준',
     amount: 120000000n,
     comment: '콘텐츠와 커머스가 자연스럽게 이어지는 구조가 좋아 보입니다.',
-    plainPassword: 'Bp$8qT_73r',
+    plainPassword: process.env.SEED_PASSWORD_R7X1TQ,
   },
   {
     id: 'y9b3ld',
@@ -169,7 +156,7 @@ const investments = [
     investorName: '최유진',
     amount: 400000000n,
     comment: '여행 플랫폼을 넘어 글로벌 솔루션 기업으로 확장하는 점이 인상적입니다.',
-    plainPassword: 'Yn%5Kz-91B',
+    plainPassword: process.env.SEED_PASSWORD_B6N4YC,
   },
   {
     id: 's5w7hq',
@@ -177,7 +164,7 @@ const investments = [
     investorName: '정도윤',
     amount: 250000000n,
     comment: '패션 커머스 시장에서 브랜드 파워가 강하다고 생각합니다.',
-    plainPassword: 'Ms^2rQ+84n',
+    plainPassword: process.env.SEED_PASSWORD_Z2H8KD,
   },
   {
     id: 'a8r2pn',
@@ -185,7 +172,7 @@ const investments = [
     investorName: '한지아',
     amount: 85000000n,
     comment: null,
-    plainPassword: 'Kr&9vL_63P',
+    plainPassword: process.env.SEED_PASSWORD_M9V5JX,
   },
   {
     id: 'e3x9vm',
@@ -193,7 +180,7 @@ const investments = [
     investorName: '오현우',
     amount: 15000000n,
     comment: '부동산 정보와 스마트홈 기술을 연결하는 방향성이 흥미롭습니다.',
-    plainPassword: 'Zb*4tN=28x',
+    plainPassword: process.env.SEED_PASSWORD_P4C7WU,
   },
   {
     id: 'k6j1zc',
@@ -201,7 +188,7 @@ const investments = [
     investorName: '이서연',
     amount: 30000000n,
     comment: '콘텐츠 IP를 기반으로 글로벌 확장이 가능하다고 봤습니다.',
-    plainPassword: 'Rd!7cH,52Q',
+    plainPassword: process.env.SEED_PASSWORD_X1G6RA,
   },
   {
     id: 'u2f5gy',
@@ -209,7 +196,7 @@ const investments = [
     investorName: '윤태민',
     amount: 8000000n,
     comment: '전자계약은 기업 업무에서 반복적으로 쓰이는 서비스라 안정성이 있어 보입니다.',
-    plainPassword: 'Md@6sV_81k',
+    plainPassword: process.env.SEED_PASSWORD_D5T9PQ,
   },
   {
     id: 'l9d4sb',
@@ -217,50 +204,29 @@ const investments = [
     investorName: '서하린',
     amount: 50000000n,
     comment: 'AI 상담 자동화와 CRM이 함께 있는 SaaS 구조가 매력적입니다.',
-    plainPassword: 'Ch#3aZ+79q',
+    plainPassword: process.env.SEED_PASSWORD_H8S2BN,
   },
 ];
-
-
 
 async function main() {
   for (const company of companies) {
     await prisma.company.upsert({
-      where: {
-        id: company.id,
-      },
+      where: { id: company.id },
       update: company,
       create: company,
     });
   }
 
   for (const investment of investments) {
-    const hashedPassword = await bcrypt.hash(investment.plainPassword, 10);
-
-    const investmentData = {
-      id: investment.id,
-      companyId: investment.companyId,
-      investorName: investment.investorName,
-      amount: investment.amount,
-      comment: investment.comment,
-      password: hashedPassword,
-    };
+    const { plainPassword, ...investmentData } = investment;
+    investmentData.password = await bcrypt.hash(plainPassword, 10);
 
     await prisma.investment.upsert({
-      where: {
-        id: investment.id,
-      },
+      where: { id: investment.id },
       update: investmentData,
       create: investmentData,
     });
   }
-
-  const companyCount = await prisma.company.count();
-  const investmentCount = await prisma.investment.count();
-
-  console.log(`Company count: ${companyCount}`);
-  console.log(`Investment count: ${investmentCount}`);
-  console.log(`Seed data inserted successfully.`);
 }
 
 main()
