@@ -15,8 +15,8 @@ const MAX_COMMENT_LENGTH = 1000;
 
 
 export function validateCompanyIdParam(companyId){
-  if (typeof companyId !== 'string' || !COMPANY_ID_REGEX.text(companyId)) {
-    return '기업 ID 형식이 올바르지 않습니다.';
+  if (typeof companyId !== 'string' || !COMPANY_ID_REGEX.test(companyId)) {
+    return '기업 ID 형식이 올바르지 않습니다.'; 
   }
 
   return null;
@@ -26,9 +26,9 @@ export function validateCreateInvestmentBody(body) {
   const {
     investorName,
     amount,
-    commnet,
+    comment,
     password,
-    passwordConfirmation,
+    passwordConfirm,
   } = body;
 
   if (typeof investorName !== 'string') {
@@ -52,12 +52,12 @@ export function validateCreateInvestmentBody(body) {
     return '투자 금액은 10원 이상 100억 이하로 입력해주세요.';
   }
 
-  if (commnet !== undefined && commnet !== null) {
-    if (typeof commnet !== 'string') {
+  if (comment !== undefined && comment !== null) {
+    if (typeof comment !== 'string') {
       return '투자 코멘트는 문자열이어야 합니다.';
     }
 
-  if (commnet.trim().length > MAX_COMMENT_LENGTH) {
+  if (comment.trim().length > MAX_COMMENT_LENGTH) {
     return '투자 코멘트는 1000자 이하로 입력해주세요.';
     }
   }
@@ -70,23 +70,16 @@ export function validateCreateInvestmentBody(body) {
     password.length < MIN_PASSWORD_LENGTH ||
     password.length > MAX_PASSWORD_LENGTH 
   ) {
-    return '비밀번호는 10자 이상 32자 이하로 입력해주세요.';
+    return '비밀번호는 8자 이상 32자 이하로 입력해주세요.';
   }
 
-  if (!PASSWORD_REGEX.text(password)) {
+  if (!PASSWORD_REGEX.test(password)) {
     return '비밀번호에 허용되지 않은 문자가 포함되어 있습니다.';
   }
 
-  if (password !== passwordConfirmation) {
+  if (password !== passwordConfirm) {
     return '비밀번호와 비밀번호 확인이 일치하지 않습니다.';
   }
 
   return null;
 }
-
-
-
-export {
-  validateCompanyIdParam,
-  validateCreateInvestmentBody,
-};
