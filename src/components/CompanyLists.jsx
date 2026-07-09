@@ -1,27 +1,42 @@
 import Button from '../components/Button';
 import DefaultLogo from '../assets/images/logo_default.png';
 
-function CompanyLists({ companies }) {
+function CompanyLists({ 
+  title,
+  companies, 
+  onSelect,
+  emptyMessage,
+}) {
   return (
-    <ul className="companyList">
-  {companies.map((company) => (
-    <li key={company.id}>
-      <img src={company.logo ?? DefaultLogo } alt={company.name} />
+    <div className="company_list_wrap">
+      <h4>
+        {title} ({companies.length})
+      </h4>
 
-      <div>
-        <p>{company.name}</p>
-        <span>{company.category}</span>
-      </div>
+      {companies.length === 0 ? (
+        <p className="empty_message">검색 결과가 없습니다.</p>
+      ) : (
+        <ul className="company_list">
+          {companies.map((company) => (
+            <li key={company.id}>
+              <div>
+                <img src={company.logo ?? DefaultLogo} alt={company.name} />
+                <p>{company.name}</p>
+                <span>{company.category}</span>
+              </div>
 
-      <Button
-        selected={company.selected}
-        onClick={() => handleSelect(company.id)}
-      >
-        {company.selected ? '선택 해제' : '선택하기'}
-      </Button>
-    </li>
-  ))}
-</ul>
+              <Button
+                selected={company.selected}
+                onClick={() => onSelect(company.id)}
+              >
+                {company.selected ? '선택 해제' : '선택하기'}
+              </Button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+    
   )
 }
 
