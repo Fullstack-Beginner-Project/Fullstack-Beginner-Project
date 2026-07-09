@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import bcrypt from 'bcryptjs';
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 
@@ -144,7 +145,7 @@ const investments = [
     investorName: '김민준',
     amount: 800000000n,
     comment: '금융 앱 안에서 여러 서비스를 연결하는 확장성이 크다고 판단했습니다.',
-    password: 'Rt@7mQ_2vL',
+    plainPassword: 'Rt@7mQ_2vL',
   },
   {
     id: 'n4z8kp',
@@ -152,7 +153,7 @@ const investments = [
     investorName: '이서연',
     amount: 3000000n,
     comment: '지역 기반 커뮤니티 서비스라 사용자 충성도가 높아 보입니다.',
-    password: 'Dg#42pL+zA',
+    plainPassword: 'Dg#42pL+zA',
   },
   {
     id: 'v1c6tr',
@@ -160,7 +161,7 @@ const investments = [
     investorName: '김민준',
     amount: 120000000n,
     comment: '콘텐츠와 커머스가 자연스럽게 이어지는 구조가 좋아 보입니다.',
-    password: 'Bp$8qT_73r',
+    plainPassword: 'Bp$8qT_73r',
   },
   {
     id: 'y9b3ld',
@@ -168,7 +169,7 @@ const investments = [
     investorName: '최유진',
     amount: 400000000n,
     comment: '여행 플랫폼을 넘어 글로벌 솔루션 기업으로 확장하는 점이 인상적입니다.',
-    password: 'Yn%5Kz-91B',
+    plainPassword: 'Yn%5Kz-91B',
   },
   {
     id: 's5w7hq',
@@ -176,7 +177,7 @@ const investments = [
     investorName: '정도윤',
     amount: 250000000n,
     comment: '패션 커머스 시장에서 브랜드 파워가 강하다고 생각합니다.',
-    password: 'Ms^2rQ+84n',
+    plainPassword: 'Ms^2rQ+84n',
   },
   {
     id: 'a8r2pn',
@@ -184,7 +185,7 @@ const investments = [
     investorName: '한지아',
     amount: 85000000n,
     comment: null,
-    password: 'Kr&9vL_63P',
+    plainPassword: 'Kr&9vL_63P',
   },
   {
     id: 'e3x9vm',
@@ -192,7 +193,7 @@ const investments = [
     investorName: '오현우',
     amount: 15000000n,
     comment: '부동산 정보와 스마트홈 기술을 연결하는 방향성이 흥미롭습니다.',
-    password: 'Zb*4tN=28x',
+    plainPassword: 'Zb*4tN=28x',
   },
   {
     id: 'k6j1zc',
@@ -200,7 +201,7 @@ const investments = [
     investorName: '이서연',
     amount: 30000000n,
     comment: '콘텐츠 IP를 기반으로 글로벌 확장이 가능하다고 봤습니다.',
-    password: 'Rd!7cH,52Q',
+    plainPassword: 'Rd!7cH,52Q',
   },
   {
     id: 'u2f5gy',
@@ -208,7 +209,7 @@ const investments = [
     investorName: '윤태민',
     amount: 8000000n,
     comment: '전자계약은 기업 업무에서 반복적으로 쓰이는 서비스라 안정성이 있어 보입니다.',
-    password: 'Md@6sV_81k',
+    plainPassword: 'Md@6sV_81k',
   },
   {
     id: 'l9d4sb',
@@ -216,7 +217,7 @@ const investments = [
     investorName: '서하린',
     amount: 50000000n,
     comment: 'AI 상담 자동화와 CRM이 함께 있는 SaaS 구조가 매력적입니다.',
-    password: 'Ch#3aZ+79q',
+    plainPassword: 'Ch#3aZ+79q',
   },
 ];
 
@@ -234,12 +235,23 @@ async function main() {
   }
 
   for (const investment of investments) {
+    const hashedPassword = await bcrypt.hash(investment.plainPassword, 10);
+
+    const investmentData = {
+      id: investment.id,
+      companyId: investment.companyId,
+      investorName: investment.investorName,
+      amount: investment.amount,
+      comment: investment.comment,
+      password: hashedPassword,
+    };
+
     await prisma.investment.upsert({
       where: {
         id: investment.id,
       },
-      update: investment,
-      create: investment,
+      update: investmentData,
+      create: investmentData,
     });
   }
 
