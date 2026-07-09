@@ -13,8 +13,8 @@ function Button({
 
   const className = [
     'btn',
-    `btn--${size}`,
-    `btn--${variant}`,
+    `btn_${size}`,
+    `btn_${variant}`,
     selected ? 'is-selected' : '',
   ]
     .filter(Boolean)
@@ -26,14 +26,16 @@ function Button({
   };
 
   return (
-    <button
-      type="button"
-      className={className}
-      disabled={disabled}
-      onClick={onButtonClick}
-    >
-      {children}
-    </button>
+    <div className="btn_wrap">
+      <button
+        type="button"
+        className={className}
+        disabled={disabled}
+        onClick={onButtonClick}
+      >
+        {children}
+      </button>
+    </div>
   );
 }
 
