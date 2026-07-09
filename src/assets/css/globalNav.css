@@ -1,4 +1,4 @@
-.gnb {
+.gnb_wrap {
   position: sticky;
   top: 0;
   left: 0;
@@ -12,73 +12,73 @@
   background-color: var(--Secondary-900);
 }
 
-.gnb__logo {
+.gnb_wrap .gnb_logo {
   display: flex;
   align-items: center;
 }
 
-.gnb__logo img {
+.gnb_wrap .gnb_logo img {
   height: 28px;
 }
 
-.gnb__nav ul {
+.gnb_wrap .gnb_nav ul {
   display: flex;
   align-items: center;
   gap: 32px;
 }
 
-.gnb__link {
+.gnb_wrap .gnb_link {
   font-size: 14px;
   font-weight: 600;
   color: var(--Secondary-400);
 }
 
-.gnb__link:hover {
+.gnb_wrap .gnb_link:hover {
   color: #fff;
 }
 
-.gnb__link.is-active {
+.gnb_wrap .gnb_link.is-active {
   color: #fff;
 }
 
 /* Tablet (iPad mini 기준) */
 @media (max-width: 1024px) {
-  .gnb {
+  .gnb_wrap {
     gap: 24px;
     height: 56px;
     padding: 0 16px;
   }
 
-  .gnb__logo img {
+  .gnb_wrap .gnb_logo img {
     height: 24px;
   }
 
-  .gnb__nav ul {
+  .gnb_wrap .gnb_nav ul {
     gap: 20px;
   }
 
-  .gnb__link {
+  .gnb_wrap .gnb_link {
     font-size: 13px;
   }
 }
 
 /* Mobile */
 @media (max-width: 480px) {
-  .gnb {
+  .gnb_wrap {
     gap: 12px;
     height: 48px;
     padding: 0 12px;
   }
 
-  .gnb__logo img {
+  .gnb_wrap .gnb_logo img {
     height: 20px;
   }
 
-  .gnb__nav ul {
+  .gnb_wrap .gnb_nav ul {
     gap: 10px;
   }
 
-  .gnb__link {
+  .gnb_wrap .gnb_link {
     font-size: 11px;
   }
 }
