@@ -1,24 +1,24 @@
 import React from "react";
-import Table from "../components/Table";
+import { Outlet } from "react-router-dom";
+
+import GlobalNav from "../components/GlobalNav";
+
 
 function Lobby() {
 
+
   return (
     <>
+    <GlobalNav />
       <div className="wrap">
         <div id="body">
-          <div className="content_wrap">
-            
-
-          </div>
-          <div className="pagnation_wrap">
-
-          </div>
-          <p className="text">test</p>
+          
+            <Outlet />
+           
         </div>
       </div>
     </>
   );
 }
 
-export default Lobby
+export default Lobby;

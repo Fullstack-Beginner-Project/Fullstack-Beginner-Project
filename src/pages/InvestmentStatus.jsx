@@ -1,11 +1,14 @@
 import React from "react";
 
-function Investment_status() {
+function InvestmentStatus() {
   return (
-  <>
-    <a>테스트</a>
-  </>
+    <>
+      {/* 해당페이지에서 전체 부모요소 잡아야할 때 content_wrap에 클래스 추가 */}
+      <div className="content_wrap">
+        <a>투자현황</a>
+      </div>
+    </>
   );
 }
 
-export default Investment_status
+export default InvestmentStatus;
