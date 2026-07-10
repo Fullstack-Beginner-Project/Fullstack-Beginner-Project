@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../assets/css/Input.css";
+import "../assets/css/input.css";
 /* 
   Input 컴포넌트입니다.
   type : [password, text] 타입 설정해주세요.

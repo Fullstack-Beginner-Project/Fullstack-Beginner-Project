@@ -12,6 +12,7 @@
 #root>.wrap .input_wrap p {
   margin-left: 20px;
   color: var(--warning_color);
+  
 }
 
 #root>.wrap .input_wrap .frame {
