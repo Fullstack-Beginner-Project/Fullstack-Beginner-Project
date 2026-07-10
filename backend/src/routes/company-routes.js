@@ -25,6 +25,8 @@ const SORT_OPTIONS = {
   },
 };
 
+const COMPANY_ID_REGEX = /^[a-z0-9]{6}$/;
+
 const companyRouter = Router();
 
 function sendBadRequest(res, message = '잘못된 요청입니다.') {
@@ -35,13 +37,8 @@ function sendBadRequest(res, message = '잘못된 요청입니다.') {
   });
 }
 
-// BigInt는 JSON 응답하면 터질수 있어서 숫자변환 필요
-function serializeCompany(company) {
-  return {
-    ...company,
-    actualInvestmentAmount: Number(company.actualInvestmentAmount),
-    revenue: Number(company.revenue),
-  };
+function isValidCompanyId(companyId) {
+  return typeof companyId === 'string' && COMPANY_ID_REGEX.test(companyId);
 }
 
 companyRouter.get('/companies', async (req, res) => {
@@ -109,10 +106,8 @@ companyRouter.get('/companies', async (req, res) => {
       where,
     });
 
-    const list = companies.map(serializeCompany);
-
     return res.status(200).json({
-      list,
+      list: companies,
       totalCount,
     });
   } catch (error) {
@@ -122,7 +117,50 @@ companyRouter.get('/companies', async (req, res) => {
   }
 });
 
+companyRouter.get('/companies/:companyId', async (req, res) => {
+  try {
+    const { companyId } = req.params;
+
+    if (!isValidCompanyId(companyId)) {
+      return sendBadRequest(res);
+    }
+
+    const company = await prisma.company.findUnique({
+      where: {
+        id: companyId,
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        category: true,
+        actualInvestmentAmount: true,
+        revenue: true,
+        employeeCount: true,
+        // myCompanySelectCount: true,
+        // compareCompanySelectCount: true,
+      },
+    });
+
+    if (!company) {
+      return sendBadRequest(res);
+    }
+
+    return res.status(200).json({
+      company,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return sendBadRequest(res);
+  }
+});
+
 companyRouter.all('/companies', (req, res) => {
+  return sendBadRequest(res);
+});
+
+companyRouter.all('/companies/:companyId', (req, res) => {
   return sendBadRequest(res);
 });
 
