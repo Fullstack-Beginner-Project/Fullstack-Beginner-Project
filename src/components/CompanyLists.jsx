@@ -12,7 +12,7 @@ function CompanyLists({
       <h4>
         {title} ({companies.length})
       </h4>
-
+      {/* 리스트 검색 결과가 있는 경우와 없는 경우 고려 */}
       {companies.length === 0 ? (
         <p className="empty_message">검색 결과가 없습니다.</p>
       ) : (
@@ -24,7 +24,7 @@ function CompanyLists({
                 <p>{company.name}</p>
                 <span>{company.category}</span>
               </div>
-
+  
               <Button
                 selected={company.selected}
                 onClick={() => onSelect(company.id)}
