@@ -1,0 +1,46 @@
+.section {
+  margin-top: 48px;
+}
+
+.section:first-child {
+  margin-top: 0;
+}
+
+.section_head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+.section_title {
+  flex-shrink: 0;
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.section_right {
+  margin-bottom: 16px;
+}
+
+.section_body {
+  width: 100%;
+}
+
+
+
+/* 반응형 */
+
+@media screen and (max-width: 1280px) {
+  .section_head {
+    flex-wrap: wrap;
+  }
+}
+
+@media screen and (max-width: 1023px) {}
+
+@media screen and (max-width: 768px) {}
+
+/* 반응형 end */

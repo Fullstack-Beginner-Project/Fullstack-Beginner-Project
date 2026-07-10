@@ -1,14 +1,23 @@
 import React from "react";
+import Table from "../components/Table";
 
 function Lobby() {
 
   return (
-  <>
-    <div className="wrap">
-      <p className="text">test</p>
-    </div>
-    
-  </>
+    <>
+      <div className="wrap">
+        <div id="body">
+          <div className="content_wrap">
+            
+
+          </div>
+          <div className="pagnation_wrap">
+
+          </div>
+          <p className="text">test</p>
+        </div>
+      </div>
+    </>
   );
 }
 
