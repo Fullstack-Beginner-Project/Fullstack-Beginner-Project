@@ -5,11 +5,9 @@
   align-items: flex-start;
   height: 48px;
   gap: 10px;
-
   border-radius: 10px;
   border: 1px solid var(--gray_200);
   background: var(--black_400);
-
   position: relative;
 }
 

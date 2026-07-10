@@ -1,6 +1,14 @@
 import React, { useState } from "react";
-import "../assets/css/Input.css";
+import "../assets/css/input.css";
+/* 
+  Input 컴포넌트입니다.
+  type : [password, text] 타입 설정해주세요.
+  placeholder : "" 내부 text 작성해주세요
+  onValueChange : {} Form 작성을 위한 Value 값 내보내는 파라미터입니다.
 
+  ex)
+  <Input type={"text"} placeholder={"Test"} onValueChange={(value) => console.log(value)}/>
+ */
 function Input({ type, placeholder, onValueChange }) {
   const [first, setFirst] = useState(true);
   const [value, setValue] = useState("");

@@ -1,6 +1,13 @@
-import '../assets/css/Search.css';
+import '../assets/css/search.css';
 import React, { useState } from 'react';
+/* 
+  Search 컴포넌트입니다.
+  size : [medium, small] 타입 설정해주세요.
+  onSubmit : {} Form 작성을 위한 Value 값 내보내는 파라미터입니다.
 
+  ex)
+  <Dropdown size={"medium"} onSubmit={(value) => console.log(value)}/>
+ */
 function Search({ size, onSubmit }) {
   const className = ["search_wrap", size].join(" ");
   const [value, setValue] = useState("");

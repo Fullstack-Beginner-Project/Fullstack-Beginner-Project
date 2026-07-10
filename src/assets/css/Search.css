@@ -53,7 +53,6 @@
 .search_wrap .frame .search_input {
   border: none;
   background: transparent;
-
   color: var(--gray-gray_100, #D8D8D8);
   font-family: Pretendard;
   font-style: normal;
