@@ -14,7 +14,7 @@ const MAX_COMMENT_LENGTH = 1000;
 
 
 
-function validateCompanyIdParam(companyId){
+function validateCompanyIdParam(companyId) {
   if (typeof companyId !== 'string' || !COMPANY_ID_REGEX.test(companyId)) {
     return '기업 ID 형식이 올바르지 않습니다.';
   }
@@ -140,9 +140,34 @@ function validatePatchInvestmentBody(body) {
   return null;
 }
 
+function validateDeleteInvestmentBody(body) {
+  const { investmentsId, password } = body;
+  if (typeof investmentsId !== 'string' || !COMPANY_ID_REGEX.test(investmentsId)) {
+    return '투자 ID 형식이 올바르지 않습니다.';
+  }
+  if (typeof password !== 'string') {
+    return '비밀번호를 입력해주세요.';
+  }
+
+  if (
+    password.length < MIN_PASSWORD_LENGTH ||
+    password.length > MAX_PASSWORD_LENGTH
+  ) {
+    return '비밀번호는 8자 이상 32자 이하로 입력해주세요.';
+  }
+
+  if (!PASSWORD_REGEX.test(password)) {
+    return '비밀번호에 허용되지 않은 문자가 포함되어 있습니다.';
+  }
+
+  return null;
+
+}
+
 
 export {
   validateCompanyIdParam,
   validateCreateInvestmentBody,
   validatePatchInvestmentBody,
+  validateDeleteInvestmentBody
 };
