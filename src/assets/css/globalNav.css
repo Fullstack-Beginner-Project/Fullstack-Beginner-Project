@@ -41,7 +41,7 @@
   color: #fff;
 }
 
-/* Tablet (1280px) */
+/*  반응형 Tablet (1280px) */
 @media (max-width: 1280px) {
   .gnb_wrap {
     gap: 24px;
@@ -62,7 +62,7 @@
   }
 }
 
-/* Mobile (768px) */
+/* 반응형 Mobile (768px) */
 @media (max-width: 768px) {
   .gnb_wrap {
     gap: 12px;
