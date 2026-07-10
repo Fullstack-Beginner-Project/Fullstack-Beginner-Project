@@ -5,54 +5,80 @@ import Search from './Search';
 import CompanyLists from '../components/CompanyLists';
 import Pagination from '../components/Pagination';
 
-// API 내려오기 전 목업 데이터 사용
 import { mockCompanies } from '../mocks/companies';
 
+const PAGE_SIZE = 5;
+
 function ModalCompanySelect() {
-    // API 내려온 후 useEffect 추가
   const [companies, setCompanies] = useState(mockCompanies);
   const [keyword, setKeyword] = useState('');
-  
+  const [currentPage, setCurrentPage] = useState(1);
+
   const recentCompanies = companies.filter(
-  (company) => company.isRecent // isRecent은 API에서 최근 비교한 기업 여부를 내려줄 때 값 변경
-);
+    (company) => company.isRecent
+  );
 
   const searchCompanies = companies.filter(
-  (company) =>
-    company.name.includes(keyword) ||
-    company.category.includes(keyword)
+    (company) =>
+      company.name.includes(keyword) ||
+      company.category.includes(keyword)
+  );
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(searchCompanies.length / PAGE_SIZE)
+  );
+
+  const paginatedCompanies = searchCompanies.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
   );
 
   const handleSelect = (id) => {
-    setRecentCompanies((prev) =>
+    setCompanies((prev) =>
       prev.map((company) =>
         company.id === id
-          ? { ...company, selected: !company.selected }
+          ? {
+              ...company,
+              selected: !company.selected,
+            }
           : company
       )
     );
   };
 
+  const handleKeywordChange = (value) => {
+    setKeyword(value);
+    setCurrentPage(1);
+  };  
+
   return (
     <Modal
-      title='나의 기업 선택하기'
-      footer={<Pagination />}
+      title="나의 기업 선택하기"
+      footer={
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      }
     >
-      <Search 
+      <Search
         value={keyword}
-        onChange={setKeyword}/>
+        onChange={handleKeywordChange}
+      />
 
       <CompanyLists
-        title='최근 비교한 기업'
+        title="최근 비교한 기업"
         companies={recentCompanies}
         onSelect={handleSelect}
       />
 
       <CompanyLists
-        title='검색 결과'
-        companies={searchCompanies}
+        title="검색 결과"
+        companies={paginatedCompanies}
         onSelect={handleSelect}
-        emptyMessage='검색 결과가 없습니다.'
+        emptyMessage="검색 결과가 없습니다."
       />
     </Modal>
   );
