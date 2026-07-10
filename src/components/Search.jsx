@@ -1,4 +1,4 @@
-import '../assets/css/Search.css';
+import '../assets/css/search.css';
 import React, { useState } from 'react';
 
 function Search({ size, onSubmit }) {

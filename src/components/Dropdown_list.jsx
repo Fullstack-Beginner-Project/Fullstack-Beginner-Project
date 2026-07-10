@@ -1,16 +1,8 @@
-import "../assets/css/Dropdown_list.css";
+import "../assets/css/dropdown_list.css";
 import React, { useState } from "react";
 
-function Dropdown_list({ size, onSelect }) {
+function Dropdown_list({ size, options, onSelect }) {
   const className = ["dropdown_list", size].join(" ");
-  const options = [
-    "누적 투자금액 높은순",
-    "누적 투자금액 낮은순",
-    "매출액 높은순",
-    "매출액 낮은순",
-    "고용 인원 많은순",
-    "고용 인원 적은순"
-  ];
 
   return (
     <ul className={className}>
