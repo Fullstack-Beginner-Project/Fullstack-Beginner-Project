@@ -26,7 +26,7 @@
   border: 1px solid var(--black_200);
 }
 
-/* Tablet (1280px) */
+/* 반응형 Tablet (1280px) */
 @media (max-width: 1280px) {
   .input_field_wrap {
     min-height: 260px;
@@ -38,7 +38,7 @@
   }
 }
 
-/* Mobile (768px) */
+/* 반응형 Mobile (768px) */
 @media (max-width: 768px) {
   .input_field_wrap {
     min-height: 200px;

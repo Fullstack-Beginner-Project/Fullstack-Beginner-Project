@@ -11,17 +11,18 @@ function Button({
   children,
 }) {
 
+  // size, variant, selected 상태를 조합해서 클래스명 생성
   const className = [
     'btn',
     `btn_${size}`,
     `btn_${variant}`,
     selected ? 'is-selected' : '',
   ]
-    .filter(Boolean)
+    .filter(Boolean) // 빈 문자열('is-selected' 아닐 때) 제거
     .join(' ');
 
   const onButtonClick = (event) => {
-    if (disabled) return;
+    if (disabled) return; // 비활성화 상태면 클릭 무시
     if (onClick) onClick(event);
   };
 

@@ -4,6 +4,7 @@ import '../assets/css/globalNav.css';
 
 
 
+// 상단 네비게이션 메뉴 목록 (라벨과 이동 경로)
 const NAV_ITEMS = [
   { label: '나의 기업 비교', to: '/my-company-compare' },
   { label: '비교 현황', to: '/compare-overview' },
@@ -23,6 +24,7 @@ function GlobalNav() {
             <li key={to}>
               <NavLink
                 to={to}
+                // 현재 페이지와 일치하는 메뉴에 is-active 클래스 부여
                 className={({ isActive }) =>
                   isActive ? 'gnb_link is-active' : 'gnb_link'
                 }
