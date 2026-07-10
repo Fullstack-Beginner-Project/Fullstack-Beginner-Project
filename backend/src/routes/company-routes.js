@@ -137,8 +137,6 @@ companyRouter.get('/companies/:companyId', async (req, res) => {
         actualInvestmentAmount: true,
         revenue: true,
         employeeCount: true,
-        // myCompanySelectCount: true,
-        // compareCompanySelectCount: true,
       },
     });
 
@@ -156,6 +154,87 @@ companyRouter.get('/companies/:companyId', async (req, res) => {
   }
 });
 
+companyRouter.get('/companies/:companyId/investments', async (req, res) => {
+  try {
+    const { companyId } = req.params;
+
+    if (!isValidCompanyId(companyId)) {
+      return sendBadRequest(res);
+    }
+
+    const {
+      page = '1',
+      pageSize = '5',
+    } = req.query;
+
+    if (
+      typeof page !== 'string' ||
+      typeof pageSize !== 'string'
+    ) {
+      return sendBadRequest(res);
+    }
+
+    const pageNumber = Number(page);
+    const pageSizeNumber = Number(pageSize);
+
+    if (!Number.isInteger(pageNumber) || pageNumber < 1) {
+      return sendBadRequest(res);
+    }
+
+    if (!Number.isInteger(pageSizeNumber) || pageSizeNumber < 1) {
+      return sendBadRequest(res);
+    }
+
+    const company = await prisma.company.findUnique({
+      where: {
+        id: companyId,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!company) {
+      return sendBadRequest(res);
+    }
+
+    const skip = (pageNumber - 1) * pageSizeNumber;
+
+    const where = {
+      companyId,
+    };
+
+    const investments = await prisma.investment.findMany({
+      where,
+      orderBy: {
+        amount: 'desc',
+      },
+      skip,
+      take: pageSizeNumber,
+      select: {
+        id: true,
+        companyId: true,
+        investorName: true,
+        amount: true,
+        comment: true,
+      },
+    });
+
+    const totalCount = await prisma.investment.count({
+      where,
+    });
+
+    return res.status(200).json({
+      list: investments,
+      totalCount,
+    });
+    } catch (error) {
+      console.error(error)
+
+      return sendBadRequest(res);
+    }
+});
+
 companyRouter.all('/companies', (req, res) => {
   return sendBadRequest(res);
 });
@@ -164,6 +243,8 @@ companyRouter.all('/companies/:companyId', (req, res) => {
   return sendBadRequest(res);
 });
 
-
+companyRouter.all('/companies/:companyId/investments', (req, res) => {
+  return sendBadRequest(res);
+});
 
 export default companyRouter;

@@ -39,3 +39,4 @@ Content-Type: application/json
 
 ### 잘못된 메서드 요청
 GET http://localhost:3000/api/investments
+
