@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs';
 import prisma from '../lib/prisma.js';
 import { validateCreateInvestmentBody } from '../validators/invest-validator.js';
 import { validatePatchInvestmentBody } from '../validators/invest-validator.js';
+import { validateDeleteInvestmentBody } from '../validators/invest-validator.js';
 
 
 
@@ -160,6 +161,57 @@ investmentRouter.patch('/investments', async (req, res) => {
     return res.status(200).json({
       investment: updatedInvestment,
     });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({
+      status: 400,
+      code: 'Bad Request',
+      message: '서버 오류가 발생했습니다.',
+    });
+  }
+});
+
+investmentRouter.delete('/investments', async (req, res) => {
+  try {
+    const { investmentsId, password } = req.body;
+    const error = validateDeleteInvestmentBody(req.body);
+    if (error) {
+      return res.status(400).json({
+        status: 400,
+        code: 'Bad Request',
+        message: error,
+      });
+    }
+    const investment = await prisma.investment.findUnique({
+      where: {
+        id: investmentsId
+      }
+    })
+    if (!investment) {
+      return res.status(400).json({
+        status: 400,
+        code: 'Bad Request',
+        message: '투자 정보를 찾을 수 없습니다.'
+      });
+    }
+    const isPasswordMatch = await bcrypt.compare(password, investment.password);
+    if (!isPasswordMatch) {
+      return res.status(400).json({
+        status: 400,
+        code: 'Bad Request',
+        message: '비밀번호가 일치하지 않습니다.',
+      });
+    }
+    const deletedInvestment = await prisma.investment.delete({
+      where: {
+        id: investmentsId,
+      },
+    });
+
+    return res.status(200).json({
+      id: deletedInvestment.id,
+    });
+
   } catch (error) {
     console.error(error);
     return res.status(400).json({
