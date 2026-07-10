@@ -2,7 +2,7 @@ import '../assets/css/search.css';
 import React, { useState } from 'react';
 /* 
   Search 컴포넌트입니다.
-  size : [medium, small] 타입 설정해주세요.
+  size : [medium, small] 타입 설정해주세요. 페이지용은 적지 않습니다.
   onSubmit : {} Form 작성을 위한 Value 값 내보내는 파라미터입니다.
 
   ex)
