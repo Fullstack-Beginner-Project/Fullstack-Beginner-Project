@@ -27,3 +27,6 @@ node_modules/
 # Env
 .env
 .env.*
+
+#personal
+src/components/TableBack.jsx

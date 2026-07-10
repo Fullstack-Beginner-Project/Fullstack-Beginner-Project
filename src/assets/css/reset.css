@@ -61,6 +61,26 @@ a{
     background-color: inherit;
 }
 
+.object_fit_cover{
+    display: block;
+    flex-shrink: 0;
+}
+
+.object_fit_cover img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ellipsis{
+    display: inline-block;
+    width: 100%;
+    word-wrap: normal;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
 input,
 select,
 textarea,
@@ -115,6 +135,7 @@ input{
 
 table {
     width:100%;
+    table-layout: fixed;
 }
 
 code {
@@ -176,6 +197,12 @@ code {
     opacity: 1;
     z-index: 2;
     transition: opacity 0.5s, top 0.1s;
+}
+
+.overflow_x{
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .img_wrap img{
