@@ -17,11 +17,11 @@ Content-Type: application/json
 
 {
   "companyId": "k3p9av",
-  "investorName": "최유진",
-  "amount": 35000000,
-  "comment": "지역 커뮤니티 기반 서비스는 사용자의 생활 반경 안에서 꾸준히 쓰일 가능성이 높다고 판단했습니다.",
-  "password": "Ab232ffcd",
-  "passwordConfirmation": "Ab232ffcd"
+  "investorName": "안유진",
+  "amount": 10000000,
+  "comment": "떡상 가즈아!!!",
+  "password": "abc1234@",
+  "passwordConfirmation": "abc1234@"
 }
 
 ### 잘못된 body 요청
@@ -36,14 +36,41 @@ Content-Type: application/json
   "password": "abc",
   "passwordConfirmation": "abc"
 }
+
+### investmentsId 없는 PATCH 요청
+PATCH http://localhost:3000/api/investments
+Content-Type: application/json
+
+{
+  "investmentsId": "k3p9av",
+  "investorName": "홍길동",
+  "amount": 5000000,
+  "comment": "수정 테스트",
+  "password": "Wrong123!"
+}
+
+### 비밀번호 틀린 PATCH 요청
+PATCH http://localhost:3000/api/investments
+Content-Type: application/json
+
+{
+  "investmentsId": "qg5etq",
+  "investorName": "홍길동",
+  "amount": 5000000,
+  "comment": "수정 테스트",
+  "password": "Wrong123!"
+}
+
 ### 가상 투자 삭제
 DELETE http://localhost:3000/api/investments
 Content-Type: application/json
 
 {
-  "investmentsId": "yvbow0",
-  "password": "Ab232ffcd"
+  "investmentsId": "dj3jda",
+  "password": "abc1234@"
 }
 ### 잘못된 메서드 요청
-GET http://localhost:3000/api/investments
+GET http://localhost:3000/api/companies/f8q2mz/investments
+
+
 
