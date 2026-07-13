@@ -92,6 +92,29 @@ const DeleteInvestmentBody = object({
   password: AuthPassword,
 });
 
+const CREATE_FIELD_MESSAGES = {
+  investorName: '투자자 이름은 2자 이상 40자 이하로 입력해주세요.',
+  amount: '투자 금액은 10원 이상 100억 이하로 입력해주세요.',
+  comment: '투자 코멘트는 1000자 이하로 입력해주세요.',
+  password: '비밀번호는 8자 이상 32자 이하로 입력해주세요.',
+  passwordConfirmation: '동일한 비밀번호를 입력해주세요.',
+};
+
+const PATCH_FIELD_MESSAGES = {
+  investorName: '투자자 이름은 2자 이상 40자 이하로 입력해주세요.',
+  amount: '투자 금액은 10원 이상 100억 이하로 입력해주세요.',
+  comment: '투자 코멘트는 1000자 이하로 입력해주세요.',
+  password: '비밀번호갸 올바르지 않습니다.',
+};
+
+const DELETE_FIELD_MESSAGES = {
+  password: '비밀번호갸 올바르지 않습니다.',
+};
+
+function getFieldErrorMessage(error, fieldMessages) {
+  return fieldMessages[error.key] || '잘못된 요청입니다.';
+}
+
 function validateCompanyIdParam(companyId) {
   const [error] = validate(companyId, CompanyId);
   
@@ -106,11 +129,11 @@ function validateCreateInvestmentBody(body) {
   const [error] = validate(body, CreateInvestmentBody);
 
   if (error) {
-    return '잘못된 요청입니다.';
+    return getFieldErrorMessage(error, CREATE_FIELD_MESSAGES);
   }
 
   if (body.password !== body.passwordConfirmation) {
-    return '잘못된 요청입니다.';
+    return '비밀번호와 비밀번호 확인이 일치하지 않습니다.';
   }
 
   return null;
@@ -120,7 +143,7 @@ function validatePatchInvestmentBody(body) {
   const [error] = validate(body, PatchInvestmentBody);
   
   if (error) {
-    return '잘못된 요청입니다.';
+    return getFieldErrorMessage(error, PATCH_FIELD_MESSAGES);
   }
 
   return null;
@@ -130,7 +153,7 @@ function validateDeleteInvestmentBody(body) {
   const [error] = validate(body, DeleteInvestmentBody);
 
   if (error) {
-    return '잘못된 요청입니다.';
+    return getFieldErrorMessage(error, DELETE_FIELD_MESSAGES);
   }
 
   return null;

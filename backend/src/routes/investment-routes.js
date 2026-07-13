@@ -83,7 +83,7 @@ investmentRouter.post('/investments', async (req, res) => {
     }
     const validationError = validateCreateInvestmentBody(req.body);
     if (validationError) {
-      return sendBadRequest(res);
+      return sendBadRequest(res, validationError);
     }
     const {
       companyId,
@@ -143,8 +143,6 @@ investmentRouter.patch('/investments', async (req, res) => {
         code: 'Bad Request',
         message: '투자 정보를 찾을 수 없습니다.'
       });
-
-      console.log('investment password:', investment.password);
     }
 
     const isPasswordMatch = await bcrypt.compare(password, investment.password);
