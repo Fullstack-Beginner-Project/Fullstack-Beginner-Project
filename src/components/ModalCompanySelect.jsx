@@ -4,8 +4,9 @@ import Modal from '../components/Modal';
 import Search from './Search';
 import CompanyLists from '../components/CompanyLists';
 import Pagination from '../components/Pagination';
+import '../assets/css/ModalCompanySelect.css';
 
-import { mockCompanies } from '../mocks/companies';
+import { mockCompanies } from '../mock/companies';
 
 const PAGE_SIZE = 5;
 
@@ -67,19 +68,20 @@ function ModalCompanySelect() {
         value={keyword}
         onChange={handleKeywordChange}
       />
+      <div className='company_select_list_wrap'>
+        <CompanyLists
+          title="최근 비교한 기업"
+          companies={recentCompanies}
+          onSelect={handleSelect}
+        />
 
-      <CompanyLists
-        title="최근 비교한 기업"
-        companies={recentCompanies}
-        onSelect={handleSelect}
-      />
-
-      <CompanyLists
-        title="검색 결과"
-        companies={paginatedCompanies}
-        onSelect={handleSelect}
-        emptyMessage="검색 결과가 없습니다."
-      />
+        <CompanyLists
+          title="검색 결과"
+          companies={paginatedCompanies}
+          onSelect={handleSelect}
+          emptyMessage="검색 결과가 없습니다."
+        />
+      </div>
     </Modal>
   );
 }

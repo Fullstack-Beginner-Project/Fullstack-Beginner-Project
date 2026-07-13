@@ -1,7 +1,9 @@
 import { useState } from 'react';
+
 import Modal from '../components/Modal';
 import Button from '../components/Button';
-// 인풋 import 예정
+import Input from '../components/Input';
+import '../assets/css/ModalInput.css';
 
 function ModalDelete({
   onClose,
@@ -14,14 +16,18 @@ function ModalDelete({
       title='삭제 권한 인증'
       onClose={onClose}
       footer={
-        <Button onClick={() => onDelete(password)}>
-          삭제하기
-        </Button>
+        <div className='modal_footer_btns'>
+          <Button onClick={() => onDelete(password)}>
+            삭제하기
+          </Button>
+        </div>
       }
     >
-      <div className='password_input'>
-        <p>비밀번호</p>  
-        <input type='password' placeholder='패스워드를 입력해주세요'/>
+      <div className='modal_input'>
+        <label>비밀번호</label>  
+        <Input type='password' 
+               placeholder='패스워드를 입력해주세요'
+               onValueChange={setPassword}/>
       </div>
 
     </Modal>

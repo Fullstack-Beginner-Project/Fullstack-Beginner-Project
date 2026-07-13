@@ -1,0 +1,23 @@
+.modal_input {
+    display: flex;
+    flex-direction: column;
+    gap: 16px 0;
+    margin-bottom: 24px;
+}
+.modal_input label {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+@media (max-width: 768px) {
+    #root>.wrap .input_wrap .frame {
+        width: 100%;
+    }
+    .modal_input {
+        gap: 12px 0;
+        margin-bottom: 16px;
+    }
+    .modal_input label {
+        font-size: 14px;
+    }
+}

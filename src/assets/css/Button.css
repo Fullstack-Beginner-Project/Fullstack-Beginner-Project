@@ -72,8 +72,8 @@
 /* variant: outline */
 .btn_wrap .btn_outline {
   background-color: transparent;
-  border-color: var(--Secondary-400);
-  color: var(--Secondary-700);
+  border-color: var(--main_color);
+  color: var(--main_color);
 }
 
 .btn_wrap .btn_outline.is-selected {
@@ -82,10 +82,10 @@
 }
 
 .btn_wrap .btn_outline:disabled {
-  border-color: var(--Secondary-200);
-  color: var(--Secondary-400);
+  border-color: var(--gray_200);
+  color: var(--gray_200);
 }
 
 .btn_wrap .btn_outline:active {
-  background-color: var(--Secondary-100);
+  background-color: var(--main_color);
 }

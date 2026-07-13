@@ -3,6 +3,9 @@ import { useState } from 'react';
 import Modal from '../components/Modal';
 import Button from '../components/Button';
 import Input from '../components/Input';
+import '../assets/css/ModalInput.css';
+import '../assets/css/ModalInvest.css';
+
 
 import DefaultLogo from '../assets/images/logo_default.png';
 
@@ -31,7 +34,7 @@ function ModalInvest({
       title="기업에 투자하기"
       onClose={onClose}
       footer={
-        <>
+        <div className='modal_footer_btns'>
           <Button variant="secondary" onClick={onClose}>
             취소
           </Button>
@@ -39,7 +42,7 @@ function ModalInvest({
           <Button onClick={() => onInvest(form)}>
             투자하기
           </Button>
-        </>
+        </div>
       }
     >
       {/* 투자 기업 정보 */}
@@ -59,7 +62,7 @@ function ModalInvest({
         </div>
       </div>
 
-      <div className="invest_input">
+      <div className="modal_input">
         <label>투자자 이름</label>
         <Input
           type="text"
@@ -68,7 +71,7 @@ function ModalInvest({
         />
       </div>
 
-      <div className="invest_input">
+      <div className="modal_input">
         <label>투자 금액</label>
         <Input
           type="number"
@@ -77,16 +80,17 @@ function ModalInvest({
         />
       </div>
 
-      <div className="invest_input">
+      <div className="modal_input">
         <label>투자 코멘트</label>
-        <Input
-          type="text"
+        <textarea
+          className="invest_comment"
           placeholder="투자에 대한 코멘트를 입력해 주세요"
-          onValueChange={handleValueChange('comment')}
+          value={form.comment}
+          onChange={(e) => handleValueChange('comment')(e.target.value)}
         />
       </div>
 
-      <div className="invest_input">
+      <div className="modal_input">
         <label>비밀번호</label>
         <Input
           type="password"
@@ -95,7 +99,7 @@ function ModalInvest({
         />
       </div>
 
-      <div className="invest_input">
+      <div className="modal_input">
         <label>비밀번호 확인</label>
         <Input
           type="password"

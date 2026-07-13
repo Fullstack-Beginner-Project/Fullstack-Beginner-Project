@@ -1,4 +1,6 @@
-export const companies = [
+// const companies를 export const mockCompanies로 수정
+
+export const mockCompanies = [
   {
     id: 1,
     name: '블루코드',

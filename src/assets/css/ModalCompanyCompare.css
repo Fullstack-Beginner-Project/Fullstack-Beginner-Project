@@ -1,0 +1,5 @@
+.caution_message {
+    color: var(--warning_color);
+    font-size: 14px;
+    margin-top: 12px;
+}
