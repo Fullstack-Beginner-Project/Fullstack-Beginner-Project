@@ -13,7 +13,8 @@ const NAV_ITEMS = [
 
 function GlobalNav() {
   return (
-    <header className="gnb_wrap">
+  <header className="gnb_wrap">
+    <div className="gnb_inner">
       <NavLink to="/" className="gnb_logo">
         <img src={logoImg} alt="View my startup" />
       </NavLink>
@@ -24,7 +25,6 @@ function GlobalNav() {
             <li key={to}>
               <NavLink
                 to={to}
-                // 현재 페이지와 일치하는 메뉴에 is-active 클래스 부여
                 className={({ isActive }) =>
                   isActive ? 'gnb_link is-active' : 'gnb_link'
                 }
@@ -35,8 +35,9 @@ function GlobalNav() {
           ))}
         </ul>
       </nav>
-    </header>
-  );
+    </div>
+  </header>
+);
 }
 
 
