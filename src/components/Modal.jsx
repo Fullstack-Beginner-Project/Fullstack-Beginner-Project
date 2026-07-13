@@ -1,4 +1,5 @@
 import ModalClose from '../assets/images/icon_delete.png';
+import '../assets/css/Modal.css'
 
 function Modal({
     title,

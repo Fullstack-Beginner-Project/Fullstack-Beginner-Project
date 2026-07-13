@@ -59,6 +59,7 @@ function ModalCompanySelect({ onClose, onSelectCompany }) {
       }
     >
       <Search
+        size="medium"
         value={keyword}
         onChange={handleKeywordChange}
       />

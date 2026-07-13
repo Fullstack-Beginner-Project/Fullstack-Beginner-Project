@@ -10,9 +10,9 @@
 }
 
 @media (max-width: 768px) {
-    #root>.wrap .input_wrap .frame {
+    /* #root>.wrap .input_wrap .frame {
         width: 100%;
-    }
+    } */
     .modal_input {
         gap: 12px 0;
         margin-bottom: 16px;
