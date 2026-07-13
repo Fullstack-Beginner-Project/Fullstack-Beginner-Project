@@ -5,7 +5,7 @@ import Search from './Search';
 import CompanyLists from '../components/CompanyLists';
 import Pagination from '../components/Pagination';
 
-import { mockCompanies } from '../mocks/companies';
+import { companies as mockCompanies } from '../mock/companies';
 
 const PAGE_SIZE = 5;
 
