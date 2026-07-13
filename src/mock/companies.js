@@ -1,4 +1,4 @@
-const companies = [
+export const companies = [
   {
     id: 1,
     name: '블루코드',
