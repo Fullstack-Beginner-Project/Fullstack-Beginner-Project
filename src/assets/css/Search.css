@@ -1,4 +1,43 @@
+/*pages용*/
 .search_wrap {
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  border: 1px solid var(--gray_200);
+  background: var(--black_200);
+  width: 448px;
+}
+
+.search_wrap .frame {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+  margin: 12px;
+}
+
+/*  반응형 Tablet (1280px) */
+@media (max-width: 1280px) {
+  .search_wrap {
+    max-width: 271px;
+  }
+}
+
+/* 반응형 Mobile (768px) */
+@media (max-width: 768px) {
+  .search_wrap {
+    max-width: none;
+    flex: 1;
+  }
+
+  .search_wrap .frame {
+    margin: 8px 12px;
+  }
+}
+
+/*modal용*/
+
+.search_wrap.medium, .search_wrap.small {
   display: flex;
   align-items: center;
   border-radius: 10px;
@@ -12,25 +51,27 @@
 }
 
 .search_wrap.small {
-  width: 448px;
+  width: 313px;
   height: 40px;
 }
 
-.search_wrap .frame {
+.search_wrap.medium .frame {
   display: flex;
   width: 424px;
   align-items: center;
   gap: 8px;
-}
-
-.search_wrap.medium .frame {
   margin: 12px;
 }
 
 .search_wrap.small .frame {
+  display: flex;
+  width: 424px;
+  align-items: center;
+  gap: 8px;
   margin: 8px 12px;
 }
 
+/*공통*/
 .search_wrap .frame .icon_wrap {
   display: flex;
   align-items: center;

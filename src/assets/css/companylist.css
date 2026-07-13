@@ -1,0 +1,38 @@
+.search_wrap_parent {
+  gap: 12px;
+}
+
+.dropdown_wrap.small {
+  height: 50px;
+}
+
+/*  반응형 Tablet (1280px) */
+@media (max-width: 1280px) {}
+
+/* 반응형 Mobile (768px) */
+@media (max-width: 768px) {
+  .section_right {
+    width: 100%;
+  }
+
+
+  .search_wrap_parent {
+    max-width: none;
+  }
+
+  .dropdown_wrap.medium {
+    width: 168px;
+    height: 40px;
+    padding: 10px;
+  }
+
+  .dropdown_list.medium li {
+    width: 168px;
+    font-size: 12px;
+  }
+
+  .dropdown_wrap.small {
+    height: 42px;
+    padding: 6px 8px;
+  }
+}
