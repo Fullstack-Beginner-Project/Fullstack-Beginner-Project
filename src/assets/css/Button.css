@@ -32,7 +32,7 @@
 
 /* variant: primary */
 .btn_wrap .btn_primary {
-  background-color: var(--Secondary-700);
+  background-color: var(--black_300);
   color: #fff;
 }
 
@@ -41,18 +41,18 @@
 }
 
 .btn_wrap .btn_primary:disabled {
-  background-color: var(--Secondary-200);
-  color: var(--Secondary-400);
+  background-color: var(--gray_300);
+  color: var(--gray_200);
 }
 
 .btn_wrap .btn_primary:active {
-  background-color: #1f2937;
+  background-color: var(--black_100);
 }
 
 /* variant: secondary */
 .btn_wrap .btn_secondary {
-  background-color: var(--Secondary-100);
-  color: var(--Secondary-700);
+  background-color: var(--gray_100);
+  color: var(--black_300);
 }
 
 .btn_wrap .btn_secondary.is-selected {
@@ -61,19 +61,19 @@
 }
 
 .btn_wrap .btn_secondary:disabled {
-  background-color: var(--Secondary-100);
-  color: var(--Secondary-400);
+  background-color: var(--gray_100);
+  color: var(--gray_200);
 }
 
 .btn_wrap .btn_secondary:active {
-  background-color: var(--Secondary-200);
+  background-color: var(--gray_300);
 }
 
 /* variant: outline */
 .btn_wrap .btn_outline {
   background-color: transparent;
-  border-color: var(--main_color);
-  color: var(--main_color);
+  border-color: var(--gray_200);
+  color: var(--black_300);
 }
 
 .btn_wrap .btn_outline.is-selected {
@@ -82,10 +82,10 @@
 }
 
 .btn_wrap .btn_outline:disabled {
-  border-color: var(--gray_200);
+  border-color: var(--gray_300);
   color: var(--gray_200);
 }
 
 .btn_wrap .btn_outline:active {
-  background-color: var(--main_color);
+  background-color: var(--gray_100);
 }

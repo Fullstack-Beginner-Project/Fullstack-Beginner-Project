@@ -10,8 +10,8 @@ import { mockCompanies } from '../mock/companies';
 
 const PAGE_SIZE = 5;
 
-function ModalCompanySelect() {
-  const [companies, setCompanies] = useState(mockCompanies);
+function ModalCompanySelect({ onClose, onSelectCompany }) {
+  const companies = mockCompanies;
   const [keyword, setKeyword] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -36,16 +36,9 @@ function ModalCompanySelect() {
   );
 
   const handleSelect = (id) => {
-    setCompanies((prev) =>
-      prev.map((company) =>
-        company.id === id
-          ? {
-              ...company,
-              selected: !company.selected,
-            }
-          : company
-      )
-    );
+    const company = companies.find((company) => company.id === id);
+    onSelectCompany(company);
+    onClose();
   };
 
   const handleKeywordChange = (value) => {
@@ -56,6 +49,7 @@ function ModalCompanySelect() {
   return (
     <Modal
       title="나의 기업 선택하기"
+      onClose={onClose}
       footer={
         <Pagination
           currentPage={currentPage}
