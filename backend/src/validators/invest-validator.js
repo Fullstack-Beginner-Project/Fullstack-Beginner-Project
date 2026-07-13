@@ -80,7 +80,7 @@ const CreateInvestmentBody = object({
 });
 
 const PatchInvestmentBody = object({
-  investmentsId: InvestmentId,
+  investmentId: InvestmentId,
   investorName: InvestorName,
   amount: InvestmentAmount,
   comment: optional(nullable(InvestmentComment)),
@@ -88,7 +88,7 @@ const PatchInvestmentBody = object({
 });
 
 const DeleteInvestmentBody = object({
-  investmentsId: InvestmentId,
+  investmentId: InvestmentId,
   password: AuthPassword,
 });
 

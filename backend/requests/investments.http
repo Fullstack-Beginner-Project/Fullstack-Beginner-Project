@@ -37,12 +37,12 @@ Content-Type: application/json
   "passwordConfirmation": "abc"
 }
 
-### investmentsId 없는 PATCH 요청
+### investmentId 없는 PATCH 요청
 PATCH http://localhost:3000/api/investments
 Content-Type: application/json
 
 {
-  "investmentsId": "k3p9av",
+  "investmentId": "k3p9av",
   "investorName": "홍길동",
   "amount": 5000000,
   "comment": "수정 테스트",
@@ -54,11 +54,11 @@ PATCH http://localhost:3000/api/investments
 Content-Type: application/json
 
 {
-  "investmentsId": "qg5etq",
+  "investmentId": "jt73an",
   "investorName": "홍길동",
   "amount": 5000000,
   "comment": "수정 테스트",
-  "password": "Wrong123!"
+  "password": "Ab232ffcd"
 }
 
 ### 가상 투자 삭제
@@ -66,8 +66,8 @@ DELETE http://localhost:3000/api/investments
 Content-Type: application/json
 
 {
-  "investmentsId": "dj3jda",
-  "password": "abc1234@"
+  "investmentId": "jt73an",
+  "password": "Ab232ffcd"
 }
 ### 잘못된 메서드 요청
 GET http://localhost:3000/api/companies/f8q2mz/investments

@@ -1,0 +1,38 @@
+### 비교 기업 선택 모달 - 기본 조회
+GET http://localhost:3000/api/compare/companies
+
+### 2. 비교 기업 선택 모달 - 1페이지 3개 조회
+GET http://localhost:3000/api/compare/companies?page=1&pageSize=3
+
+### 3. 비교 기업 선택 모달 - 2페이지 조회
+GET http://localhost:3000/api/compare/companies?page=2&pageSize=5
+
+### 4. 비교 기업 선택 모달 - 회사명 검색
+GET http://localhost:3000/api/compare/companies?page=1&pageSize=5&keyword=토스
+
+### 5. 비교 기업 선택 모달 - 선택 기업 복원
+GET http://localhost:3000/api/compare/companies?compareCompanyIds=z2h8kd,f8q2mz
+
+### 6. 비교 기업 선택 모달 - 검색과 선택 기업 복원 동시 사용
+GET http://localhost:3000/api/compare/companies?page=1&pageSize=5&keyword=당근&compareCompanyIds=z2h8kd,f8q2mz
+
+### 7. 비교 기업 선택 모달 - 잘못된 page
+GET http://localhost:3000/api/compare/companies?page=0&pageSize=5
+
+### 8. 비교 기업 선택 모달 - 잘못된 pageSize
+GET http://localhost:3000/api/compare/companies?page=1&pageSize=0
+
+### 9. 비교 기업 선택 모달 - 잘못된 companyId 형식
+GET http://localhost:3000/api/compare/companies?compareCompanyIds=abc123,wrong-id
+
+### 10. 비교 기업 선택 모달 - 빈 companyId 포함
+GET http://localhost:3000/api/compare/companies?compareCompanyIds=abc123,,def456
+
+### 11. 비교 기업 선택 모달 - 비교 기업 6개 초과
+GET http://localhost:3000/api/compare/companies?compareCompanyIds=z2h8kd,f8q2mz,r7x1tq,b6n4yc,h8s2bn,p4c7wu
+
+### 12. 비교 기업 선택 모달 - 잘못된 메서드
+POST http://localhost:3000/api/compare/companies
+Content-Type: application/json
+
+{}

@@ -115,7 +115,7 @@ investmentRouter.post('/investments', async (req, res) => {
 investmentRouter.patch('/investments', async (req, res) => {
   try {
     const {
-      investmentsId,
+      investmentId,
       investorName,
       amount,
       comment,
@@ -133,7 +133,7 @@ investmentRouter.patch('/investments', async (req, res) => {
 
     const investment = await prisma.investment.findUnique({
       where: {
-        id: investmentsId,
+        id: investmentId,
       },
     });
 
@@ -152,7 +152,7 @@ investmentRouter.patch('/investments', async (req, res) => {
 
     const updatedInvestment = await prisma.investment.update({
       where: {
-        id: investmentsId,
+        id: investmentId,
       },
       data: {
         investorName: investorName.trim(),
@@ -184,7 +184,7 @@ investmentRouter.patch('/investments', async (req, res) => {
 
 investmentRouter.delete('/investments', async (req, res) => {
   try {
-    const { investmentsId, password } = req.body;
+    const { investmentId, password } = req.body;
     const error = validateDeleteInvestmentBody(req.body);
     if (error) {
       return res.status(400).json({
@@ -195,7 +195,7 @@ investmentRouter.delete('/investments', async (req, res) => {
     }
     const investment = await prisma.investment.findUnique({
       where: {
-        id: investmentsId
+        id: investmentId
       },
     });
     if (!investment) {
@@ -211,7 +211,7 @@ investmentRouter.delete('/investments', async (req, res) => {
     }
     const deletedInvestment = await prisma.investment.delete({
       where: {
-        id: investmentsId,
+        id: investmentId,
       },
     });
 
