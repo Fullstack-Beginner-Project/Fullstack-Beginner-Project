@@ -40,6 +40,12 @@ function MyCompanyCompare() {
     // TODO: 비교 현황 페이지로 이동 또는 비교 결과 반영
   };
 
+  const handleCancelMyCompany = (event) => {
+    event.stopPropagation();
+    setMyCompany(null);
+    setTargetCompany(null);
+  };
+
   return (
     <>
       <div className="content_wrap my_company_compare_wrap">
@@ -51,6 +57,15 @@ function MyCompanyCompare() {
         >
           {myCompany ? (
             <div className="company_slot_selected">
+              <div className="company_slot_cancel">
+                <Button
+                  size="small"
+                  variant="outline"
+                  onClick={handleCancelMyCompany}
+                >
+                  선택 취소
+                </Button>
+              </div>
               <img
                 src={myCompany.logo ?? DefaultLogo}
                 alt={myCompany.name}
@@ -66,38 +81,43 @@ function MyCompanyCompare() {
           )}
         </div>
 
-        <div className="company_slot_header">
-          <h3>어떤 기업이 궁금하세요?</h3>
-          <Button
-            size="small"
-            variant="primary"
-            onClick={() => handleOpenModal(SLOT.TARGET)}
-          >
-            기업 추가하기
-          </Button>
-        </div>
-
-        <div
-          className="company_slot"
-          onClick={() => handleOpenModal(SLOT.TARGET)}
-        >
-          {targetCompany ? (
-            <div className="company_slot_selected">
-              <img
-                src={targetCompany.logo ?? DefaultLogo}
-                alt={targetCompany.name}
-              />
-              <p>{targetCompany.name}</p>
-              <span>{targetCompany.category}</span>
+        {myCompany && (
+          <>
+            <div className="company_slot_header">
+              <h3>어떤 기업이 궁금하세요?</h3>
+              <Button
+                size="small"
+                variant="primary"
+                selected
+                onClick={() => handleOpenModal(SLOT.TARGET)}
+              >
+                기업 추가하기
+              </Button>
             </div>
-          ) : (
-            <p className="company_slot_placeholder">
-              아직 추가한 기업이 없어요.
-              <br />
-              버튼을 눌러 기업을 추가해보세요
-            </p>
-          )}
-        </div>
+
+            <div
+              className="company_slot"
+              onClick={() => handleOpenModal(SLOT.TARGET)}
+            >
+              {targetCompany ? (
+                <div className="company_slot_selected">
+                  <img
+                    src={targetCompany.logo ?? DefaultLogo}
+                    alt={targetCompany.name}
+                  />
+                  <p>{targetCompany.name}</p>
+                  <span>{targetCompany.category}</span>
+                </div>
+              ) : (
+                <p className="company_slot_placeholder">
+                  아직 추가한 기업이 없어요.
+                  <br />
+                  버튼을 눌러 기업을 추가해보세요
+                </p>
+              )}
+            </div>
+          </>
+        )}
 
         <Button
           size="large"
