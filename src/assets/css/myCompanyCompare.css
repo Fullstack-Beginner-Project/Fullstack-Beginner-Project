@@ -9,6 +9,7 @@
 }
 
 .my_company_compare_wrap .company_slot {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17,6 +18,16 @@
   background-color: var(--black_200);
   border-radius: 12px;
   cursor: pointer;
+}
+
+.my_company_compare_wrap .company_slot_cancel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.my_company_compare_wrap .company_slot_cancel .btn_outline {
+  border-color: transparent;
 }
 
 .my_company_compare_wrap .company_slot_empty {
@@ -61,4 +72,9 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
+}
+
+.my_company_compare_wrap .btn_wrap {
+  display: flex;
+  justify-content: center;
 }
