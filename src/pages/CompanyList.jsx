@@ -4,6 +4,7 @@ import Section from "../components/Section";
 import Search from "../components/Search";
 import Dropdown from "../components/Dropdown";
 import GlobalNav from "../components/GlobalNav";
+import "../assets/css/companylist.css";
 
 function CompanyList() {
 
@@ -11,10 +12,19 @@ function CompanyList() {
     console.log("검색어:", keyword);
   }
 
+  const options = [
+    "누적 투자금액 높은순", 
+    "누적 투자금액 낮은순",
+    "매출액 높은순",
+    "매출액 낮은순",
+    "고용 인원 많은순",
+    "고용 인원 적은순",
+  ]
+
   const sectionRight = (
     <form className="search_wrap_parent flex">
-      <Search size={'medium'} onSubmit={handleSearch}></Search>
-      <Dropdown size={'medium'} ></Dropdown>
+      <Search onSubmit={handleSearch}></Search>
+      <Dropdown size={'small'} options={options}></Dropdown>
     </form>
   );
   return (
@@ -28,7 +38,6 @@ function CompanyList() {
 
       </div>
       {/* pagnation 위치는 content_wrap안이 좋을지 밖이 좋을지 고려 */}
-      <p className="text">test</p>
     </>
   );
 }
