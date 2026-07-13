@@ -33,3 +33,37 @@ GET http://localhost:3000/api/companies/f8q2mz/investments?page=1&pageSize=5
 
 ### 기업별 투자 목록 잘못된 page
 GET http://localhost:3000/api/companies/f8q2mz/investments?page=abc
+
+
+### 투자 현황 조회
+GET http://localhost:3000/api/companies/investmentStatus
+
+###
+
+### 투자 현황 조회 - 페이지 변경
+GET http://localhost:3000/api/companies/investmentStatus?page=2&pageSize=5
+
+###
+
+### 투자 현황 조회 - 실제 투자금 높은순
+GET http://localhost:3000/api/companies/investmentStatus?orderBy=actualInvestmentAmount&order=desc
+
+###
+
+### 투자 현황 조회 - View My Startup 투자금 낮은순
+GET http://localhost:3000/api/companies/investmentStatus?orderBy=userInvestmentAmount&order=asc
+
+###
+
+### 투자 현황 조회 - 잘못된 page
+GET http://localhost:3000/api/companies/investmentStatus?page=abc
+
+###
+
+### 투자 현황 조회 - 잘못된 order
+GET http://localhost:3000/api/companies/investmentStatus?order=banana
+
+###
+
+### 투자 현황 조회 - 잘못된 orderBy
+GET http://localhost:3000/api/companies/investmentStatus?orderBy=test
