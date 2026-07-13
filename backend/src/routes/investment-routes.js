@@ -24,6 +24,14 @@ function sendBadRequest(res, message = '잘못된 요청입니다.') {
   });
 }
 
+function sendAuthenticationFailed(res, message = '인증에 실패했습니다.') {
+  return res.status(401).json({
+    status: 401,
+    code: 'Unauthorized',
+    message,
+  });
+}
+
 function isJsonRequest(req) {
   return req.is('application/json');
 }
@@ -75,7 +83,7 @@ investmentRouter.post('/investments', async (req, res) => {
     }
     const validationError = validateCreateInvestmentBody(req.body);
     if (validationError) {
-      return sendBadRequest(res);
+      return sendBadRequest(res, validationError);
     }
     const {
       companyId,
@@ -113,6 +121,7 @@ investmentRouter.patch('/investments', async (req, res) => {
       comment,
       password,
     } = req.body;
+
     const error = validatePatchInvestmentBody(req.body);
     if (error) {
       return res.status(400).json({
@@ -121,11 +130,13 @@ investmentRouter.patch('/investments', async (req, res) => {
         message: error,
       });
     }
+
     const investment = await prisma.investment.findUnique({
       where: {
         id: investmentsId,
       },
     });
+
     if (!investment) {
       return res.status(400).json({
         status: 400,
@@ -133,14 +144,12 @@ investmentRouter.patch('/investments', async (req, res) => {
         message: '투자 정보를 찾을 수 없습니다.'
       });
     }
+
     const isPasswordMatch = await bcrypt.compare(password, investment.password);
     if (!isPasswordMatch) {
-      return res.status(400).json({
-        status: 400,
-        code: 'Bad Request',
-        message: '비밀번호가 일치하지 않습니다.',
-      });
+      return sendAuthenticationFailed(res);
     }
+
     const updatedInvestment = await prisma.investment.update({
       where: {
         id: investmentsId,
@@ -158,9 +167,11 @@ investmentRouter.patch('/investments', async (req, res) => {
         comment: true,
       },
     });
+
     return res.status(200).json({
       investment: updatedInvestment,
     });
+
   } catch (error) {
     console.error(error);
     return res.status(400).json({
@@ -185,8 +196,8 @@ investmentRouter.delete('/investments', async (req, res) => {
     const investment = await prisma.investment.findUnique({
       where: {
         id: investmentsId
-      }
-    })
+      },
+    });
     if (!investment) {
       return res.status(400).json({
         status: 400,
@@ -196,11 +207,7 @@ investmentRouter.delete('/investments', async (req, res) => {
     }
     const isPasswordMatch = await bcrypt.compare(password, investment.password);
     if (!isPasswordMatch) {
-      return res.status(400).json({
-        status: 400,
-        code: 'Bad Request',
-        message: '비밀번호가 일치하지 않습니다.',
-      });
+      return sendAuthenticationFailed(res);
     }
     const deletedInvestment = await prisma.investment.delete({
       where: {
