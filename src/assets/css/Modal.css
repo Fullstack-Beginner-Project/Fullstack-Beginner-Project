@@ -9,6 +9,7 @@
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
     padding: 75px 0;
+    z-index: 1000;
 }
 .modal_wrap .modal {
     width: 496px;
