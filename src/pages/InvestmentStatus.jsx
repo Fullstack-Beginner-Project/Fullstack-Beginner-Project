@@ -26,14 +26,14 @@ function InvestmentStatus() {
     "실제 누적 투자 금액 낮은순",
   ]
 
-  const sectionRight = (
+  const sectionRight = data.length > 0 && (
     <form className="search_wrap_parent flex">
       <Dropdown size={'medium'} options={options}></Dropdown>
     </form>
   );
 
   return (
-    <div className="content_wrap">
+    <div className="content_wrap investment_page">
       <Section title={'투자 현황'} sh_right={sectionRight}>
         {loading ? (
           <p>로딩 중...</p>

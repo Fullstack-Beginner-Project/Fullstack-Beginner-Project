@@ -41,3 +41,9 @@
   font-weight: 400;
   line-height: normal;
 }
+
+.investment_page .section_head {
+  display: flex;
+  align-items: center;
+  height: 64px;
+}
