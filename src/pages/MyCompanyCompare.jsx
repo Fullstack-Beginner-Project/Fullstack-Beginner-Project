@@ -12,12 +12,18 @@ const SLOT = {
   TARGET: "target",
 };
 
+// 궁금한 기업은 최대 5개까지 선택 가능
+const MAX_TARGET_COMPANIES = 5;
+
 function MyCompanyCompare() {
   const [myCompany, setMyCompany] = useState(null);
-  const [targetCompany, setTargetCompany] = useState(null);
+  const [targetCompanies, setTargetCompanies] = useState([]);
   const [openSlot, setOpenSlot] = useState(null);
+  const [hasSelectedMyCompany, setHasSelectedMyCompany] = useState(false);
+  const [isCompareSubmitted, setIsCompareSubmitted] = useState(false);
 
-  const isCompareReady = Boolean(myCompany && targetCompany);
+  const isTargetFull = targetCompanies.length >= MAX_TARGET_COMPANIES;
+  const isCompareReady = Boolean(myCompany && targetCompanies.length > 0);
 
   const handleOpenModal = (slot) => {
     setOpenSlot(slot);
@@ -30,33 +36,58 @@ function MyCompanyCompare() {
   const handleSelectCompany = (company) => {
     if (openSlot === SLOT.MY) {
       setMyCompany(company);
+      setHasSelectedMyCompany(true);
     } else if (openSlot === SLOT.TARGET) {
-      setTargetCompany(company);
+      if (isTargetFull) return;
+      setTargetCompanies((prev) =>
+        prev.some((item) => item.id === company.id)
+          ? prev
+          : [...prev, company]
+      );
     }
   };
 
   const handleCompare = () => {
     if (!isCompareReady) return;
-    // TODO: 비교 현황 페이지로 이동 또는 비교 결과 반영
+    setIsCompareSubmitted(true);
   };
 
   const handleCancelMyCompany = (event) => {
     event.stopPropagation();
     setMyCompany(null);
-    setTargetCompany(null);
+    setIsCompareSubmitted(false);
+  };
+
+  const handleCancelTargetCompany = (event, id) => {
+    event.stopPropagation();
+    setTargetCompanies((prev) => prev.filter((item) => item.id !== id));
+    setIsCompareSubmitted(false);
+  };
+
+  const handleResetAll = () => {
+    setMyCompany(null);
+    setTargetCompanies([]);
+    setIsCompareSubmitted(false);
   };
 
   return (
     <>
       <div className="content_wrap my_company_compare_wrap">
-        <h2 className="page_title">나의 기업을 선택해 주세요!</h2>
+        <div className="my_company_compare_title">
+          <h2 className="page_title">나의 기업을 선택해 주세요!</h2>
+          {myCompany && (
+            <Button size="small" variant="primary" selected onClick={handleResetAll}>
+              전체 초기화
+            </Button>
+          )}
+        </div>
 
         <div
           className="company_slot"
           onClick={() => handleOpenModal(SLOT.MY)}
         >
           {myCompany ? (
-            <div className="company_slot_selected">
+            <>
               <div className="company_slot_cancel">
                 <Button
                   size="small"
@@ -66,13 +97,15 @@ function MyCompanyCompare() {
                   선택 취소
                 </Button>
               </div>
-              <img
-                src={myCompany.logo ?? DefaultLogo}
-                alt={myCompany.name}
-              />
-              <p>{myCompany.name}</p>
-              <span>{myCompany.category}</span>
-            </div>
+              <div className="company_slot_selected">
+                <img
+                  src={myCompany.logo ?? DefaultLogo}
+                  alt={myCompany.name}
+                />
+                <p>{myCompany.name}</p>
+                <span>{myCompany.category}</span>
+              </div>
+            </>
           ) : (
             <div className="company_slot_empty">
               <span className="plus_icon">+</span>
@@ -81,35 +114,50 @@ function MyCompanyCompare() {
           )}
         </div>
 
-        {myCompany && (
+        {(myCompany || hasSelectedMyCompany) && (
           <>
             <div className="company_slot_header">
-              <h3>어떤 기업이 궁금하세요?</h3>
+              <h3>
+                어떤 기업이 궁금하세요? <span>(최대 {MAX_TARGET_COMPANIES}개)</span>
+              </h3>
               <Button
                 size="small"
                 variant="primary"
                 selected
+                disabled={isTargetFull}
                 onClick={() => handleOpenModal(SLOT.TARGET)}
               >
                 기업 추가하기
               </Button>
             </div>
 
-            <div
-              className="company_slot"
-              onClick={() => handleOpenModal(SLOT.TARGET)}
-            >
-              {targetCompany ? (
-                <div className="company_slot_selected">
-                  <img
-                    src={targetCompany.logo ?? DefaultLogo}
-                    alt={targetCompany.name}
-                  />
-                  <p>{targetCompany.name}</p>
-                  <span>{targetCompany.category}</span>
-                </div>
+            <div className="company_slot company_slot_multi">
+              {targetCompanies.length > 0 ? (
+                targetCompanies.map((company) => (
+                  <div className="company_slot_selected" key={company.id}>
+                    <button
+                      type="button"
+                      className="company_slot_remove"
+                      onClick={(event) =>
+                        handleCancelTargetCompany(event, company.id)
+                      }
+                      aria-label="선택 취소"
+                    >
+                      -
+                    </button>
+                    <img
+                      src={company.logo ?? DefaultLogo}
+                      alt={company.name}
+                    />
+                    <p>{company.name}</p>
+                    <span>{company.category}</span>
+                  </div>
+                ))
               ) : (
-                <p className="company_slot_placeholder">
+                <p
+                  className="company_slot_placeholder"
+                  onClick={() => handleOpenModal(SLOT.TARGET)}
+                >
                   아직 추가한 기업이 없어요.
                   <br />
                   버튼을 눌러 기업을 추가해보세요
@@ -122,11 +170,53 @@ function MyCompanyCompare() {
         <Button
           size="large"
           variant="primary"
+          selected={isCompareReady}
           disabled={!isCompareReady}
           onClick={handleCompare}
         >
           기업 비교하기
         </Button>
+
+        {isCompareSubmitted && (
+          <div className="compare_result">
+            <h3 className="compare_result_title">비교 결과 확인하기</h3>
+            <ul className="compare_result_list">
+              <li className="compare_result_item">
+                <img
+                  src={myCompany.logo ?? DefaultLogo}
+                  alt={myCompany.name}
+                />
+                <p>{myCompany.name}</p>
+                <span>{myCompany.category}</span>
+              </li>
+              {targetCompanies.map((company) => (
+                <li className="compare_result_item" key={company.id}>
+                  <img
+                    src={company.logo ?? DefaultLogo}
+                    alt={company.name}
+                  />
+                  <p>{company.name}</p>
+                  <span>{company.category}</span>
+                </li>
+              ))}
+            </ul>
+
+            <h3 className="compare_result_title">기업 순위 확인하기</h3>
+            <ul className="compare_result_list">
+              {targetCompanies.map((company, index) => (
+                <li className="compare_result_item" key={company.id}>
+                  <span className="compare_result_rank">{index + 1}위</span>
+                  <img
+                    src={company.logo ?? DefaultLogo}
+                    alt={company.name}
+                  />
+                  <p>{company.name}</p>
+                  <span>{company.category}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
 
       {openSlot && (
