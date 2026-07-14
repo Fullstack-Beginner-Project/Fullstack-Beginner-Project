@@ -22,7 +22,7 @@
     font-size: 18px;
     font-weight: 500;
 }
-.invest_company div span {
+#root>.wrap * .invest_company div span {
     color: var(--gray_200);
     font-size: 16px;
 }

@@ -4,7 +4,7 @@
     font-weight: 700;
     margin-bottom: 16px;
 }
-.empty_message {
+#root>.wrap * .empty_message {
     width: 150px;
     text-align: center;
     color: var(--gray_200);
@@ -27,15 +27,21 @@
     gap: 0 8px;
 }
 .company_list li div img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
     margin-right: 8px;
 }
 .company_list li div p {
     color: #ffffff;
     font-weight: 500;
 }
-.company_list li div span {
+#root>.wrap * .company_list li div span {
     color: var(--gray_200);
     font-size: 14px;
+}
+.search_wrap {
+    width: 100%;
 }
 
 @media (max-width: 768px) {
@@ -44,6 +50,11 @@
     }
     .empty_message {
         font-size: 12px;
+    }
+
+    .company_list li div img {
+        width: 40px;
+        height: 40px;
     }
 
     .company_list li div span {
