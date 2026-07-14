@@ -2,6 +2,14 @@ import { Router } from 'express';
 
 import prisma from '../lib/prisma.js';
 
+import {
+  validateCompanyListQuery,
+  validateCompanyIdParam,
+  validateCompanyInvestmentsQuery,
+} from '../validators/company-validator.js';
+
+
+
 
 //query로 들어온 문자열을 orderBy객체로 바꿔줌
 const SORT_OPTIONS = {
@@ -25,8 +33,6 @@ const SORT_OPTIONS = {
   },
 };
 
-const COMPANY_ID_REGEX = /^[a-z0-9]{6}$/;
-
 const companyRouter = Router();
 
 function sendBadRequest(res, message = '잘못된 요청입니다.') {
@@ -37,50 +43,28 @@ function sendBadRequest(res, message = '잘못된 요청입니다.') {
   });
 }
 
-function isValidCompanyId(companyId) {
-  return typeof companyId === 'string' && COMPANY_ID_REGEX.test(companyId);
-}
 
 companyRouter.get('/companies', async (req, res) => {
   try {
+    const { error, value } = validateCompanyListQuery(req.query);
+
+    if (error) {
+      return sendBadRequest(res, error);
+    }
+
     const {
-      page = '1',
-      pageSize = '10',
-      keyword = '',
-      sort = 'revenueDesc',
-    } = req.query;
+      pageNumber,
+      pageSizeNumber,
+      keyword,
+      sort,
+    } = value;
 
-    if (
-      typeof page !== 'string' ||
-      typeof pageSize !== 'string' ||
-      typeof keyword !== 'string' ||
-      typeof sort !== 'string'
-    ) {
-      return sendBadRequest(res);
-    }
-
-    const pageNumber = Number(page);
-    const pageSizeNumber = Number(pageSize);
-
-    if (!Number.isInteger(pageNumber) || pageNumber < 1) {
-      return sendBadRequest(res);
-    }
-
-    if (!Number.isInteger(pageSizeNumber) || pageSizeNumber < 1) {
-      return sendBadRequest(res);
-    }
-
-    if (!SORT_OPTIONS[sort]) {
-      return sendBadRequest(res);
-    }
-
-    const trimmedKeyword = keyword.trim();
     const skip = (pageNumber - 1) * pageSizeNumber;
 
-    const where = trimmedKeyword
+    const where = keyword
       ? {
           name: {
-            contains: trimmedKeyword,
+            contains: keyword,
             mode: 'insensitive',
           },
         }
@@ -119,11 +103,13 @@ companyRouter.get('/companies', async (req, res) => {
 
 companyRouter.get('/companies/:companyId', async (req, res) => {
   try {
-    const { companyId } = req.params;
+    const { error, value } = validateCompanyIdParam(req.params);
 
-    if (!isValidCompanyId(companyId)) {
-      return sendBadRequest(res);
+    if (error) {
+      return sendBadRequest(res, error);
     }
+
+    const { companyId } = value;
 
     const company = await prisma.company.findUnique({
       where: {
@@ -156,34 +142,24 @@ companyRouter.get('/companies/:companyId', async (req, res) => {
 
 companyRouter.get('/companies/:companyId/investments', async (req, res) => {
   try {
-    const { companyId } = req.params;
+    const paramsValidation = validateCompanyIdParam(req.params);
 
-    if (!isValidCompanyId(companyId)) {
-      return sendBadRequest(res);
+    if (paramsValidation.error) {
+      return sendBadRequest(res, paramsValidation.error);
     }
+
+    const queryValidation = validateCompanyInvestmentsQuery(req.query);
+
+    if (queryValidation.error) {
+      return sendBadRequest(res, queryValidation.error);
+    }
+
+    const { companyId } = paramsValidation.value;
 
     const {
-      page = '1',
-      pageSize = '5',
-    } = req.query;
-
-    if (
-      typeof page !== 'string' ||
-      typeof pageSize !== 'string'
-    ) {
-      return sendBadRequest(res);
-    }
-
-    const pageNumber = Number(page);
-    const pageSizeNumber = Number(pageSize);
-
-    if (!Number.isInteger(pageNumber) || pageNumber < 1) {
-      return sendBadRequest(res);
-    }
-
-    if (!Number.isInteger(pageSizeNumber) || pageSizeNumber < 1) {
-      return sendBadRequest(res);
-    }
+      pageNumber,
+      pageSizeNumber,
+    } = queryValidation.value;
 
     const company = await prisma.company.findUnique({
       where: {
@@ -228,11 +204,11 @@ companyRouter.get('/companies/:companyId/investments', async (req, res) => {
       list: investments,
       totalCount,
     });
-    } catch (error) {
-      console.error(error)
+  } catch (error) {
+    console.error(error);
 
-      return sendBadRequest(res);
-    }
+    return sendBadRequest(res);
+  }
 });
 
 companyRouter.all('/companies', (req, res) => {
