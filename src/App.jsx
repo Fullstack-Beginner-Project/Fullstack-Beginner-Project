@@ -7,6 +7,7 @@ import MyCompanyCompare from './pages/MyCompanyCompare.jsx';
 import CompareOverview from './pages/CompareOverview.jsx';
 import InvestmentStatus from './pages/InvestmentStatus.jsx';
 import CompanyDetail from './pages/CompanyDetail.jsx';
+import CompareResult from './pages/CompareResult.jsx';
 
 function App() {
 
@@ -20,6 +21,8 @@ function App() {
           <Route path="company-list" element={<CompanyList />} />
           {/* 나의 기업 비교 */}
           <Route path="my-company-compare" element={<MyCompanyCompare />} />
+          {/* 나의 기업 비교 결과 */}
+          <Route path="compare-result" element={<CompareResult />} />
           {/* 비교 현황 */}
           <Route path="compare-overview" element={<CompareOverview />} />
           {/* 투자 현황 */}

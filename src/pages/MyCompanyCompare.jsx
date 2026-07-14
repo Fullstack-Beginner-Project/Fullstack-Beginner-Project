@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Button from "../components/Button";
 import ModalCompanySelect from "../components/ModalCompanySelect";
@@ -16,11 +17,11 @@ const SLOT = {
 const MAX_TARGET_COMPANIES = 5;
 
 function MyCompanyCompare() {
+  const navigate = useNavigate();
   const [myCompany, setMyCompany] = useState(null);
   const [targetCompanies, setTargetCompanies] = useState([]);
   const [openSlot, setOpenSlot] = useState(null);
   const [hasSelectedMyCompany, setHasSelectedMyCompany] = useState(false);
-  const [isCompareSubmitted, setIsCompareSubmitted] = useState(false);
 
   const isTargetFull = targetCompanies.length >= MAX_TARGET_COMPANIES;
   const isCompareReady = Boolean(myCompany && targetCompanies.length > 0);
@@ -52,25 +53,22 @@ function MyCompanyCompare() {
 
   const handleCompare = () => {
     if (!isCompareReady) return;
-    setIsCompareSubmitted(true);
+    navigate("/compare-result", { state: { myCompany, targetCompanies } });
   };
 
   const handleCancelMyCompany = (event) => {
     event.stopPropagation();
     setMyCompany(null);
-    setIsCompareSubmitted(false);
   };
 
   const handleCancelTargetCompany = (event, id) => {
     event.stopPropagation();
     setTargetCompanies((prev) => prev.filter((item) => item.id !== id));
-    setIsCompareSubmitted(false);
   };
 
   const handleResetAll = () => {
     setMyCompany(null);
     setTargetCompanies([]);
-    setIsCompareSubmitted(false);
   };
 
   return (
@@ -179,47 +177,6 @@ function MyCompanyCompare() {
         >
           기업 비교하기
         </Button>
-
-        {isCompareSubmitted && (
-          <div className="compare_result">
-            <h3 className="compare_result_title">비교 결과 확인하기</h3>
-            <ul className="compare_result_list">
-              <li className="compare_result_item">
-                <img
-                  src={myCompany.logo ?? DefaultLogo}
-                  alt={myCompany.name}
-                />
-                <p>{myCompany.name}</p>
-                <span>{myCompany.category}</span>
-              </li>
-              {targetCompanies.map((company) => (
-                <li className="compare_result_item" key={company.id}>
-                  <img
-                    src={company.logo ?? DefaultLogo}
-                    alt={company.name}
-                  />
-                  <p>{company.name}</p>
-                  <span>{company.category}</span>
-                </li>
-              ))}
-            </ul>
-
-            <h3 className="compare_result_title">기업 순위 확인하기</h3>
-            <ul className="compare_result_list">
-              {targetCompanies.map((company, index) => (
-                <li className="compare_result_item" key={company.id}>
-                  <span className="compare_result_rank">{index + 1}위</span>
-                  <img
-                    src={company.logo ?? DefaultLogo}
-                    alt={company.name}
-                  />
-                  <p>{company.name}</p>
-                  <span>{company.category}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
       </div>
 
       {openSlot === SLOT.MY && (
