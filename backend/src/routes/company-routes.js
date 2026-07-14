@@ -171,6 +171,8 @@ companyRouter.get('/companies/my-company', async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+
+    return sendBadRequest(res);
   }
 });
 
