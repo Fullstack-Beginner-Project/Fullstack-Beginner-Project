@@ -1,0 +1,125 @@
+.company_detail_top {
+    display: flex;
+    align-items: center;
+    gap: 0 18px;
+    padding: 40px 0 32px 0;
+}
+.company_detail_top img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+.company_detail_info h2 {
+    font-size: 24px;
+    font-weight: 700;
+}
+.company_detail_info p {
+    font-size: 20px;
+    font-weight: 500;
+    margin-top: 8px;
+}
+
+#root>.wrap * .company_detail_info p {
+    color: var(--gray_200);
+}
+
+.company_summary {
+    display: flex;
+    align-items: center;
+    gap: 0 24px;
+    padding: 32px 0;
+    border-top: 1px solid var(--black_200);
+}
+.summary_box {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 36px 24px;
+    border-radius: 16px;
+    background-color: var(--black_300);
+}
+#root>.wrap * .summary_box span {
+    color: var(--gray_100);
+}
+
+.summary_box strong {
+    font-weight: 600;
+}
+
+.company_description {
+    padding: 24px;
+    border-radius: 16px;
+    background-color: var(--black_300);
+    margin-bottom: 32px;
+}
+.company_description h4 {
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+.company_description p {
+    color: var(--gray_100);
+    font-size: 14px;
+}
+
+.invest_details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 24px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--black_200);
+}
+.invest_details h3 {
+    font-size: 20px;
+    font-weight: 700;
+}
+.invest_details_wrap p {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 1280px) {
+    .company_detail_top {
+        padding: 40px 0 24px 0;
+    }
+    .company_summary {
+        padding: 24px 0;
+    }
+    .company_description {
+        margin-bottom: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .company_detail_top {
+        padding: 24px 0 16px 0;
+    }    
+    .company_summary {
+        gap: 0 16px;
+        padding: 16px 0;
+    }
+    .summary_box {
+        flex-direction: column;
+        gap: 16px 0;
+    }
+    #root>.wrap * .summary_box span {
+        font-size: 14px;
+    }
+    #root>.wrap * .summary_box strong {
+        font-size: 14px;
+    }
+    .company_description {
+        margin-bottom: 16px;
+    }
+    .invest_details {
+        padding-bottom: 16px;
+    }
+    .invest_details h3 {
+        font-size: 16px;
+    }
+    .invest_details_wrap p {
+        font-size: 16px;
+    }
+}

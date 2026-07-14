@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import Modal from '../components/Modal';
-import Search from './Search';
-import CompanyLists from '../components/CompanyLists';
-import Pagination from '../components/Pagination';
-import Button from '../components/Button';
-import '../assets/css/ModalCompanySelect.css';
+import Modal from "../components/Modal";
+import Search from "./Search";
+import CompanyLists from "../components/CompanyLists";
+import Pagination from "../components/Pagination";
+import Button from "../components/Button";
+import "../assets/css/ModalCompanySelect.css";
 
-import { mockCompanies } from '../mock/companies';
+import { mockCompanies } from "../mock/companies";
 
 const PAGE_SIZE = 5;
 
