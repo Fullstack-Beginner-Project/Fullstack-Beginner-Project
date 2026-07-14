@@ -29,7 +29,7 @@ function CompanyList() {
   );
   return (
     <>
-      <div className="content_wrap">
+      <div className="content_wrap companylist_page">
         <Section title={'전체 스타트업 목록'} sh_right={sectionRight}>
 
           {/* section */}

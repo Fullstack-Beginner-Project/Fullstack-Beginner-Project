@@ -24,7 +24,7 @@ function CompareOverview() {
   );
   return (
     <>
-      <div className="content_wrap">
+      <div className="content_wrap companyoverview_page">
         <Section title={'비교 현황'} sh_right={sectionRight}>
 
           {/*Table은 추후 DB 연동 간 수신 데이터 확인 후 map을 통해 구성할 예정*/}
