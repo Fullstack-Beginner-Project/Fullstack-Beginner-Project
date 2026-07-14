@@ -27,7 +27,7 @@ function Dropdown({ size, options, onChange }) {
     <>
       <div className={className}>
         <div className="frame" onClick={() => setOpen(!open)}>
-          <p>{selected || "선택하세요"}</p>
+          <p>{selected || options[0]}</p>
           <img src="./src/assets/images/icon_toggle.png" alt="토글" />
         </div>
         {open && (

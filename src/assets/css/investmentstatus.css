@@ -1,35 +1,44 @@
-.dropdown_wrap.medium {
+.investment_page .dropdown_wrap.medium {
   height: 48px;
   padding: 10px;
 }
 
-.section_head {
+.investment_page .section_head {
   flex-wrap: nowrap;
 }
 
-.section_right {
+.investment_page .section_right {
   min-width: 166px;
 }
 
+.investment_page .dropdown_list.medium li {
+  width: 100%;
+  height: 48px;
+  padding: 10px;
+}
+
 @media (max-width: 768px) {
-  .section_right {
+  .investment_page .section_right {
       width: 264px;
   }
 
-  .dropdown_wrap.medium {
+  .investment_page .dropdown_wrap.medium {
     width: 264px;
     height: 42px;
     padding: 8px 10px;
   }
 
-  .dropdown_list.medium li {
-    width: 100%;
+  .investment_page .dropdown_wrap.medium p {
+    font-size: 13px;
+  }
+
+  .investment_page .dropdown_list.medium li {
     height: 42px;
     padding: 8px 10px;
   }
 }
 
-#root>.wrap .section_body .no_data {
+#root>.wrap .investment_page .section_body .no_data {
   position: fixed;          /* 화면에 고정 */
   top: 50%;                 /* 세로 중앙 */
   left: 50%;                /* 가로 중앙 */
