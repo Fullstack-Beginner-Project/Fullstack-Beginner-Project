@@ -2,6 +2,15 @@ import { Router } from 'express';
 
 import prisma from '../lib/prisma.js';
 
+import {
+  validateCompanyListQuery,
+  validateCompanyIdParam,
+  validateCompanyInvestmentsQuery,
+  validateMyCompanyQuery,
+} from '../validators/company-validator.js';
+
+
+
 
 //query로 들어온 문자열을 orderBy객체로 바꿔줌
 const SORT_OPTIONS = {
@@ -37,7 +46,7 @@ const ORDER_BY_OPTIONS = [
   'actualInvestmentAmount'
 ]
 
-const COMPANY_ID_REGEX = /^[a-z0-9]{6}$/;
+
 
 const companyRouter = Router();
 
@@ -49,6 +58,9 @@ function sendBadRequest(res, message = '잘못된 요청입니다.') {
   });
 }
 
+function toSafeNumber(value) {
+  return typeof value === 'bigint' ? Number(value) : value;
+}
 
 // ==================================================
 // 윤여진 - 투자 현황 조회 API 시작
@@ -157,53 +169,31 @@ companyRouter.get('/companies/investmentStatus', async (req, res) => {
 // 윤여진 - 투자 현황 조회 API 끝
 // ==================================================
 
-function isValidCompanyId(companyId) {
-  return typeof companyId === 'string' && COMPANY_ID_REGEX.test(companyId);
-}
 
 companyRouter.get('/companies', async (req, res) => {
   try {
+    const { error, value } = validateCompanyListQuery(req.query);
+
+    if (error) {
+      return sendBadRequest(res, error);
+    }
+
     const {
-      page = '1',
-      pageSize = '10',
-      keyword = '',
-      sort = 'revenueDesc',
-    } = req.query;
+      pageNumber,
+      pageSizeNumber,
+      keyword,
+      sort,
+    } = value;
 
-    if (
-      typeof page !== 'string' ||
-      typeof pageSize !== 'string' ||
-      typeof keyword !== 'string' ||
-      typeof sort !== 'string'
-    ) {
-      return sendBadRequest(res);
-    }
-
-    const pageNumber = Number(page);
-    const pageSizeNumber = Number(pageSize);
-
-    if (!Number.isInteger(pageNumber) || pageNumber < 1) {
-      return sendBadRequest(res);
-    }
-
-    if (!Number.isInteger(pageSizeNumber) || pageSizeNumber < 1) {
-      return sendBadRequest(res);
-    }
-
-    if (!SORT_OPTIONS[sort]) {
-      return sendBadRequest(res);
-    }
-
-    const trimmedKeyword = keyword.trim();
     const skip = (pageNumber - 1) * pageSizeNumber;
 
-    const where = trimmedKeyword
+    const where = keyword
       ? {
-        name: {
-          contains: trimmedKeyword,
-          mode: 'insensitive',
-        },
-      }
+          name: {
+            contains: keyword,
+            mode: 'insensitive',
+          },
+        }
       : {};
 
     const companies = await prisma.company.findMany({
@@ -237,13 +227,89 @@ companyRouter.get('/companies', async (req, res) => {
   }
 });
 
+companyRouter.get('/companies/my-company', async (req, res) => {
+  try {
+    const { error, value } = validateMyCompanyQuery(req.query);
+
+    if (error) {
+      return sendBadRequest(res, error);
+    }
+
+    const {
+      pageNumber,
+      pageSizeNumber,
+      keyword,
+      recentCompanyIds,
+    } = value;
+
+    const skip = (pageNumber - 1) * pageSizeNumber;
+
+    const where = keyword
+      ? {
+        name: {
+          contains: keyword,
+          mode: 'insensitive',
+        },
+      }
+    : {};
+
+    const recentCompanies = recentCompanyIds.length > 0
+      ? await prisma.company.findMany({
+        where: {
+          id: {
+            in: recentCompanyIds,
+          },
+        },
+        orderBy: {
+          name: 'asc',
+        },
+        select: {
+          id: true,
+          name: true,
+          category: true,
+        },
+      })
+    : [];
+
+    const companies = await prisma.company.findMany({
+      where,
+      orderBy: {
+        name: 'asc',
+      },
+      skip,
+      take: pageSizeNumber,
+      select: {
+        id: true,
+        name: true,
+        category: true,
+      },
+    });
+
+    const totalCount = await prisma.company.count({
+      where,
+    });
+
+    return res.status(200).json({
+      recentCompanies,
+      companies,
+      totalCount,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return sendBadRequest(res);
+  }
+});
+
 companyRouter.get('/companies/:companyId', async (req, res) => {
   try {
-    const { companyId } = req.params;
+    const { error, value } = validateCompanyIdParam(req.params);
 
-    if (!isValidCompanyId(companyId)) {
-      return sendBadRequest(res);
+    if (error) {
+      return sendBadRequest(res, error);
     }
+
+    const { companyId } = value;
 
     const company = await prisma.company.findUnique({
       where: {
@@ -276,34 +342,24 @@ companyRouter.get('/companies/:companyId', async (req, res) => {
 
 companyRouter.get('/companies/:companyId/investments', async (req, res) => {
   try {
-    const { companyId } = req.params;
+    const paramsValidation = validateCompanyIdParam(req.params);
 
-    if (!isValidCompanyId(companyId)) {
-      return sendBadRequest(res);
+    if (paramsValidation.error) {
+      return sendBadRequest(res, paramsValidation.error);
     }
+
+    const queryValidation = validateCompanyInvestmentsQuery(req.query);
+
+    if (queryValidation.error) {
+      return sendBadRequest(res, queryValidation.error);
+    }
+
+    const { companyId } = paramsValidation.value;
 
     const {
-      page = '1',
-      pageSize = '5',
-    } = req.query;
-
-    if (
-      typeof page !== 'string' ||
-      typeof pageSize !== 'string'
-    ) {
-      return sendBadRequest(res);
-    }
-
-    const pageNumber = Number(page);
-    const pageSizeNumber = Number(pageSize);
-
-    if (!Number.isInteger(pageNumber) || pageNumber < 1) {
-      return sendBadRequest(res);
-    }
-
-    if (!Number.isInteger(pageSizeNumber) || pageSizeNumber < 1) {
-      return sendBadRequest(res);
-    }
+      pageNumber,
+      pageSizeNumber,
+    } = queryValidation.value;
 
     const company = await prisma.company.findUnique({
       where: {
@@ -349,7 +405,7 @@ companyRouter.get('/companies/:companyId/investments', async (req, res) => {
       totalCount,
     });
   } catch (error) {
-    console.error(error)
+    console.error(error);
 
     return sendBadRequest(res);
   }

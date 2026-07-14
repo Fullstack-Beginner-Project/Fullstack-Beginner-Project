@@ -7,8 +7,8 @@ GET http://localhost:3000/api/companies?page=1&pageSize=5
 ### 기업명 검색
 GET http://localhost:3000/api/companies?keyword=퍼블리카
 
-### 누적 투자금액 낮은순
-GET http://localhost:3000/api/companies?sort=investmentAsc
+### 기업 목록 정렬 테스트
+GET http://localhost:3000/api/companies?page=1&pageSize=5&sort=revenueAsc
 
 ### 잘못된 sort
 GET http://localhost:3000/api/companies?sort=wrong
@@ -26,7 +26,7 @@ Content-Type: application/json
 {}
 
 ### 기업별 투자 목록 조회
-GET http://localhost:3000/api/companies/m9v5jx/investments
+GET http://localhost:3000/api/companies/z2h8kd/investments
 
 ### 기업별 투자 목록 페이지네이션
 GET http://localhost:3000/api/companies/f8q2mz/investments?page=1&pageSize=5
@@ -34,6 +34,22 @@ GET http://localhost:3000/api/companies/f8q2mz/investments?page=1&pageSize=5
 ### 기업별 투자 목록 잘못된 page
 GET http://localhost:3000/api/companies/f8q2mz/investments?page=abc
 
+
+
+### 나의 기업 선택 모달 - 기본 조회
+GET http://localhost:3000/api/companies/my-company
+
+### 나의 기업 선택 모달 - 기업명 검색
+GET http://localhost:3000/api/companies/my-company?keyword=검색어
+
+### 나의 기업 선택 모달 - 페이지네이션 조회
+GET http://localhost:3000/api/companies/my-company?page=페이지번호&pageSize=페이지크기
+
+### 나의 기업 선택 모달 - 최근 선택 기업 포함 조회
+GET http://localhost:3000/api/companies/my-company?myRecentCompanyIds=k3p9av, f8q2mz
+
+### 나의 기업 선택 모달 - 검색 + 최근 선택 기업 포함 조회
+GET http://localhost:3000/api/companies/my-company?keyword=검색어&myRecentCompanyIds=회사Id,회사Id
 
 ### 투자 현황 조회
 GET http://localhost:3000/api/companies/investmentStatus
