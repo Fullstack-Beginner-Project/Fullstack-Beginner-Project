@@ -1,7 +1,7 @@
-import Button from '../components/Button';
-import DefaultLogo from '../assets/images/logo_default.png';
+import Button from "../components/Button";
+import DefaultLogo from "../assets/images/logo_default.png";
 
-import '../assets/css/CompanyLists.css';
+import "../assets/css/CompanyLists.css";
 
 function CompanyLists({ 
   title,
@@ -28,6 +28,8 @@ function CompanyLists({
               </div>
   
               <Button
+                size="small"
+                variant="primary"
                 selected={company.selected}
                 onClick={() => onSelect(company.id)}
               >
