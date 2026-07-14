@@ -203,7 +203,22 @@ code {
 .overflow_x{
     width: 100%;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    -webkit-overflow-scrolling: touch; 
+}
+
+.overflow_y::-webkit-scrollbar{
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 5px;
+    padding: 0 1px;
+}
+
+.overflow_y::-webkit-scrollbar-thumb{
+    width: 100%;
+    
+    border-radius: 5px;
+    background-color: #ff0000;
 }
 
 .img_wrap img{

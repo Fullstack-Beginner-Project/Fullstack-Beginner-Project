@@ -1,13 +1,11 @@
-function TableColgroup() {
+function TableColgroup({ columnDefs }) {
+
     return(
         <colgroup>
-          <col className='short' />
-          <col className='title' />
-          <col className='content' />
-          <col className='etc' />
-          <col className='etc' />
-          <col className='etc' />
-          <col className='etc' />
+        {columnDefs.map((column) => (
+
+            <col key={column.key} className={column.colClassName} />
+            ))}
         </colgroup>
     )
 }

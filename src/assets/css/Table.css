@@ -1,4 +1,7 @@
 
+.table_conatiner{
+    position: relative;
+}
 
 .table_wrap {
   display: inline-block;
@@ -44,9 +47,10 @@
 .table_wrap table col.etc{
     width: 153px;
 }
-/* .table_wrap table col.etc{
-    width: ;
+.table_wrap table col.etc_2{
+    width: 90px;
 }
+/* 
 .table_wrap table col.etc{
     width: ;
 }
@@ -125,6 +129,8 @@
     text-align: left;
     text-overflow: ellipsis;
 }
+
+.table_wrap .table_body td.content .td_inner
 
 .table_wrap .table_body td.title{
     padding: 0;

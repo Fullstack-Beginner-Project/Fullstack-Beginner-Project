@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import Table from "../components/Table";
-import Button from "../components/Button"; 
+import Button from "../components/Button";
 import Pagination from "../components/Pagination";
 import "../assets/css/CompanyDetail.css";
 
@@ -26,6 +26,29 @@ function CompanyDetail() {
     currentPage * PAGE_SIZE
   );
 
+  const columnDefs = [
+    {
+      key: "investor",
+      label: "투자자 이름",
+      colClassName: "etc_2",
+    },
+    {
+      key: "rank",
+      label: "순위",
+      colClassName: "short",
+    },
+    {
+      key: "amount",
+      label: "투자금액",
+      colClassName: "etc",
+    },
+    {
+      key: "comment",
+      label: "투자 코멘트",
+      colClassName: "content",
+    },
+  ];
+
 
   return (
     <div className="content_wrap">
@@ -34,7 +57,7 @@ function CompanyDetail() {
         {/* 회사 정보 */}
         <div className="company_detail_info">
           <div className="company_detail_top">
-            <img 
+            <img
               src={company.logo}
               alt={company.name}
             />
@@ -84,9 +107,7 @@ function CompanyDetail() {
           <p>총 {(company.myStartupInvestmentAmount / 100000000).toLocaleString()}억 원</p>
         </div>
 
-        <Table 
-          data={paginatedInvestments}
-        />
+        <Table columnDefs={columnDefs} rows={paginatedInvestments}></Table>
 
         <Pagination
           currentPage={currentPage}

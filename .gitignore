@@ -30,3 +30,8 @@ node_modules/
 
 #personal
 src/components/TableBack.jsx
+src/components/TableHeadBack.jsx
+src/components/TableBodyBack.jsx
+src/components/TableRowBack.jsx
+src/components/TableRowBackBak.jsx
+src/components/TableColgroupBack.jsx
