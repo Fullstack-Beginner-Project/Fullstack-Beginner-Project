@@ -1,12 +1,20 @@
 .my_company_compare_wrap {
   padding-top: 40px;
 }
+/* 제안 */
 
 .my_company_compare_wrap .my_company_compare_title {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
+}
+
+/* 수정 */
+.my_company_compare_wrap .section_head {
+    display: flex;
+    align-items: center;
+    height: 64px; /* Dropbox 높이를 고려한 height 통일 */
 }
 
 .my_company_compare_wrap .page_title {
