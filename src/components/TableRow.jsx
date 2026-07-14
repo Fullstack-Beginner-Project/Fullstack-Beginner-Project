@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 
 
-function TableRow({ row, rowIndex, columnDefs }) {
+function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu }) {
 
   const formatAmount = (value) => {
     const amount = Number(value);
@@ -36,7 +36,7 @@ function TableRow({ row, rowIndex, columnDefs }) {
             <Link to={`/company/${row.id}`} className="company_link td_inner" onClick={(e) => e.stopPropagation()}
             >
               <div className="img_wrap object_fit_cover">
-                <img src={row.img} alt={`${value} 기업 로고`} />
+                <img src={row.img || row.logo} alt={`${value} 기업 로고`} />
               </div>
               <span className="c_nm">
                 <span className="ellipsis">{value}</span>
@@ -47,7 +47,7 @@ function TableRow({ row, rowIndex, columnDefs }) {
 
       case "description":
         return (
-          <td key={column.key} className={'content'}>
+          <td key={column.key} className={'content overflow'}>
             <div className="td_inner">
               <p className="text">
                 {value}
@@ -103,11 +103,17 @@ function TableRow({ row, rowIndex, columnDefs }) {
 
       case "comment":
         return (
-          <td key={column.key} className={'content'}>
+          <td key={column.key} className={'content comment'}>
             <div className="td_inner">
               <p className="text">
                 {value}
               </p>
+              <form action="">
+                <button type="button" className='btn_comment_menu' onClick={(event) => { onOpenCommentMenu?.(event, row); }}>
+                  <span className="no_text">코멘트 메뉴</span>
+                </button>
+              </form>
+
             </div>
           </td>
         );
@@ -123,8 +129,12 @@ function TableRow({ row, rowIndex, columnDefs }) {
     }
   };
 
+  console.log(myCompany)
+  console.log('row.id******************')
+  console.log(row.id)
+
   return (
-    <tr>
+    <tr className={row.id === myCompany ? "selection" : undefined}>
       {columnDefs.map((column) => {
         return renderCell(column);
       })}

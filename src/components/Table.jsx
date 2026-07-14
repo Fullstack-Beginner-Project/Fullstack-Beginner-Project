@@ -3,7 +3,7 @@ import '../assets/css/table.css'
 import TableHead from './TableHead';
 import TableBody from './TableBody';
 
-function Table({ columnDefs, rows }) {
+function Table({ columnDefs, rows, myCompany, ...rowProps }) {
   
   return (
     <div className="table_conatiner">
@@ -12,7 +12,7 @@ function Table({ columnDefs, rows }) {
 
           <TableHead columnDefs={columnDefs}></TableHead>
 
-          <TableBody columnDefs={columnDefs} rows={rows}></TableBody>
+          <TableBody columnDefs={columnDefs} rows={rows} myCompany={myCompany} {...rowProps}></TableBody>
 
         </div>
       </div>

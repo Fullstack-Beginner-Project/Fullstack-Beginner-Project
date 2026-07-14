@@ -7,6 +7,8 @@ import Button from "../components/Button";
 import DefaultLogo from "../assets/images/logo_default.png";
 import "../assets/css/compareResult.css";
 
+import Table from "../components/Table";
+
 const SORT_OPTIONS = [
   "누적 투자금액 높은순",
   "누적 투자금액 낮은순",
@@ -27,6 +29,79 @@ const SORT_COMPARATORS = {
   "고용 인원 적은순": (a, b) => (a.employeeCount ?? 0) - (b.employeeCount ?? 0),
 };
 
+// 비교결과 확인하기
+const columnDefs = [
+  {
+    key: "name",
+    label: "기업명",
+    colClassName: "title",
+  },
+  {
+    key: "description",
+    label: "기업소개",
+    colClassName: "content",
+  },
+  {
+    key: "category",
+    label: "카테고리",
+    colClassName: "etc",
+  },
+  {
+    key: "actualInvestmentAmount",
+    label: "누적투자금액",
+    colClassName: "etc",
+  },
+  {
+    key: "revenue",
+    label: "매출액",
+    colClassName: "etc",
+  },
+  {
+    key: "employeeCount",
+    label: "고용인원",
+    colClassName: "etc",
+  },
+];
+
+// 기업 순위 확인하기
+const rankingColumnDefs = [
+  {
+    key: "rank",
+    label: "순위",
+    colClassName: "short",
+  },
+  {
+    key: "name",
+    label: "기업명",
+    colClassName: "title",
+  },
+  {
+    key: "description",
+    label: "기업소개",
+    colClassName: "content",
+  },
+  {
+    key: "category",
+    label: "카테고리",
+    colClassName: "etc",
+  },
+  {
+    key: "actualInvestmentAmount",
+    label: "누적투자금액",
+    colClassName: "etc",
+  },
+  {
+    key: "revenue",
+    label: "매출액",
+    colClassName: "etc",
+  },
+  {
+    key: "employeeCount",
+    label: "고용인원",
+    colClassName: "etc",
+  },
+];
+
 const formatAmount = (value) => {
   if (typeof value !== "number") return "-";
   return `${Math.round(value / 100000000).toLocaleString()}억 원`;
@@ -37,6 +112,8 @@ function CompareResult() {
   const navigate = useNavigate();
   const { myCompany, targetCompanies } = location.state ?? {};
   const [sortOption, setSortOption] = useState(SORT_OPTIONS[0]);
+  console.log('myCompany')
+  console.log(myCompany)
 
   const rankedCompanies = useMemo(() => {
     if (!myCompany || !targetCompanies) return [];
@@ -94,6 +171,8 @@ function CompareResult() {
           />
         }
       >
+        {/* 이 부분은 특정 기업을 상단으로 올리는 기능은 없어서 비워놨습니다 */}
+        {/* 현재 테이블 컴포넌트 사용 시 순서가 지정된 목업 데이터가 필요합니다  */}
         <div className="compare_result_table_wrap">
           <table className="compare_result_table">
             <thead>
@@ -141,7 +220,8 @@ function CompareResult() {
       </Section>
 
       <Section title="기업 순위 확인하기">
-        <div className="compare_result_table_wrap">
+        {/* 기존 테이블 */}
+        {/* <div className="compare_result_table_wrap">
           <table className="compare_result_table">
             <thead>
               <tr>
@@ -183,7 +263,13 @@ function CompareResult() {
               ))}
             </tbody>
           </table>
-        </div>
+        </div> */}
+
+
+        {/* columnDefs: 테이블 헤더, 테이블 열 스타일 지정 */}
+        {/* rows: 데이터 */}
+        {/* myCompany: 내가 선택한 기업 아이디 <<< 해당 row 하이라이트 */}
+        <Table columnDefs={rankingColumnDefs} rows={rankedCompanies} myCompany={myCompany.id} />
       </Section>
 
       <div className="compare_result_footer">
@@ -191,7 +277,7 @@ function CompareResult() {
           size="large"
           variant="primary"
           selected
-          // onClick={() => navigate("/my-company-compare")}
+        // onClick={() => navigate("/my-company-compare")}
         >
           나의 기업(을) 투자하기
         </Button>

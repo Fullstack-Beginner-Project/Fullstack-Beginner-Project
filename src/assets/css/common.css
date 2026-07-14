@@ -4,9 +4,9 @@
     /* color */
     --main_color: #EB5230;
 
-    --black_100: #131313;
-    --black_200: #212121;
-    --black_300: #282828;
+    --black_100: #2E2E2E;
+    --black_200: #282828;
+    --black_300: #212121;
     --black_400: #131313;
  
     --gray_100: #D8D8D8;
@@ -251,6 +251,14 @@
 }
 /* input end */
 
+
+
+
+
+
+ul.comment_menu{
+    position: fixed;
+}
 
 
  

@@ -1,8 +1,8 @@
 
 import TableColgroup from "./TableColgroup";
-import TableRow from "./TableRow";
+import TableRow from "./TableRow"
 
-function TableBody({ columnDefs, rows }) {
+function TableBody({ columnDefs, rows, myCompany, ...rowProps }) {
   
   return (
     <div className="table_body_wrap">
@@ -14,7 +14,7 @@ function TableBody({ columnDefs, rows }) {
           
           {rows.map((row, rowIndex) => {
             return (
-            <TableRow key={row.id} row={row} rowIndex={rowIndex} columnDefs={columnDefs} />
+            <TableRow key={row.id} row={row} rowIndex={rowIndex} columnDefs={columnDefs} myCompany={myCompany} {...rowProps} />
             )
           })}
 

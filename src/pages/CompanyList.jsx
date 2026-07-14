@@ -6,13 +6,11 @@ import Section from "../components/Section";
 import Search from "../components/Search";
 import Dropdown from "../components/Dropdown";
 import GlobalNav from "../components/GlobalNav";
-import TableBack from "../components/TableBack";
 import Pagination from "../components/Pagination.jsx";
 import axios from "axios";
 
 const response = await axios.get('https://codeit-sprint-for-api-test-1.geonwoo.dev/api/companies/f8q2mz/investments');
 const data = response.data.list
-console.log(data)
 
 function CompanyList() {
 
@@ -238,7 +236,7 @@ function CompanyList() {
         <Section title={'전체 스타트업 목록'} sh_right={sectionRight}>
 
           {/* section */}
-          <TableBack columnDefs={columnDefs} rows={companies}></TableBack>
+          <Table columnDefs={columnDefs} rows={companies}></Table>
 
           <Pagination currentPage={1} totalPages={10} />
         </Section>
@@ -246,7 +244,7 @@ function CompanyList() {
         <Section title={'전체 스타트업 ddd목록'} sh_right={sectionRight}>
 
           {/* section */}
-          <TableBack columnDefs={columnDefs_invest} rows={data}></TableBack>
+          <Table columnDefs={columnDefs_invest} rows={data}></Table>
 
           <Pagination currentPage={1} totalPages={10} />
         </Section>

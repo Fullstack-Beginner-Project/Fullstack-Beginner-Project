@@ -201,25 +201,38 @@ code {
 }
 
 .overflow_x{
+    padding-bottom: 5px;
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch; 
 }
 
-.overflow_y::-webkit-scrollbar{
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 5px;
-    padding: 0 1px;
+/* Chrome, Edge, Safari */
+.overflow_x::-webkit-scrollbar {
+  height: 12px;
 }
 
-.overflow_y::-webkit-scrollbar-thumb{
-    width: 100%;
-    
-    border-radius: 5px;
-    background-color: #ff0000;
+.overflow_x::-webkit-scrollbar-track {
+  background: var(--black_300);
+  border-radius: 10px;
 }
+
+.overflow_x::-webkit-scrollbar-thumb {
+  background: var(--gray_400);
+  border-radius: 8px;
+  border: 2px solid var(--black_300);
+}
+
+.overflow_x::-webkit-scrollbar-thumb:hover {
+  background: var(--gray_300);
+}
+ 
+/* 양옆 화살표 제거 */
+.overflow_x::-webkit-scrollbar-button {
+  display: none;
+}
+
+
 
 .img_wrap img{
     display: block;
