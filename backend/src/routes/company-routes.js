@@ -6,6 +6,7 @@ import {
   validateCompanyListQuery,
   validateCompanyIdParam,
   validateCompanyInvestmentsQuery,
+  validateMyCompanyQuery,
 } from '../validators/company-validator.js';
 
 
@@ -98,6 +99,78 @@ companyRouter.get('/companies', async (req, res) => {
     console.error(error);
 
     return sendBadRequest(res);
+  }
+});
+
+companyRouter.get('/companies/my-company', async (req, res) => {
+  try {
+    const { error, value } = validateMyCompanyQuery(req.query);
+
+    if (error) {
+      return sendBadRequest(res, error);
+    }
+
+    const {
+      pageNumber,
+      pageSizeNumber,
+      keyword,
+      recentCompanyIds,
+    } = value;
+
+    const skip = (pageNumber - 1) * pageSizeNumber;
+
+    const where = keyword
+      ? {
+        name: {
+          contains: keyword,
+          mode: 'insensitive',
+        },
+      }
+    : {};
+
+    const recentCompanies = recentCompanyIds.length > 0
+      ? await prisma.company.findMany({
+        where: {
+          id: {
+            in: recentCompanyIds,
+          },
+        },
+        orderBy: {
+          name: 'asc',
+        },
+        select: {
+          id: true,
+          name: true,
+          category: true,
+        },
+      })
+    : [];
+
+    const companies = await prisma.company.findMany({
+      where,
+      orderBy: {
+        name: 'asc',
+      },
+      skip,
+      take: pageSizeNumber,
+      select: {
+        id: true,
+        name: true,
+        category: true,
+      },
+    });
+
+    const totalCount = await prisma.company.count({
+      where,
+    });
+
+    return res.status(200).json({
+      recentCompanies,
+      companies,
+      totalCount,
+    });
+  } catch (error) {
+    console.error(error);
   }
 });
 

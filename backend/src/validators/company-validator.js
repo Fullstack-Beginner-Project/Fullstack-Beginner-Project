@@ -63,6 +63,25 @@ const CompanyInvestmentsQuery = object({
   page: optional(Page),
   pageSize: optional(PageSize),
 });
+// 최근 선택한 기업은 없어도 됨
+const MyRecentCompanyIds = refine(string(), 'MyRecentCompanyIds', (value) => {
+  if (value.trim() === '') {
+    return true;
+  }
+
+  const companyIds = value.split(',');
+
+  return companyIds.every((companyId) => {
+    return COMPANY_ID_REGEX.test(companyId.trim());
+  });
+});
+
+const MyCompanyQuery = object({
+  page: optional(Page),
+  pageSize: optional(PageSize),
+  keyword: optional(string()),
+  myRecentCompanyIds: optional(MyRecentCompanyIds),
+});
 
 function validateCompanyListQuery(query) {
   const [error] = validate(query, CompanyListQuery);
@@ -135,8 +154,48 @@ function validateCompanyInvestmentsQuery(query) {
   };
 }
 
+function validateMyCompanyQuery(query) {
+  const [error] = validate(query, MyCompanyQuery);
+
+  if (error) {
+    return {
+      error: '잘못된 요청입니다.',
+    };
+  }
+
+  const {
+    page = '1',
+    pageSize = '5',
+    keyword = '',
+    myRecentCompanyIds = '',
+  } = query;
+
+  const pageNumber = Number(page);
+  const pageSizeNumber = Number(pageSize);
+  const trimmedKeyword = keyword.trim();
+
+  const recentCompanyIds = myRecentCompanyIds
+    .split(',')
+    .map((companyId) => {
+      return companyId.trim();
+    })
+    .filter((companyId) => {
+      return companyId !== '';
+    });
+
+  return {
+    value: {
+      pageNumber,
+      pageSizeNumber,
+      keyword: trimmedKeyword,
+      recentCompanyIds,
+    },
+  };
+}
+
 export {
   validateCompanyListQuery,
   validateCompanyIdParam,
   validateCompanyInvestmentsQuery,
+  validateMyCompanyQuery,
 };

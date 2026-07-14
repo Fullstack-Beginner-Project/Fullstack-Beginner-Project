@@ -33,3 +33,20 @@ GET http://localhost:3000/api/companies/f8q2mz/investments?page=1&pageSize=5
 
 ### 기업별 투자 목록 잘못된 page
 GET http://localhost:3000/api/companies/f8q2mz/investments?page=abc
+
+
+
+### 나의 기업 선택 모달 - 기본 조회
+GET http://localhost:3000/api/companies/my-company
+
+### 나의 기업 선택 모달 - 기업명 검색
+GET http://localhost:3000/api/companies/my-company?keyword=검색어
+
+### 나의 기업 선택 모달 - 페이지네이션 조회
+GET http://localhost:3000/api/companies/my-company?page=페이지번호&pageSize=페이지크기
+
+### 나의 기업 선택 모달 - 최근 선택 기업 포함 조회
+GET http://localhost:3000/api/companies/my-company?myRecentCompanyIds=k3p9av, f8q2mz
+
+### 나의 기업 선택 모달 - 검색 + 최근 선택 기업 포함 조회
+GET http://localhost:3000/api/companies/my-company?keyword=검색어&myRecentCompanyIds=회사Id,회사Id
