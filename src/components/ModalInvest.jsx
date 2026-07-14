@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import Modal from '../components/Modal';
-import Button from '../components/Button';
-import Input from '../components/Input';
-import '../assets/css/ModalInput.css';
-import '../assets/css/ModalInvest.css';
+import Modal from "../components/Modal";
+import Button from "../components/Button";
+import Input from "../components/Input";
+import "../assets/css/ModalInput.css";
+import "../assets/css/ModalInvest.css";
 
 
 import DefaultLogo from '../assets/images/logo_default.png';
@@ -34,7 +34,7 @@ function ModalInvest({
       title="기업에 투자하기"
       onClose={onClose}
       footer={
-        <div className='modal_footer_btns'>
+        <div className="modal_footer_btns">
           <Button variant="secondary" onClick={onClose}>
             취소
           </Button>

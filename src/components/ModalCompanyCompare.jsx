@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import Modal from '../components/Modal';
-import Search from './Search';
-import CompanyLists from '../components/CompanyLists';
-import Pagination from '../components/Pagination';
-import '../assets/css/ModalCompanySelect.css';
-import '../assets/css/ModalCompanyCompare.css';
+import Modal from "../components/Modal";
+import Search from "./Search";
+import CompanyLists from "../components/CompanyLists";
+import Pagination from "../components/Pagination";
+import "../assets/css/ModalCompanySelect.css";
+import "../assets/css/ModalCompanyCompare.css";
 
-import { mockCompanies } from '../mock/companies';
+import { mockCompanies } from "../mock/companies";
 
 const PAGE_SIZE = 5;
 
@@ -61,7 +61,7 @@ function ModalCompanyCompare() {
 
   return (
     <Modal
-      title='비교할 기업 선택하기'
+      title="비교할 기업 선택하기"
       footer={
         <Pagination 
           currentPage={currentPage}
@@ -74,21 +74,21 @@ function ModalCompanyCompare() {
         value={keyword}
         onChange={handleKeywordChange}/>
 
-      <div className='company_select_list_wrap'>        
+      <div className="company_select_list_wrap">        
         <CompanyLists
-          title='선택한 기업'
+          title="선택한 기업"
           companies={selectedCompanies}
           onSelect={handleSelect}
         />
 
         <CompanyLists
-          title='검색 결과'
+          title="검색 결과"
           companies={paginatedCompanies}
           onSelect={handleSelect}
         />
       </div>
 
-      <p className='caution_message'>
+      <p className="caution_message">
         *비교할 기업은 최대 5개까지 선택 가능합니다.
       </p>
     </Modal>
