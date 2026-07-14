@@ -34,17 +34,20 @@ function MyCompanyCompare() {
   };
 
   const handleSelectCompany = (company) => {
-    if (openSlot === SLOT.MY) {
-      setMyCompany(company);
-      setHasSelectedMyCompany(true);
-    } else if (openSlot === SLOT.TARGET) {
-      if (isTargetFull) return;
-      setTargetCompanies((prev) =>
-        prev.some((item) => item.id === company.id)
-          ? prev
-          : [...prev, company]
-      );
-    }
+    setMyCompany(company);
+    setHasSelectedMyCompany(true);
+  };
+
+  const handleSelectTargetCompanies = (companies) => {
+    setTargetCompanies((prev) => {
+      const merged = [...prev];
+      companies.forEach((company) => {
+        if (!merged.some((item) => item.id === company.id)) {
+          merged.push(company);
+        }
+      });
+      return merged.slice(0, MAX_TARGET_COMPANIES);
+    });
   };
 
   const handleCompare = () => {
@@ -219,10 +222,20 @@ function MyCompanyCompare() {
         )}
       </div>
 
-      {openSlot && (
+      {openSlot === SLOT.MY && (
         <ModalCompanySelect
           onClose={handleCloseModal}
           onSelectCompany={handleSelectCompany}
+        />
+      )}
+
+      {openSlot === SLOT.TARGET && (
+        <ModalCompanySelect
+          multiple
+          selectedCompanies={targetCompanies}
+          maxSelectable={MAX_TARGET_COMPANIES}
+          onClose={handleCloseModal}
+          onSelectCompanies={handleSelectTargetCompanies}
         />
       )}
     </>
