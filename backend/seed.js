@@ -14,6 +14,7 @@ const companies = [
     employeeCount: 1788,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_toss.png",
   },
   {
     id: 'k3p9av',
@@ -26,6 +27,7 @@ const companies = [
     employeeCount: 623,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_karrot.png",
   },
   {
     id: 'r7x1tq',
@@ -38,6 +40,7 @@ const companies = [
     employeeCount: 723,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_ohouse.png",
   },
   {
     id: 'b6n4yc',
@@ -50,6 +53,7 @@ const companies = [
     employeeCount: 1000,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_nol.png",
   },
   {
     id: 'z2h8kd',
@@ -62,6 +66,7 @@ const companies = [
     employeeCount: 2127,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_musinsa.png",
   },
   {
     id: 'm9v5jx',
@@ -74,6 +79,7 @@ const companies = [
     employeeCount: 2853,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_kurly.png",
   },
   {
     id: 'p4c7wu',
@@ -86,6 +92,7 @@ const companies = [
     employeeCount: 248,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_zigbang.png",
   },
   {
     id: 'x1g6ra',
@@ -98,6 +105,7 @@ const companies = [
     employeeCount: 429,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_rdbooks.png",
   },
   {
     id: 'd5t9pq',
@@ -110,6 +118,7 @@ const companies = [
     employeeCount: 92,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_modusign.png",
   },
   {
     id: 'h8s2bn',
@@ -122,6 +131,7 @@ const companies = [
     employeeCount: 219,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_chtalk.png",
   },
     {
     id: 'a4w7pz',
@@ -134,6 +144,7 @@ const companies = [
     employeeCount: 715,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_dunamu.png",
   },
   {
     id: 'v3n8ka',
@@ -146,6 +157,7 @@ const companies = [
     employeeCount: 385,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_ably.png",
   },
   {
     id: 't5u9ve',
@@ -158,6 +170,7 @@ const companies = [
     employeeCount: 152,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_banksalad.png",
   },
   {
     id: 'u9s2dg',
@@ -170,6 +183,7 @@ const companies = [
     employeeCount: 188,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_upstage.png",
   },
   {
     id: 'w6r8tn',
@@ -182,6 +196,7 @@ const companies = [
     employeeCount: 174,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_wrtn.png",
   },
   {
     id: 'd7b3ai',
@@ -194,6 +209,7 @@ const companies = [
     employeeCount: 50,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_deepbrain.png",
   },
   {
     id: 'm5k8st',
@@ -206,6 +222,7 @@ const companies = [
     employeeCount: 128,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_makestar.png",
   },
   {
     id: 'x2d9xp',
@@ -218,6 +235,7 @@ const companies = [
     employeeCount: 112,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_deepx.png",
   },
   {
     id: 'r4b7ll',
@@ -230,6 +248,7 @@ const companies = [
     employeeCount: 106,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_rebellion.png",
   },
   {
     id: 'l6f2ex',
@@ -242,6 +261,7 @@ const companies = [
     employeeCount: 87,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
+    img: "src/assets/images/img_bi_lifex.png",
   },
 ];
 
