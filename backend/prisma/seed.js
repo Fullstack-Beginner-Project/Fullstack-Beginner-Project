@@ -123,6 +123,18 @@ const companies = [
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
   },
+  {
+    id: 'asdekf',
+    name: '코드잇',
+    description:
+      '테스트용으로 작성된 내용입니다.',
+    category: 'B2B SaaS',
+    actualInvestmentAmount: 53890000000n,
+    revenue: 35000000n,
+    employeeCount: 220,
+    myCompanySelectCount: 0,
+    compareCompanySelectCount: 0,
+  },
 ];
 
 const investments = [
