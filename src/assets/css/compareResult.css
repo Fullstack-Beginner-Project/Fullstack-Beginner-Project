@@ -1,0 +1,92 @@
+.compare_result_page {
+  padding-top: 40px;
+  padding-bottom: 80px;
+}
+
+.compare_result_empty {
+  margin-bottom: 24px;
+  color: var(--gray_200);
+  text-align: center;
+}
+
+.compare_result_my_company {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 32px;
+  background-color: var(--black_300);
+  border-radius: 12px;
+}
+
+.compare_result_my_company img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+}
+
+.compare_result_my_company span {
+  color: var(--gray_200);
+}
+
+.compare_result_table_wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  background-color: var(--black_200);
+}
+
+.compare_result_table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.compare_result_table th,
+.compare_result_table td {
+  padding: 16px 12px;
+  border-bottom: 1px solid var(--black_300);
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.compare_result_table th {
+  color: var(--gray_200);
+  font-weight: 500;
+}
+
+.compare_result_table td.title .td_inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.compare_result_table td.title img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.compare_result_table td.description {
+  max-width: 320px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--gray_200);
+  text-align: left;
+}
+
+.compare_result_table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.compare_result_table tbody tr.is-my-company {
+  background-color: var(--gray_400);
+}
+
+.compare_result_footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
