@@ -34,6 +34,20 @@ const SORT_OPTIONS = {
   },
 };
 
+//order option 값 
+const ORDER_OPTIONS = [
+  'desc',
+  'asc',
+];
+
+//orderBy 값
+const ORDER_BY_OPTIONS = [
+  'userInvestmentAmount',
+  'actualInvestmentAmount'
+]
+
+
+
 const companyRouter = Router();
 
 function sendBadRequest(res, message = '잘못된 요청입니다.') {
@@ -43,6 +57,117 @@ function sendBadRequest(res, message = '잘못된 요청입니다.') {
     message,
   });
 }
+
+function toSafeNumber(value) {
+  return typeof value === 'bigint' ? Number(value) : value;
+}
+
+// ==================================================
+// 윤여진 - 투자 현황 조회 API 시작
+// ==================================================
+
+companyRouter.get('/companies/investmentStatus', async (req, res) => {
+  try {
+    const {
+      page = '1',
+      pageSize = '10',
+      orderBy = 'userInvestmentAmount',
+      order = 'desc',
+    } = req.query;
+
+    if (
+      typeof page !== 'string' ||
+      typeof pageSize !== 'string' ||
+      typeof orderBy !== 'string' ||
+      typeof order !== 'string'
+    ) {
+      return sendBadRequest(res);
+    }
+
+    const pageNumber = Number(page);
+    const pageSizeNumber = Number(pageSize);
+
+    if (!Number.isInteger(pageNumber) || pageNumber < 1) {
+      return sendBadRequest(res);
+    }
+
+    if (!Number.isInteger(pageSizeNumber) || pageSizeNumber < 1) {
+      return sendBadRequest(res);
+    }
+
+    if (!ORDER_OPTIONS.includes(order)) {
+      return sendBadRequest(res);
+    }
+
+    if (!ORDER_BY_OPTIONS.includes(orderBy)) {
+      return sendBadRequest(res);
+    }
+
+    const companies = await prisma.company.findMany({
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        category: true,
+        actualInvestmentAmount: true,
+        investments: {
+          select: {
+            amount: true,
+          },
+        },
+      },
+    });
+
+    const companiesWithInvestmentAmount = companies.map((company) => {
+      const userInvestmentAmount = company.investments.reduce(
+        (sum, investment) => sum + investment.amount,
+        0n
+      );
+
+      const { investments, ...companyInfo } = company;
+
+      return {
+        ...companyInfo,
+        userInvestmentAmount,
+      };
+    });
+
+    companiesWithInvestmentAmount.sort((a, b) => {
+      const aValue = a[orderBy];
+      const bValue = b[orderBy];
+
+      if (aValue === bValue) {
+        return a.name.localeCompare(b.name);
+      }
+
+      if (order === 'asc') {
+        return aValue < bValue ? -1 : 1;
+      }
+
+      return aValue > bValue ? -1 : 1;
+    });
+
+    const skip = (pageNumber - 1) * pageSizeNumber;
+
+    const list = companiesWithInvestmentAmount.slice(
+      skip,
+      skip + pageSizeNumber
+    );
+
+    return res.status(200).json({
+      list,
+      totalCount: companiesWithInvestmentAmount.length,
+    });
+  } catch (error) {
+    console.error(error);
+    return sendBadRequest(res);
+  }
+});
+
+
+// ==================================================
+// 윤여진 - 투자 현황 조회 API 끝
+// ==================================================
 
 
 companyRouter.get('/companies', async (req, res) => {

@@ -61,3 +61,13 @@ GET http://localhost:3000/api/compare/status?sort=잘못된정렬값
 
 ### 비교 현황 조회 - 잘못된 페이지
 GET http://localhost:3000/api/compare/status?page=잘못된페이지
+
+### 기업 비교하기
+POST http://localhost:3000/api/compare
+Content-Type: application/json
+
+{
+  "myCompanyIds": ["z2h8kd"],
+  "compareCompanyIds": ["f8q2mz", "r7x1tq"]
+}
+

@@ -39,6 +39,7 @@ const companies = [
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
   },
+  
   {
     id: 'b6n4yc',
     name: '야놀자',
@@ -240,6 +241,18 @@ const companies = [
     actualInvestmentAmount: 80000000000n,
     revenue: 7830740000n,
     employeeCount: 87,
+    myCompanySelectCount: 0,
+    compareCompanySelectCount: 0,
+  },
+  {
+    id: 'asdekf',
+    name: '코드잇',
+    description:
+      '테스트용으로 작성된 내용입니다.',
+    category: 'B2B SaaS',
+    actualInvestmentAmount: 53890000000n,
+    revenue: 35000000n,
+    employeeCount: 220,
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
   },
