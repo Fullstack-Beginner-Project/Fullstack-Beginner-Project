@@ -1,4 +1,4 @@
-import '../assets/css/button.css';
+import '../assets/css/Button.css';
 
 
 
@@ -7,6 +7,7 @@ function Button({
   variant = 'primary',
   selected = false,
   disabled = false,
+  showResetIcon = false,
   onClick,
   children,
 }) {
@@ -34,6 +35,7 @@ function Button({
         disabled={disabled}
         onClick={onButtonClick}
       >
+        {showResetIcon && <span className="btn_reset_icon" aria-hidden="true">↻</span>}
         {children}
       </button>
     </div>
