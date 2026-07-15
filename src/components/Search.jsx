@@ -16,18 +16,24 @@ function Search({ size, onSubmit }) {
 
   const handleDelete = () => {
     setValue("");
+    onSubmit?.("");
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter" && value !== "") {
-      onSubmit?.(value); // 부모로 값 전달
-      console.log(value);
+    if (e.key === "Enter") {
+      if (value !== "") {
+        onSubmit?.(value);
+      } else {
+        onSubmit?.(""); // 빈 값이면 초기화
+      }
     }
   };
 
   const handleSearchClick = () => {
-    if (value !== ""){
-      onSubmit?.(value); // 검색 아이콘 클릭 시 값 전달
+    if (value !== "") {
+      onSubmit?.(value);
+    } else {
+      onSubmit?.("");
     }
   };
 

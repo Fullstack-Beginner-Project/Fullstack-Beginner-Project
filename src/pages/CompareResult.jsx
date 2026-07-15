@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import Section from "../components/Section";
 import Dropdown from "../components/Dropdown";
@@ -8,6 +9,8 @@ import DefaultLogo from "../assets/images/logo_default.png";
 import "../assets/css/compareResult.css";
 
 import Table from "../components/Table";
+
+const API_BASE_URL = "https://fullstack-beginner-api-test.ggeonwoo.workers.dev";
 
 const SORT_OPTIONS = [
   "누적 투자금액 높은순",
@@ -18,15 +21,13 @@ const SORT_OPTIONS = [
   "고용 인원 적은순",
 ];
 
-const SORT_COMPARATORS = {
-  "누적 투자금액 높은순": (a, b) =>
-    (b.actualInvestmentAmount ?? 0) - (a.actualInvestmentAmount ?? 0),
-  "누적 투자금액 낮은순": (a, b) =>
-    (a.actualInvestmentAmount ?? 0) - (b.actualInvestmentAmount ?? 0),
-  "매출액 높은순": (a, b) => (b.revenue ?? 0) - (a.revenue ?? 0),
-  "매출액 낮은순": (a, b) => (a.revenue ?? 0) - (b.revenue ?? 0),
-  "고용 인원 많은순": (a, b) => (b.employeeCount ?? 0) - (a.employeeCount ?? 0),
-  "고용 인원 적은순": (a, b) => (a.employeeCount ?? 0) - (b.employeeCount ?? 0),
+const SORT_OPTION_TO_API_VALUE = {
+  "누적 투자금액 높은순": "investmentDesc",
+  "누적 투자금액 낮은순": "investmentAsc",
+  "매출액 높은순": "revenueDesc",
+  "매출액 낮은순": "revenueAsc",
+  "고용 인원 많은순": "employeeDesc",
+  "고용 인원 적은순": "employeeAsc",
 };
 
 // 비교결과 확인하기
@@ -103,8 +104,9 @@ const rankingColumnDefs = [
 ];
 
 const formatAmount = (value) => {
-  if (typeof value !== "number") return "-";
-  return `${Math.round(value / 100000000).toLocaleString()}억 원`;
+  const numberValue = Number(value);
+  if (Number.isNaN(numberValue)) return "-";
+  return `${Math.round(numberValue / 100000000).toLocaleString()}억 원`;
 };
 
 function CompareResult() {
@@ -112,12 +114,28 @@ function CompareResult() {
   const navigate = useNavigate();
   const { myCompany, targetCompanies } = location.state ?? {};
   const [sortOption, setSortOption] = useState(SORT_OPTIONS[0]);
-  console.log('myCompany')
-  console.log(myCompany)
+  const [rankedCompanies, setRankedCompanies] = useState([]);
 
-  const rankedCompanies = useMemo(() => {
-    if (!myCompany || !targetCompanies) return [];
-    return [myCompany, ...targetCompanies].sort(SORT_COMPARATORS[sortOption]);
+  // API 연결
+  useEffect(() => {
+    if (!myCompany || !targetCompanies || targetCompanies.length === 0) return;
+
+    const fetchCompareResult = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/compare`, {
+          params: {
+            compareCompanyIds: targetCompanies.map((company) => company.id).join(","),
+            myCompanyIds: myCompany.id,
+            sort: SORT_OPTION_TO_API_VALUE[sortOption],
+          },
+        });
+        setRankedCompanies(response.data.list);
+      } catch (error) {
+        console.error("기업 비교 결과 조회 실패:", error);
+      }
+    };
+
+    fetchCompareResult();
   }, [myCompany, targetCompanies, sortOption]);
 
   if (!myCompany || !targetCompanies || targetCompanies.length === 0) {
@@ -269,7 +287,13 @@ function CompareResult() {
         {/* columnDefs: 테이블 헤더, 테이블 열 스타일 지정 */}
         {/* rows: 데이터 */}
         {/* myCompany: 내가 선택한 기업 아이디 <<< 해당 row 하이라이트 */}
-        <Table columnDefs={rankingColumnDefs} rows={rankedCompanies} myCompany={myCompany.id} />
+        <Table
+          columnDefs={rankingColumnDefs}
+          rows={rankedCompanies}
+          myCompany={myCompany.id}
+          currentPage={1}
+          rowsPerPage={rankedCompanies.length}
+        />
       </Section>
 
       <div className="compare_result_footer">
