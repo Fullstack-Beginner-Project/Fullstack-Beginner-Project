@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import Button from "../components/Button";
 import ModalCompanySelect from "../components/ModalCompanySelect";
 import DefaultLogo from "../assets/images/logo_default.png";
 import "../assets/css/myCompanyCompare.css";
+
+const API_BASE_URL = "https://fullstack-beginner-api-test.ggeonwoo.workers.dev";
 
 
 // 어떤 슬롯을 채우는 중인지 구분하기 위한 값
@@ -37,6 +40,12 @@ function MyCompanyCompare() {
   const handleSelectCompany = (company) => {
     setMyCompany(company);
     setHasSelectedMyCompany(true);
+
+    axios
+      .patch(`${API_BASE_URL}/api/companies/${company.id}/my-company-select-count`)
+      .catch((error) => {
+        console.error("나의 기업 선택 횟수 반영 실패:", error);
+      });
   };
 
   const handleSelectTargetCompanies = (companies) => {
@@ -51,9 +60,18 @@ function MyCompanyCompare() {
     });
   };
 
-  const handleCompare = () => {
+  const handleCompare = async () => {
     if (!isCompareReady) return;
-    navigate("/compare-result", { state: { myCompany, targetCompanies } });
+
+    try {
+      await axios.post(`${API_BASE_URL}/api/compare`, {
+        compareCompanyIds: targetCompanies.map((company) => company.id).join(","),
+        myCompanyIds: myCompany.id,
+      });
+      navigate("/compare-result", { state: { myCompany, targetCompanies } });
+    } catch (error) {
+      console.error("기업 비교 실행 실패:", error);
+    }
   };
 
   const handleCancelMyCompany = (event) => {
