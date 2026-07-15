@@ -1,7 +1,13 @@
 import { Router } from 'express';
 
 import prisma from "../lib/prisma.js";
-import { validateCompareCompaniesQuery, validateCompareBody } from '../validators/compare-validator.js';
+import { 
+  validateCompareCompaniesQuery,
+  validateCompareBody,
+  validateCompareStatusQuery,
+} from '../validators/compare-validator.js';
+
+
 
 const compareRouter = Router();
 
@@ -19,6 +25,32 @@ function serializeCompareCompany(company) {
     companyId: company.id,
     name: company.name,
     category: company.category,
+  };
+}
+
+const COMPARE_STATUS_SORT_OPTIONS = {
+  selectCountDesc: {
+    myCompanySelectCount: 'desc',
+  },
+  selectCountAsc: {
+    myCompanySelectCount: 'asc',
+  },
+  investmentDesc: {
+    actualInvestmentAmount: 'desc',
+  },
+  investmentAsc: {
+    actualInvestmentAmount: 'asc',
+  },
+};
+
+function serializeCompareStatusCompany(company) {
+  return {
+    companyId: company.id,
+    name: company.name,
+    description: company.description,
+    category: company.category,
+    myCompanySelectCount: company.myCompanySelectCount,
+    compareCompanySelectCount: company.compareCompanySelectCount
   };
 }
 
@@ -114,6 +146,56 @@ compareRouter.get('/compare/companies', async (req, res) => {
   }
 });
 
+compareRouter.get('/compare/status', async (req, res) => {
+  try {
+    const { error, value } = validateCompareStatusQuery(req.query);
+
+    if (error) {
+      return sendBadRequest(res, error);
+    }
+
+    const {
+      pageNumber,
+      pageSizeNumber,
+      sort,
+    } = value;
+
+    const skip = (pageNumber - 1) * pageSizeNumber;
+
+    const companyRows = await prisma.company.findMany({
+      orderBy: COMPARE_STATUS_SORT_OPTIONS[sort],
+      skip,
+      take: pageSizeNumber,
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        category: true,
+        myCompanySelectCount: true,
+        compareCompanySelectCount: true,
+      },
+    });
+
+    const total = await prisma.company.count();
+
+    const companies = companyRows.map((company) => {
+      return serializeCompareStatusCompany(company);
+    });
+
+    const totalPages = Math.ceil(total / pageSizeNumber);
+
+    return res.status(200).json({
+      companies,
+      total,
+      totalPages,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return sendBadRequest(res);
+  }
+});
+
 compareRouter.post('/compare', async (req, res) => {
   try {
     const { error, value } = validateCompareBody(req.body);
@@ -166,6 +248,10 @@ compareRouter.post('/compare', async (req, res) => {
 });
 
 compareRouter.all('/compare/companies', (req, res) => {
+  return sendBadRequest(res);
+});
+
+compareRouter.all('/compare/status', (req, res) => {
   return sendBadRequest(res);
 });
 

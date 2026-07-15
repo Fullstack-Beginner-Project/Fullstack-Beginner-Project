@@ -1,5 +1,6 @@
 import {
   array,
+  enums,
   object,
   string,
   optional,
@@ -30,6 +31,21 @@ const PageSize = refine(string(), 'PageSize', (value) => {
     Number.isInteger(pageSizeNumber) &&
     pageSizeNumber >= MIN_PAGE_SIZE
   );
+});
+
+const COMPARE_STATUS_SORT_VALUES = [
+  'selectCountDesc',
+  'selectCountAsc',
+  'investmentDesc',
+  'investmentAsc',
+];
+
+const CompareStatusSort = enums(COMPARE_STATUS_SORT_VALUES);
+
+const CompareStatusQuery = object({
+  page: optional(Page),
+  pageSize: optional(PageSize),
+  sort: optional(CompareStatusSort),
 });
 
 const CompareCompanyIds = refine(string(), 'CompareCompanyIds', (value) => {
@@ -103,6 +119,33 @@ function validateCompareCompaniesQuery(query) {
   };
 }
 
+function validateCompareStatusQuery(query) {
+  const [error] = validate(query, CompareStatusQuery);
+
+  if (error) {
+    return {
+      error: '잘못된 요청입니다.',
+    };
+  }
+
+  const {
+    page = '1',
+    pageSize = '10',
+    sort = 'selectCountDesc',
+  } = query;
+
+  const pageNumber = Number(page);
+  const pageSizeNumber = Number(pageSize);
+
+  return {
+    value: {
+      pageNumber,
+      pageSizeNumber,
+      sort,
+    },
+  };
+}
+
 function validateCompareBody(body) {
   const CompareBody = object({
     myCompanyIds: refine(array(CompanyId), 'MyCompanyIds', (value) => {
@@ -132,5 +175,6 @@ function validateCompareBody(body) {
 
 export {
   validateCompareCompaniesQuery,
-  validateCompareBody
+  validateCompareBody,
+  validateCompareStatusQuery,
 };
