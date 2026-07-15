@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import Table from "../components/Table";
-import Button from "../components/Button"; 
+import Button from "../components/Button";
 import Pagination from "../components/Pagination";
 import "../assets/css/CompanyDetail.css";
 
@@ -10,8 +10,50 @@ import { mockCompanies } from "../mock/companies";
 import { mockInvestments } from "../mock/investments";
 
 const PAGE_SIZE = 5;
+// const MENU_WIDTH = 154;
+// const MENU_HEIGHT = 90;
+// const GAP = 8;
 
 function CompanyDetail() {
+  const [commentMenu, setCommentMenu] = useState({
+    row: null,
+    top: 0,
+    left: 0,
+  });
+
+  // const handleOpenCommentMenu = (event, row) => {
+  //   event.stopPropagation();
+
+  //   const rect = event.currentTarget.getBoundingClientRect();
+
+  //   const left = Math.min(
+  //     Math.max(GAP, rect.right - MENU_WIDTH),
+  //     window.innerWidth - MENU_WIDTH - GAP
+  //   );
+
+  //   const top =
+  //     rect.bottom + MENU_HEIGHT + GAP <= window.innerHeight
+  //       ? rect.bottom + GAP
+  //       : rect.top - MENU_HEIGHT - GAP;
+
+  //   setCommentMenu((prev) => {
+  //     // 같은 행의 버튼을 다시 누르면 닫기
+  //     if (prev.row?.id === row.id) {
+  //       return {
+  //         row: null,
+  //         top: 0,
+  //         left: 0,
+  //       };
+  //     }
+
+  //     return {
+  //       row,
+  //       top,
+  //       left,
+  //     };
+  //   });
+  // };
+
   const company = mockCompanies[0];
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,6 +68,29 @@ function CompanyDetail() {
     currentPage * PAGE_SIZE
   );
 
+  const columnDefs = [
+    {
+      key: "investor",
+      label: "투자자 이름",
+      colClassName: "etc_2",
+    },
+    {
+      key: "rank",
+      label: "순위",
+      colClassName: "short",
+    },
+    {
+      key: "amount",
+      label: "투자금액",
+      colClassName: "etc",
+    },
+    {
+      key: "comment",
+      label: "투자 코멘트",
+      colClassName: "content",
+    },
+  ];
+
 
   return (
     <div className="content_wrap">
@@ -34,7 +99,7 @@ function CompanyDetail() {
         {/* 회사 정보 */}
         <div className="company_detail_info">
           <div className="company_detail_top">
-            <img 
+            <img
               src={company.logo}
               alt={company.name}
             />
@@ -84,9 +149,7 @@ function CompanyDetail() {
           <p>총 {(company.myStartupInvestmentAmount / 100000000).toLocaleString()}억 원</p>
         </div>
 
-        <Table 
-          data={paginatedInvestments}
-        />
+        <Table columnDefs={columnDefs} rows={paginatedInvestments}></Table>
 
         <Pagination
           currentPage={currentPage}

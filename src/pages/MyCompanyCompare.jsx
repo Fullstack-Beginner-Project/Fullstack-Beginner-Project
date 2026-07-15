@@ -74,8 +74,11 @@ function MyCompanyCompare() {
   return (
     <>
       <div className="content_wrap my_company_compare_wrap">
-        <div className="my_company_compare_title">
-          <h2 className="page_title">나의 기업을 선택해 주세요!</h2>
+        {/*수정 제안*/}
+        {/*my_company_compare_title에서 모든 페이지에서 사용중인 section.css의 section_head 활용*/}
+        <div className="section_head">
+          {/*page_title > section_title*/}
+          <h2 className="section_title">나의 기업을 선택해 주세요!</h2>
           {myCompany && (
             <Button
               size="small"
@@ -123,10 +126,10 @@ function MyCompanyCompare() {
 
         {(myCompany || hasSelectedMyCompany) && (
           <>
-            <div className="company_slot_header">
-              <h3>
+            <div className="section_head">
+              <h2 className="section_title">
                 어떤 기업이 궁금하세요? <span>(최대 {MAX_TARGET_COMPANIES}개)</span>
-              </h3>
+              </h2>
               <Button
                 size="small"
                 variant="primary"
