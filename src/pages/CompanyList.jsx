@@ -20,10 +20,12 @@ function CompanyList() {
   const [totalPages, setTotalPages] = useState(1);
   const [sortOption, setSortOption] = useState("revenueDesc");
   const [keyword, setKeyword] = useState("");
+  const [loading, setLoading] = useState(true);
  
   // keyword 받기
   const handleSearch = (keyword) => {
     setKeyword(keyword);
+    setCurrentPage(1);
   }
   // 드롭다운에서 선택한 옵션을 API 파라미터에 맞게 변환
   const handleSortChange = (selected) => {
@@ -51,9 +53,9 @@ function CompanyList() {
     }
   };
 
-  // API 연결
   useEffect(() => {
     const fetchCompanies = async () => {
+      setLoading(true); // 호출 시작 시 로딩 켜기
       try {
         const response = await axios.get(
           `https://fullstack-beginner-api-test.ggeonwoo.workers.dev/api/companies?page=${currentPage}&pageSize=${rowsPerPage}&sort=${sortOption}&keyword=${keyword}`
@@ -62,9 +64,10 @@ function CompanyList() {
         setTotalPages(Math.ceil(response.data.totalCount / rowsPerPage));
       } catch (error) {
         console.error("데이터 불러오기 실패:", error);
+      } finally {
+        setLoading(false); // 호출 끝나면 로딩 끄기
       }
     };
-
     fetchCompanies();
   }, [currentPage, sortOption, keyword]);
 
@@ -151,12 +154,25 @@ function CompanyList() {
       <div className="content_wrap companylist_page">
         <Section title={'전체 스타트업 목록'} sh_right={sectionRight}>
           {/* section */}
-          <Table columnDefs={columnDefs} rows={companies} currentPage={currentPage} rowsPerPage={rowsPerPage}></Table>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
+          {loading ? (
+            <p className="in_loading">로딩 중...</p>
+          ) : companies.length === 0 ? (
+            <p className="no_data">아직 등록된 기업이 없어요</p>
+          ) : (
+            <>
+              <Table
+                columnDefs={columnDefs}
+                rows={companies}
+                currentPage={currentPage}
+                rowsPerPage={rowsPerPage}
+              />
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </>
+          )}
         </Section>
 
         {/* 혹시 몰라 남겨둡니다. */}

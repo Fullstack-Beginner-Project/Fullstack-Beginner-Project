@@ -21,13 +21,12 @@ function InvestmentStatus() {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
   const [totalPages, setTotalPages] = useState(1);
-
-  // 정렬 상태
   const [orderBy, setOrderBy] = useState("userInvestmentAmount");
   const [order, setOrder] = useState("desc");
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(
           `https://codeit-sprint-for-api-test-1.geonwoo.dev/api/companies/investmentStatus?page=${currentPage}&pageSize=${rowsPerPage}&orderBy=${orderBy}&order=${order}`
@@ -75,7 +74,7 @@ function InvestmentStatus() {
     }
   };
 
-  const sectionRight = companies.length > 0 && (
+  const sectionRight = (
     <div className="search_wrap_parent flex">
       <Dropdown size="medium" options={options} onChange={handleSortChange} />
     </div>
@@ -85,7 +84,7 @@ function InvestmentStatus() {
     <div className="content_wrap investment_page">
       <Section title={"투자 현황"} sh_right={sectionRight}>
         {loading ? (
-          <p>로딩 중...</p>
+          <p className="in_loading">로딩 중...</p>
         ) : companies.length === 0 ? (
           <p className="no_data">아직 투자 현황이 없어요</p>
         ) : (
