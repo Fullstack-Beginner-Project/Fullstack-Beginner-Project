@@ -201,6 +201,7 @@ function MyCompanyCompare() {
           multiple
           selectedCompanies={targetCompanies}
           maxSelectable={MAX_TARGET_COMPANIES}
+          excludedIds={myCompany ? [myCompany.id] : []}
           onClose={handleCloseModal}
           onSelectCompanies={handleSelectTargetCompanies}
         />
