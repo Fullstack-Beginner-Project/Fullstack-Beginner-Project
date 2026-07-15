@@ -35,6 +35,33 @@ GET http://localhost:3000/api/compare/companies?compareCompanyIds=z2h8kd,f8q2mz,
 POST http://localhost:3000/api/compare/companies
 Content-Type: application/json
 
+{}
+
+
+### 비교 현황 조회 - 기본 조회
+GET http://localhost:3000/api/compare/status
+
+### 비교 현황 조회 - 나의 기업 선택 횟수 높은순
+GET http://localhost:3000/api/compare/status?sort=selectCountDesc
+
+### 비교 현황 조회 - 나의 기업 선택 횟수 낮은순
+GET http://localhost:3000/api/compare/status?sort=selectCountAsc
+
+### 비교 현황 조회 - 실제 누적 투자 금액 높은순
+GET http://localhost:3000/api/compare/status?sort=investmentDesc
+
+### 비교 현황 조회 - 실제 누적 투자 금액 낮은순
+GET http://localhost:3000/api/compare/status?sort=investmentAsc
+
+### 비교 현황 조회 - 페이지네이션 + 나의 기업 선택 횟수 높은순
+GET http://localhost:3000/api/compare/status?page=3&pageSize=5&sort=selectCountDesc
+
+### 비교 현황 조회 - 잘못된 정렬값
+GET http://localhost:3000/api/compare/status?sort=잘못된정렬값
+
+### 비교 현황 조회 - 잘못된 페이지
+GET http://localhost:3000/api/compare/status?page=잘못된페이지
+
 ### 기업 비교하기
 POST http://localhost:3000/api/compare
 Content-Type: application/json
@@ -43,3 +70,4 @@ Content-Type: application/json
   "myCompanyIds": ["z2h8kd"],
   "compareCompanyIds": ["f8q2mz", "r7x1tq"]
 }
+
