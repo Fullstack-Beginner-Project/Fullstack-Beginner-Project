@@ -127,7 +127,7 @@ compareRouter.post('/compare', async (req, res) => {
       compareCompanyIds,
     } = value;
 
-    const [myCompanyId] = myCompanyIds[0];
+    const [myCompanyId] = myCompanyIds;
 
     await prisma.$transaction([
       prisma.company.update({
@@ -166,6 +166,10 @@ compareRouter.post('/compare', async (req, res) => {
 });
 
 compareRouter.all('/compare/companies', (req, res) => {
+  return sendBadRequest(res);
+});
+
+compareRouter.all('/compare', (req, res) => {
   return sendBadRequest(res);
 });
 
