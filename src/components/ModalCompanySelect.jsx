@@ -18,6 +18,7 @@ function ModalCompanySelect({
   multiple = false,
   selectedCompanies = [],
   maxSelectable,
+  excludedIds = [],
 }) {
   const companies = mockCompanies;
   const [keyword, setKeyword] = useState('');
@@ -49,13 +50,18 @@ function ModalCompanySelect({
   const isCheckLimitReached =
     typeof maxSelectable === 'number' && checkedIds.size >= maxSelectable;
 
+  const excludedIdSet = new Set(excludedIds);
+
   const withSelectedFlag = (list) =>
     list.map((company) => ({
       ...company,
       selected: checkedIds.has(company.id),
+      disabled: excludedIdSet.has(company.id),
     }));
 
   const handleSelect = (id) => {
+    if (excludedIdSet.has(id)) return;
+
     if (!multiple) {
       const company = companies.find((company) => company.id === id);
       onSelectCompany(company);
@@ -121,13 +127,13 @@ function ModalCompanySelect({
       <div className='company_select_list_wrap'>
         <CompanyLists
           title="최근 비교한 기업"
-          companies={multiple ? withSelectedFlag(recentCompanies) : recentCompanies}
+          companies={withSelectedFlag(recentCompanies)}
           onSelect={handleSelect}
         />
 
         <CompanyLists
           title="검색 결과"
-          companies={multiple ? withSelectedFlag(paginatedCompanies) : paginatedCompanies}
+          companies={withSelectedFlag(paginatedCompanies)}
           onSelect={handleSelect}
           emptyMessage="검색 결과가 없습니다."
         />
