@@ -8,10 +8,29 @@ import axios from "axios";
 
 function CompareOverview() {
   const [companies, setCompanies] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
   const [totalPages, setTotalPages] = useState(1);
   const [sortOption, setSortOption] = useState("selectCountDesc");
+
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      setLoading(true); // 호출 시작 시 로딩 켜기
+      try {
+        const response = await axios.get(
+          `https://fullstack-beginner-api-test.ggeonwoo.workers.dev/api/compare/status?page=${currentPage}&pageSize=${rowsPerPage}&sort=${sortOption}`
+        );
+        setCompanies(response.data.list);
+        setTotalPages(Math.ceil(response.data.totalCount / rowsPerPage));
+      } catch (error) {
+        console.error("데이터 불러오기 실패:", error);
+      } finally {
+        setLoading(false); // 호출 끝나면 로딩 끄기
+      }
+    };
+    fetchCompanies();
+  }, [currentPage, sortOption]);
 
   const options = [
     "나의 기업 선택 횟수 높은순",
@@ -39,22 +58,6 @@ function CompareOverview() {
     }
   };
 
-  useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
-        const response = await axios.get(
-          `https://fullstack-beginner-api-test.ggeonwoo.workers.dev/api/compare/status?page=${currentPage}&pageSize=${rowsPerPage}&sort=${sortOption}`
-        );
-        setCompanies(response.data.list);
-        setTotalPages(Math.ceil(response.data.totalCount / rowsPerPage));
-      } catch (error) {
-        console.error("데이터 불러오기 실패:", error);
-      }
-    };
-
-    fetchCompanies();
-  }, [currentPage, sortOption]);
-
   const columnDefs = [
     { key: "rank", label: "순위", colClassName: "short" },
     { key: "name", label: "기업명", colClassName: "title" },
@@ -73,12 +76,20 @@ function CompareOverview() {
   return (
     <div className="content_wrap companyoverview_page">
       <Section title={"비교 현황"} sh_right={sectionRight}>
-        <Table columnDefs={columnDefs} rows={companies} currentPage={currentPage} rowsPerPage={rowsPerPage} />
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
+        {loading ? (
+          <p className="in_loading">로딩 중...</p>
+        ) : companies.length === 0 ? (
+          <p className="no_data">아직 투자 현황이 없어요</p>
+        ) : (
+          <>
+            <Table columnDefs={columnDefs} rows={companies} currentPage={currentPage} rowsPerPage={rowsPerPage} />
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </>
+        )}
       </Section>
     </div>
   );
