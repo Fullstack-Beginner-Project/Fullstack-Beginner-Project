@@ -21,6 +21,16 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
     // console.log("value:", value);
 
     switch (column.key) {
+      case "own_rank":
+        return (
+          <td key={column.key} className={column.className}>
+            <div className="td_inner">
+              {row.rank}위
+            </div>
+          </td>
+        );
+
+
       case "rank":
         // 페이지네이션 반영
         const rankNumber = (currentPage - 1) * rowsPerPage + (rowIndex + 1);

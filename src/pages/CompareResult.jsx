@@ -67,7 +67,7 @@ const columnDefs = [
 // 기업 순위 확인하기
 const rankingColumnDefs = [
   {
-    key: "rank",
+    key: "own_rank",
     label: "순위",
     colClassName: "short",
   },
@@ -120,22 +120,39 @@ function CompareResult() {
   useEffect(() => {
     if (!myCompany || !targetCompanies || targetCompanies.length === 0) return;
 
-    const fetchCompareResult = async () => {
+    const fetchRankedCompanies = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/compare`, {
+        // 1. 전체 기업 리스트 가져오기
+        const response = await axios.get(`${API_BASE_URL}/api/companies`, {
           params: {
-            compareCompanyIds: targetCompanies.map((company) => company.id).join(","),
-            myCompanyIds: myCompany.id,
-            sort: SORT_OPTION_TO_API_VALUE[sortOption],
+            page: 1,
+            pageSize: 9999, // 전체 긁어오기
+            sort: SORT_OPTION_TO_API_VALUE[sortOption], // 정렬 옵션 반영
           },
         });
-        setRankedCompanies(response.data.list);
+
+        const allCompanies = response.data.list;
+
+        // 2. 순위 매기기
+        const sortedCompanies = allCompanies.map((company, index) => ({
+          ...company,
+          rank: index + 1,
+        }));
+
+        // 3. 내 기업 + 타겟 기업만 필터링
+        const selectedIds = [myCompany.id, ...targetCompanies.map(c => c.id)];
+        const rankedCompanies = sortedCompanies.filter(c =>
+          selectedIds.includes(c.id)
+        );
+        setRankedCompanies(rankedCompanies);
       } catch (error) {
-        console.error("기업 비교 결과 조회 실패:", error);
+        console.error("기업 랭킹 조회 실패:", error);
+      } finally {
+        console.log(rankedCompanies);
       }
     };
 
-    fetchCompareResult();
+    fetchRankedCompanies();
   }, [myCompany, targetCompanies, sortOption]);
 
   if (!myCompany || !targetCompanies || targetCompanies.length === 0) {
@@ -238,52 +255,6 @@ function CompareResult() {
       </Section>
 
       <Section title="기업 순위 확인하기">
-        {/* 기존 테이블 */}
-        {/* <div className="compare_result_table_wrap">
-          <table className="compare_result_table">
-            <thead>
-              <tr>
-                <th>순위</th>
-                <th>기업명</th>
-                <th>기업 소개</th>
-                <th>카테고리</th>
-                <th>누적 투자 금액</th>
-                <th>매출액</th>
-                <th>고용 인원</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rankedCompanies.map((company, index) => (
-                <tr
-                  key={company.id}
-                  className={company.id === myCompany.id ? "is-my-company" : undefined}
-                >
-                  <td>{index + 1}위</td>
-                  <td className="title">
-                    <div className="td_inner">
-                      <img
-                        src={company.logo ?? DefaultLogo}
-                        alt={company.name}
-                      />
-                      <span>{company.name}</span>
-                    </div>
-                  </td>
-                  <td className="description">{company.description ?? "-"}</td>
-                  <td>{company.category}</td>
-                  <td>{formatAmount(company.actualInvestmentAmount)}</td>
-                  <td>{formatAmount(company.revenue)}</td>
-                  <td>
-                    {typeof company.employeeCount === "number"
-                      ? `${company.employeeCount}명`
-                      : "-"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div> */}
-
-
         {/* columnDefs: 테이블 헤더, 테이블 열 스타일 지정 */}
         {/* rows: 데이터 */}
         {/* myCompany: 내가 선택한 기업 아이디 <<< 해당 row 하이라이트 */}
