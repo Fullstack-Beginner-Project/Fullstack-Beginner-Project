@@ -2,7 +2,7 @@
 import TableColgroup from "./TableColgroup";
 import TableRow from "./TableRow"
 
-function TableBody({ columnDefs, rows, myCompany, ...rowProps }) {
+function TableBody({ columnDefs, rows, myCompany, currentPage, rowsPerPage, ...rowProps }) {
   
   return (
     <div className="table_body_wrap">
@@ -14,7 +14,7 @@ function TableBody({ columnDefs, rows, myCompany, ...rowProps }) {
           
           {rows.map((row, rowIndex) => {
             return (
-            <TableRow key={row.id} row={row} rowIndex={rowIndex} columnDefs={columnDefs} myCompany={myCompany} {...rowProps} />
+            <TableRow key={row.id} row={row} rowIndex={rowIndex} columnDefs={columnDefs} myCompany={myCompany} {...rowProps} currentPage={currentPage} rowsPerPage={rowsPerPage} />
             )
           })}
 

@@ -151,7 +151,7 @@ function CompanyList() {
       <div className="content_wrap companylist_page">
         <Section title={'전체 스타트업 목록'} sh_right={sectionRight}>
           {/* section */}
-          <Table columnDefs={columnDefs} rows={companies}></Table>
+          <Table columnDefs={columnDefs} rows={companies} currentPage={currentPage} rowsPerPage={rowsPerPage}></Table>
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
@@ -159,12 +159,13 @@ function CompanyList() {
           />
         </Section>
 
-        <Section title={'전체 스타트업 ddd목록'} sh_right={sectionRight}>
-          {/* section */}
+        {/* 혹시 몰라 남겨둡니다. */}
+        {/* <Section title={'전체 스타트업 ddd목록'} sh_right={sectionRight}>
+
           <Table columnDefs={columnDefs_invest} rows={data}></Table>
 
           <Pagination currentPage={1} totalPages={10} />
-        </Section>
+        </Section> */}
       </div>
       {/* pagnation 위치는 content_wrap안이 좋을지 밖이 좋을지 고려 */}
     </>

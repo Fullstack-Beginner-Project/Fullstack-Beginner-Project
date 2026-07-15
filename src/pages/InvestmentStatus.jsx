@@ -1,92 +1,101 @@
-import { useState, useEffect, React } from "react";
+import { useState, useEffect } from "react";
 import "../assets/css/investmentstatus.css";
 import Dropdown from "../components/Dropdown.jsx";
 import Section from "../components/Section";
 import Table from "../components/Table.jsx";
 import Pagination from "../components/Pagination.jsx";
-import { mockCompanies } from "../mock/companies.js"; // 임시용 mock 데이터
+import axios from "axios";
 
-// 임시 테이블 항목
 const columnDefs = [
-  {
-    key: "rank",
-    label: "순위",
-    colClassName: "short",
-  },
-  {
-    key: "name",
-    label: "기업명",
-    colClassName: "title",
-  },
-  {
-    key: "description",
-    label: "기업소개",
-    colClassName: "content",
-  },
-  {
-    key: "category",
-    label: "카테고리",
-    colClassName: "etc",
-  },
-  {
-    key: "amount",
-    label: "View My Startup 투자 금액 ",
-    colClassName: "etc_3",
-  },
-  {
-    key: "revenue",
-    label: "실제 누적 투자 금액",
-    colClassName: "etc_3",
-  },
+  { key: "rank", label: "순위", colClassName: "short" },
+  { key: "name", label: "기업명", colClassName: "title" },
+  { key: "description", label: "기업소개", colClassName: "content" },
+  { key: "category", label: "카테고리", colClassName: "etc" },
+  { key: "amount", label: "View My Startup 투자 금액", colClassName: "etc_3" },
+  { key: "revenue", label: "실제 누적 투자 금액", colClassName: "etc_3" },
 ];
 
 function InvestmentStatus() {
-  const [data, setData] = useState(mockCompanies);
+  const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
+  const [totalPages, setTotalPages] = useState(1);
 
-  // 현재 페이지에 해당하는 데이터만 slice
-  const indexOfLastRow = currentPage * rowsPerPage;
-  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = mockCompanies.slice(indexOfFirstRow, indexOfLastRow);
-  const totalPages = Math.ceil(mockCompanies.length / rowsPerPage);
+  // 정렬 상태
+  const [orderBy, setOrderBy] = useState("userInvestmentAmount");
+  const [order, setOrder] = useState("desc");
 
   useEffect(() => {
-    fetch("") // api 주소
-      .then((res) => res.json())
-      .then((result) => {
-        setData(result); // result가 배열이라고 가정
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `https://codeit-sprint-for-api-test-1.geonwoo.dev/api/companies/investmentStatus?page=${currentPage}&pageSize=${rowsPerPage}&orderBy=${orderBy}&order=${order}`
+        );
+        setCompanies(response.data.list);
+        setTotalPages(Math.ceil(response.data.totalCount / rowsPerPage));
+      } catch (error) {
+        console.error("데이터 불러오기 실패:", error);
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
+      }
+    };
+
+    fetchData();
+  }, [currentPage, orderBy, order]);
 
   const options = [
     "View My Startup 투자 금액 높은순",
     "View My Startup 투자 금액 낮은순",
     "실제 누적 투자 금액 높은순",
     "실제 누적 투자 금액 낮은순",
-  ]
+  ];
 
+  const handleSortChange = (selected) => {
+    switch (selected) {
+      case "View My Startup 투자 금액 높은순":
+        setOrderBy("userInvestmentAmount");
+        setOrder("desc");
+        break;
+      case "View My Startup 투자 금액 낮은순":
+        setOrderBy("userInvestmentAmount");
+        setOrder("asc");
+        break;
+      case "실제 누적 투자 금액 높은순":
+        setOrderBy("actualInvestmentAmount");
+        setOrder("desc");
+        break;
+      case "실제 누적 투자 금액 낮은순":
+        setOrderBy("actualInvestmentAmount");
+        setOrder("asc");
+        break;
+      default:
+        setOrderBy("userInvestmentAmount");
+        setOrder("desc");
+    }
+  };
 
-
-  const sectionRight = data.length > 0 && (
-    <form className="search_wrap_parent flex">
-      <Dropdown size={'medium'} options={options}></Dropdown>
-    </form>
+  const sectionRight = companies.length > 0 && (
+    <div className="search_wrap_parent flex">
+      <Dropdown size="medium" options={options} onChange={handleSortChange} />
+    </div>
   );
 
   return (
     <div className="content_wrap investment_page">
-      <Section title={'투자 현황'} sh_right={sectionRight}>
+      <Section title={"투자 현황"} sh_right={sectionRight}>
         {loading ? (
           <p>로딩 중...</p>
-        ) : data.length === 0 ? (
+        ) : companies.length === 0 ? (
           <p className="no_data">아직 투자 현황이 없어요</p>
         ) : (
           <>
-            <Table columnDefs={columnDefs} rows={currentRows} />
+            <Table
+              columnDefs={columnDefs}
+              rows={companies}
+              currentPage={currentPage}
+              rowsPerPage={rowsPerPage}
+            />
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
@@ -97,22 +106,6 @@ function InvestmentStatus() {
       </Section>
     </div>
   );
-
-  // return (
-  //   <>
-  //     <div className="content_wrap">
-  //       <Section title={'투자 현황'} sh_right={sectionRight}>
-
-  //         {/*Table은 추후 DB 연동 간 수신 데이터 확인 후 map을 통해 구성할 예정*/}
-  //         <Table></Table>
-
-  //         <Pagination />
-  //       </Section>
-
-  //     </div>
-  //     {/* pagnation 위치는 content_wrap안이 좋을지 밖이 좋을지 고려 */}
-  //   </>
-  // );
 }
 
-export default InvestmentStatus;
+export default InvestmentStatus
