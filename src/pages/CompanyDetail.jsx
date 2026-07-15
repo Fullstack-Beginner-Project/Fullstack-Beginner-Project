@@ -3,6 +3,7 @@ import { useState } from "react";
 import Table from "../components/Table";
 import Button from "../components/Button";
 import Pagination from "../components/Pagination";
+import DefaultLogo from "../assets/images/logo_default.png";
 import "../assets/css/CompanyDetail.css";
 
 import { mockCompanies } from "../mock/companies";
@@ -100,7 +101,7 @@ function CompanyDetail() {
         <div className="company_detail_info">
           <div className="company_detail_top">
             <img
-              src={company.logo}
+              src={company.logo ?? DefaultLogo}
               alt={company.name}
             />
 
