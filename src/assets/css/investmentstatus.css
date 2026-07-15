@@ -38,7 +38,8 @@
   }
 }
 
-#root>.wrap .investment_page .section_body .no_data {
+#root>.wrap .investment_page .section_body .no_data,
+#root>.wrap .investment_page .section_body .in_loading {
   position: fixed;          /* 화면에 고정 */
   top: 50%;                 /* 세로 중앙 */
   left: 50%;                /* 가로 중앙 */
