@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import prisma from "../lib/prisma.js";
-import { validateCompareCompaniesQuery } from '../validators/compare-validator.js';
+import { validateCompareCompaniesQuery, validateCompareBody } from '../validators/compare-validator.js';
 
 const compareRouter = Router();
 
@@ -39,17 +39,17 @@ compareRouter.get('/compare/companies', async (req, res) => {
 
     const selectedCompanyRows = compareCompanyIds.length
       ? await prisma.company.findMany({
-          where: {
-            id: {
-              in: compareCompanyIds,
-            },
+        where: {
+          id: {
+            in: compareCompanyIds,
           },
-          select: {
-            id: true,
-            name: true,
-            category: true,
-          },
-        })
+        },
+        select: {
+          id: true,
+          name: true,
+          category: true,
+        },
+      })
       : [];
 
     const sortedSelectedCompanyRows = compareCompanyIds
@@ -68,11 +68,11 @@ compareRouter.get('/compare/companies', async (req, res) => {
 
     const where = keyword
       ? {
-          name: {
-            contains: keyword,
-            mode: 'insensitive',
-          },
-        }
+        name: {
+          contains: keyword,
+          mode: 'insensitive',
+        },
+      }
       : {};
 
     const skip = (pageNumber - 1) * pageSizeNumber;
@@ -114,8 +114,60 @@ compareRouter.get('/compare/companies', async (req, res) => {
   }
 });
 
+compareRouter.post('/compare', async (req, res) => {
+  try {
+    const { error, value } = validateCompareBody(req.body);
+
+    if (error) {
+      return sendBadRequest(res, error);
+    }
+
+    const {
+      myCompanyIds,
+      compareCompanyIds,
+    } = value;
+
+    const [myCompanyId] = myCompanyIds[0];
+
+    await prisma.$transaction([
+      prisma.company.update({
+        where: {
+          id: myCompanyId,
+        },
+        data: {
+          myCompanySelectCount: {
+            increment: 1,
+          },
+        },
+      }),
+
+      prisma.company.updateMany({
+        where: {
+          id: {
+            in: compareCompanyIds,
+          },
+        },
+        data: {
+          compareCompanySelectCount: {
+            increment: 1,
+          },
+        },
+      }),
+    ]);
+
+    return res.status(200).json({
+      message: '기업 비교 요청 확인',
+    });
+  } catch (error) {
+    console.error(error);
+
+    return sendBadRequest(res);
+  }
+});
+
 compareRouter.all('/compare/companies', (req, res) => {
   return sendBadRequest(res);
 });
+
 
 export default compareRouter;

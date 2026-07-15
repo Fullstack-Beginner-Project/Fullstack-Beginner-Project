@@ -1,4 +1,5 @@
 import {
+  array,
   object,
   string,
   optional,
@@ -12,6 +13,9 @@ const COMPANY_ID_REGEX = /^[a-z0-9]{6}$/;
 const MIN_PAGE = 1;
 const MIN_PAGE_SIZE = 1;
 const MAX_COMPARE_COMPANY_COUNT = 5;
+const CompanyId = refine(string(), 'CompanyId', (value) => {
+  return COMPANY_ID_REGEX.test(value);
+});
 
 const Page = refine(string(), 'Page', (value) => {
   const pageNumber = Number(value);
@@ -84,7 +88,7 @@ function validateCompareCompaniesQuery(query) {
 
   // 선택한 기업 아이디 목록
   const parsedCompareCompanyIds = compareCompanyIds
-  ? compareCompanyIds
+    ? compareCompanyIds
       .split(',')
       .map((companyId) => companyId.trim())
     : [];
@@ -99,6 +103,34 @@ function validateCompareCompaniesQuery(query) {
   };
 }
 
+function validateCompareBody(body) {
+  const CompareBody = object({
+    myCompanyIds: refine(array(CompanyId), 'MyCompanyIds', (value) => {
+      return value.length === 1;
+    }),
+    compareCompanyIds: refine(
+      array(CompanyId),
+      'CompareCompanyIds',
+      (value) => {
+        return value.length >= 1 && value.length <= MAX_COMPARE_COMPANY_COUNT;
+      }
+    ),
+  });
+
+  const [error] = validate(body, CompareBody);
+
+  if (error) {
+    return {
+      error: '잘못된 요청입니다.',
+    };
+  }
+
+  return {
+    value: body,
+  };
+}
+
 export {
-  validateCompareCompaniesQuery
+  validateCompareCompaniesQuery,
+  validateCompareBody
 };
