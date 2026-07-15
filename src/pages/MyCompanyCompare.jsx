@@ -80,7 +80,13 @@ function MyCompanyCompare() {
           {/*page_title > section_title*/}
           <h2 className="section_title">나의 기업을 선택해 주세요!</h2>
           {myCompany && (
-            <Button size="small" variant="primary" selected onClick={handleResetAll}>
+            <Button
+              size="small"
+              variant="primary"
+              selected
+              showResetIcon
+              onClick={handleResetAll}
+            >
               전체 초기화
             </Button>
           )}
@@ -129,6 +135,7 @@ function MyCompanyCompare() {
                 variant="primary"
                 selected
                 disabled={isTargetFull}
+                showResetIcon
                 onClick={() => handleOpenModal(SLOT.TARGET)}
               >
                 기업 추가하기

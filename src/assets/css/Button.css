@@ -14,9 +14,15 @@
   cursor: not-allowed;
 }
 
+.btn_wrap .btn_reset_icon {
+  margin-right: 4px;
+  font-size: 0.9em;
+  line-height: 1;
+}
+
 /* size */
 .btn_wrap .btn_large {
-  padding: 1rem 1.5rem;
+  padding: 1rem 2.5rem;
   font-size: 16px;
 }
 
@@ -41,8 +47,8 @@
 }
 
 .btn_wrap .btn_primary:disabled {
-  background-color: var(--gray_300);
-  color: var(--gray_200);
+  background-color: var(--black_300);
+  color: var(--gray_400);
 }
 
 .btn_wrap .btn_primary:active {
