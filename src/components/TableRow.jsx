@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 
 
-function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu }) {
+function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, currentPage, rowsPerPage }) {
 
   const formatAmount = (value) => {
     const amount = Number(value);
@@ -22,10 +22,12 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu }) {
 
     switch (column.key) {
       case "rank":
+        // 페이지네이션 반영
+        const rankNumber = (currentPage - 1) * rowsPerPage + (rowIndex + 1);
         return (
           <td key={column.key} className={column.className}>
             <div className="td_inner">
-              {rowIndex + 1}위
+              {rankNumber}위
             </div>
           </td>
         );
