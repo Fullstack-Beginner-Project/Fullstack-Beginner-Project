@@ -7,7 +7,11 @@ import ModalCompanySelect from "../components/ModalCompanySelect";
 import DefaultLogo from "../assets/images/logo_default.png";
 import "../assets/css/myCompanyCompare.css";
 
+
+
 const API_BASE_URL = "https://fullstack-beginner-api-test.ggeonwoo.workers.dev";
+// ModalCompanySelect.jsx와 동일한 키를 사용해 최근 비교 세션을 공유
+const LAST_COMPARE_SESSION_KEY = "lastCompareSession";
 
 
 // 어떤 슬롯을 채우는 중인지 구분하기 위한 값
@@ -68,6 +72,13 @@ function MyCompanyCompare() {
         compareCompanyIds: targetCompanies.map((company) => company.id).join(","),
         myCompanyIds: myCompany.id,
       });
+      localStorage.setItem(
+        LAST_COMPARE_SESSION_KEY,
+        JSON.stringify({
+          myCompanyId: myCompany.id,
+          compareCompanyIds: targetCompanies.map((company) => company.id),
+        })
+      );
       navigate("/compare-result", { state: { myCompany, targetCompanies } });
     } catch (error) {
       console.error("기업 비교 실행 실패:", error);

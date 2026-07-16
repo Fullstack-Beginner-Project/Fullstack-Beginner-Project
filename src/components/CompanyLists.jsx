@@ -20,7 +20,10 @@ function CompanyLists({
       ) : (
         <ul className="company_list">
           {companies.map((company) => (
-            <li key={company.id}>
+            <li
+              key={company.id}
+              className={company.isMyCompany ? "is_my_company" : undefined}
+            >
               <div>
                 <img src={company.logo ?? DefaultLogo} alt={company.name} />
                 <p>{company.name}</p>
