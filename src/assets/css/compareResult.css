@@ -30,6 +30,7 @@
 }
 
 .compare_result_table_wrap {
+  overflow: hidden;
   overflow-x: auto;
   border-radius: 12px;
   background-color: var(--black_200);
