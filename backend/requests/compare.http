@@ -1,0 +1,87 @@
+### 비교 기업 선택 모달 - 기본 조회
+GET http://localhost:3000/api/compare/companies
+
+### 2. 비교 기업 선택 모달 - 1페이지 3개 조회
+GET http://localhost:3000/api/compare/companies?page=1&pageSize=3
+
+### 3. 비교 기업 선택 모달 - 2페이지 조회
+GET http://localhost:3000/api/compare/companies?page=2&pageSize=5
+
+### 4. 비교 기업 선택 모달 - 회사명 검색
+GET http://localhost:3000/api/compare/companies?page=1&pageSize=5&keyword=토스
+
+### 5. 비교 기업 선택 모달 - 선택 기업 복원
+GET http://localhost:3000/api/compare/companies?compareCompanyIds=z2h8kd,f8q2mz
+
+### 6. 비교 기업 선택 모달 - 검색과 선택 기업 복원 동시 사용
+GET http://localhost:3000/api/compare/companies?page=1&pageSize=5&keyword=당근&compareCompanyIds=z2h8kd,f8q2mz
+
+### 7. 비교 기업 선택 모달 - 잘못된 page
+GET http://localhost:3000/api/compare/companies?page=0&pageSize=5
+
+### 8. 비교 기업 선택 모달 - 잘못된 pageSize
+GET http://localhost:3000/api/compare/companies?page=1&pageSize=0
+
+### 9. 비교 기업 선택 모달 - 잘못된 companyId 형식
+GET http://localhost:3000/api/compare/companies?compareCompanyIds=abc123,wrong-id
+
+### 10. 비교 기업 선택 모달 - 빈 companyId 포함
+GET http://localhost:3000/api/compare/companies?compareCompanyIds=abc123,,def456
+
+### 11. 비교 기업 선택 모달 - 비교 기업 6개 초과
+GET http://localhost:3000/api/compare/companies?compareCompanyIds=z2h8kd,f8q2mz,r7x1tq,b6n4yc,h8s2bn,p4c7wu
+
+### 12. 비교 기업 선택 모달 - 잘못된 메서드
+POST http://localhost:3000/api/compare/companies
+Content-Type: application/json
+
+{}
+
+
+### 비교 현황 조회 - 기본 조회
+GET http://localhost:3000/api/compare/status
+
+### 비교 현황 조회 - 나의 기업 선택 횟수 높은순
+GET http://localhost:3000/api/compare/status?sort=selectCountDesc
+
+### 비교 현황 조회 - 나의 기업 선택 횟수 낮은순
+GET http://localhost:3000/api/compare/status?sort=selectCountAsc
+
+### 비교 현황 조회 - 실제 누적 투자 금액 높은순
+GET http://localhost:3000/api/compare/status?sort=investmentDesc
+
+### 비교 현황 조회 - 실제 누적 투자 금액 낮은순
+GET http://localhost:3000/api/compare/status?sort=investmentAsc
+
+### 비교 현황 조회 - 페이지네이션 + 나의 기업 선택 횟수 높은순
+GET http://localhost:3000/api/compare/status?page=3&pageSize=5&sort=selectCountDesc
+
+### 비교 현황 조회 - 잘못된 정렬값
+GET http://localhost:3000/api/compare/status?sort=잘못된정렬값
+
+### 비교 현황 조회 - 잘못된 페이지
+GET http://localhost:3000/api/compare/status?page=잘못된페이지
+
+### 기업 비교하기
+POST http://localhost:3000/api/compare
+Content-Type: application/json
+
+{
+  "myCompanyIds": ["z2h8kd"],
+  "compareCompanyIds": ["f8q2mz", "r7x1tq"]
+}
+
+### 비교 결과 조회 - 기본 정렬
+GET http://localhost:3000/api/compare?myCompanyIds=z2h8kd&compareCompanyIds=f8q2mz,r7x1tq
+
+### 비교 결과 조회 - 직원 많은순
+GET http://localhost:3000/api/compare?myCompanyIds=z2h8kd&compareCompanyIds=f8q2mz,r7x1tq&sort=employeeDesc
+
+### 비교 결과 조회 - 잘못된 sort
+GET http://localhost:3000/api/compare?z2h8kd&compareCompanyIds=f8q2mz,r7x1tq&sort=wrongSort
+
+### 비교 결과 조회 - 비교 기업 6개라서 실패
+GET http://localhost:3000/api/compare?myCompanyIds=a4w7pz&compareCompanyIds=t5u9ve,w6r8tn,x1g6ra,z2h8kd,p4c7wu,b6n4yc
+
+### 비교 결과 조회 - 나의 기업과 비교 기업 중복
+GET http://localhost:3000/api/compare?myCompanyIds=a4w7pz&compareCompanyIds=a4w7pz,b6n4yc
