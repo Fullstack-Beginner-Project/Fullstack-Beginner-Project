@@ -13,8 +13,6 @@ const PAGE_SIZE = 5;
 const RECENT_MY_COMPANY_KEY = "recentMyCompanyIds";
 const RECENT_COMPARE_COMPANY_KEY = "recentCompareCompanyIds";
 const MAX_RECENT_IDS = 10;
-// compareCompanyIds는 API 스펙상 요청 시 최대 5개까지만 허용됨
-const MAX_COMPARE_COMPANY_IDS_PER_REQUEST = 5;
 
 const readRecentIds = (key) => {
   try {
@@ -48,6 +46,7 @@ function ModalCompanySelect({
     () => new Set(selectedCompanies.map((company) => company.id))
   );
 
+  const [selectedCompaniesState, setSelectedCompaniesState] = useState(selectedCompanies);
   const [recentCompanies, setRecentCompanies] = useState([]);
   const [searchCompanies, setSearchCompanies] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
@@ -59,13 +58,9 @@ function ModalCompanySelect({
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const storedRecentIds = readRecentIds(recentKey);
+        const recentIds = readRecentIds(recentKey).join(",");
 
         if (multiple) {
-          // localStorage에는 최근 10개까지 기억하되, compareCompanyIds는 최대 5개까지만 요청 가능
-          const recentIds = storedRecentIds
-            .slice(0, MAX_COMPARE_COMPANY_IDS_PER_REQUEST)
-            .join(",");
           const response = await axios.get(`${API_BASE_URL}/api/compare/companies`, {
             params: {
               page: currentPage,
@@ -88,7 +83,6 @@ function ModalCompanySelect({
           );
           setTotalPages(response.data.totalPages);
         } else {
-          const recentIds = storedRecentIds.join(",");
           const response = await axios.get(`${API_BASE_URL}/api/companies/my-company`, {
             params: {
               page: currentPage,
@@ -136,20 +130,22 @@ function ModalCompanySelect({
       const next = new Set(prev);
       if (next.has(id)) {
         next.delete(id);
+        setSelectedCompaniesState((prevList) => prevList.filter(c => c.id !== id));
       } else {
         if (isCheckLimitReached) return prev;
         next.add(id);
+        const company = [...recentCompanies, ...searchCompanies].find(c => c.id === id);
+        if (company) {
+          setSelectedCompaniesState((prevList) => [...prevList, company]);
+        }
       }
       return next;
     });
   };
 
   const handleConfirm = () => {
-    const selected = [...recentCompanies, ...searchCompanies].filter(
-      (company) => checkedIds.has(company.id)
-    );
-    selected.forEach((company) => addRecentId(recentKey, company.id));
-    onSelectCompanies(selected);
+    selectedCompaniesState.forEach((company) => addRecentId(recentKey, company.id));
+    onSelectCompanies(selectedCompaniesState);
     onClose();
   };
 
