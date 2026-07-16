@@ -9,6 +9,7 @@ import DefaultLogo from "../assets/images/logo_default.png";
 import "../assets/css/compareResult.css";
 
 import Table from "../components/Table";
+import ModalInvest from "../components/ModalInvest";
 
 const API_BASE_URL = "https://fullstack-beginner-api-test.ggeonwoo.workers.dev";
 
@@ -112,9 +113,43 @@ const formatAmount = (value) => {
 function CompareResult() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [openSlot, setOpenSlot] = useState(null);
   const { myCompany, targetCompanies } = location.state ?? {};
   const [sortOption, setSortOption] = useState(SORT_OPTIONS[0]);
   const [rankedCompanies, setRankedCompanies] = useState([]);
+
+  const handleOpenModal = () => {
+    setOpenSlot(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenSlot(false);
+  };
+
+  const handleInvest = async (form) => {
+    // 서버 스펙에 맞게 변환
+    const payload = {
+      companyId: myCompany.id,
+      investorName: form.investor,
+      amount: Number(form.amount),
+      comment: form.comment,
+      password: form.password,
+      passwordConfirmation: form.passwordConfirm,
+    };
+
+    // 콘솔로 확인
+    console.log(JSON.stringify(payload, null, 2));
+
+    try {
+      const response = await axios.post(`${API_BASE_URL}/api/investments`, payload);
+      console.log("투자 성공:", response.data);
+      alert("투자가 완료되었습니다!");
+      handleCloseModal();
+    } catch (error) {
+      console.error("투자 실패:", error.response?.data || error.message);
+    }
+  };
+
 
   // API 연결
   useEffect(() => {
@@ -122,6 +157,7 @@ function CompareResult() {
 
     const fetchRankedCompanies = async () => {
       try {
+        // 1. 전체 기업 리스트 가져오기
         const response = await axios.get(`${API_BASE_URL}/api/companies`, {
           params: {
             page: 1,
@@ -129,7 +165,7 @@ function CompareResult() {
             sort: SORT_OPTION_TO_API_VALUE[sortOption], // 정렬 옵션 반영
           },
         });
-        setRankedCompanies(response.data.list);
+
         const allCompanies = response.data.list;
 
         // 2. 순위 매기기
@@ -254,7 +290,6 @@ function CompareResult() {
       </Section>
 
       <Section title="기업 순위 확인하기">
-        
         {/* columnDefs: 테이블 헤더, 테이블 열 스타일 지정 */}
         {/* rows: 데이터 */}
         {/* myCompany: 내가 선택한 기업 아이디 <<< 해당 row 하이라이트 */}
@@ -272,11 +307,20 @@ function CompareResult() {
           size="large"
           variant="primary"
           selected
-        // onClick={() => navigate("/my-company-compare")}
+          onClick={() => handleOpenModal()}
         >
           나의 기업(을) 투자하기
         </Button>
       </div>
+
+      {openSlot && (
+        <ModalInvest
+          company={myCompany}
+          onClose={handleCloseModal}
+          onInvest={handleInvest}   // form을 인자로 받음
+        />
+      )}
+
     </div>
   );
 }

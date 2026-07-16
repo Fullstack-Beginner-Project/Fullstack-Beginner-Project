@@ -30,6 +30,18 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
           </td>
         );
 
+
+      case "rank":
+        // 페이지네이션 반영
+        const rankNumber = (currentPage - 1) * rowsPerPage + (rowIndex + 1);
+        return (
+          <td key={column.key} className={column.className}>
+            <div className="td_inner">
+              {rankNumber}위
+            </div>
+          </td>
+        );
+
       case "name":
         return (
           <td key={column.key} className={'title'}>

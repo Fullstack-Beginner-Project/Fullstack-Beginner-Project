@@ -28,7 +28,7 @@ function App() {
           {/* 투자 현황 */}
           <Route path="investment-status" element={<InvestmentStatus />} />
           {/* 기업 상세 */}
-          <Route path="company/:id" element={<CompanyDetail />} />
+          <Route path="company/:companyId" element={<CompanyDetail />} />
         </Route>
       </Routes>
     </BrowserRouter>
