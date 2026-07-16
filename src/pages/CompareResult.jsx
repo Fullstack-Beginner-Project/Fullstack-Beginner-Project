@@ -11,6 +11,8 @@ import "../assets/css/compareResult.css";
 import Table from "../components/Table";
 import ModalInvest from "../components/ModalInvest";
 
+
+
 const API_BASE_URL = "https://fullstack-beginner-api-test.ggeonwoo.workers.dev";
 
 const SORT_OPTIONS = [
@@ -304,5 +306,7 @@ function CompareResult() {
     </div>
   );
 }
+
+
 
 export default CompareResult;
