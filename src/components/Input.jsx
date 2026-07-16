@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../assets/css/input.css";
+import visibilityIcon from "../assets/images/icon_visibility_on.png";
 /* 
   Input 컴포넌트입니다.
   type : [password, text] 타입 설정해주세요.
@@ -32,7 +33,7 @@ function Input({ type, placeholder, onValueChange }) {
         {type === "password" && (
           !visible ? (
             <img
-              src="./src/assets/images/icon_visibility_on.png"
+              src={visibilityIcon}
               alt="보이기"
               onClick={() => setVisible(true)}
             />

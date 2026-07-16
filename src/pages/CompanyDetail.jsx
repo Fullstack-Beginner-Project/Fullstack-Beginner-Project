@@ -61,10 +61,12 @@ function CompanyDetail() {
   const [totalPages, setTotalPages] = useState(1);
   const [isInvestOpen, setIsInvestOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [confirmModal, setConfirmModal] = useState({
     open: false,
     message: "",
   });
+  const rowsPerPage = 5;
 
   // API 연결
   const fetchData = async () => {
@@ -86,10 +88,13 @@ function CompanyDetail() {
       );
     } catch (error) {
       console.error("데이터 불러오기 실패:", error);
+    } finally {
+      setLoading(false); // 호출 시작 시 로딩 켜기
     }
   };
 
   useEffect(() => {
+    setLoading(true); // 호출 시작 시 로딩 켜기
     fetchData();
   }, [companyId, currentPage]);
 
@@ -146,79 +151,82 @@ function CompanyDetail() {
     }
   };
 
-  if (!company) {
-    return <div>Loading...</div>
-  }
   return (
     <>
-      <div className="content_wrap">
-        <div className="company_detail_wrap">
+      <div className="content_wrap companydetail_page">
+        {loading ? (
+          <p className="in_loading">로딩 중...</p>
+        ) : !company ? (
+          <p className="no_data">기업 정보를 불러오지 못했습니다.</p>
+        ) : (
+          <div className="company_detail_wrap">
+            {/* 회사 정보 */}
+            <div className="company_detail_info">
+              <div className="company_detail_top">
+                <img
+                  src={company.logo ?? DefaultLogo}
+                  alt={company.name}
+                />
 
-          {/* 회사 정보 */}
-          <div className="company_detail_info">
-            <div className="company_detail_top">
-              <img
-                src={company.logo ?? DefaultLogo}
-                alt={company.name}
-              />
+                <div className="company_detail_info">
+                  <h2>{company.name}</h2>
+                  <p>{company.category}</p>
+                </div>
+              </div>
 
-              <div className="company_detail_info">
-                <h2>{company.name}</h2>
-                <p>{company.category}</p>
+              <div className="company_summary">
+                <div className="summary_box">
+                  <span>누적 투자 금액</span>
+                  <strong>{Number(company.actualInvestmentAmount / 100000000).toLocaleString()}억 원</strong>
+                </div>
+
+                <div className="summary_box">
+                  <span>매출액</span>
+                  <strong>{Number(company.revenue / 100000000).toLocaleString()}억 원</strong>
+                </div>
+
+                <div className="summary_box">
+                  <span>고용 인원</span>
+                  <strong>{company.employeeCount}명</strong>
+                </div>
+              </div>
+
+              <div className="company_description">
+                <h4>기업소개</h4>
+
+                <p>{company.description}</p>
               </div>
             </div>
 
-            <div className="company_summary">
-              <div className="summary_box">
-                <span>누적 투자 금액</span>
-                <strong>{Number(company.actualInvestmentAmount / 100000000).toLocaleString()}억 원</strong>
-              </div>
+            {/* 투자내역 */}
+            <div className="invest_details_wrap">
+              <div className="invest_details">
+                <h3>View My Startup에서 받은 투자</h3>
 
-              <div className="summary_box">
-                <span>매출액</span>
-                <strong>{Number(company.revenue / 100000000).toLocaleString()}억 원</strong>
+                <Button
+                  size="medium"
+                  variant="primary"
+                  onClick={() => setIsInvestOpen(true)}
+                >
+                  기업투자하기
+                </Button>
               </div>
-
-              <div className="summary_box">
-                <span>고용 인원</span>
-                <strong>{company.employeeCount}명</strong>
-              </div>
+              <p>총 {Number(company.actualInvestmentAmount / 100000000).toLocaleString()}억 원</p>
             </div>
 
-            <div className="company_description">
-              <h4>기업소개</h4>
+            <Table 
+              columnDefs={columnDefs} 
+              rows={investments}
+              rowsPerPage={rowsPerPage}
+              currentPage={currentPage} />
 
-              <p>{company.description}</p>
-            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage} />
+
           </div>
-
-          {/* 투자내역 */}
-          <div className="invest_details_wrap">
-            <div className="invest_details">
-              <h3>View My Startup에서 받은 투자</h3>
-
-              <Button
-                size="medium"
-                variant="primary"
-                onClick={() => setIsInvestOpen(true)}
-              >
-                기업투자하기
-              </Button>
-            </div>
-            <p>총 {Number(company.actualInvestmentAmount / 100000000).toLocaleString()}억 원</p>
-          </div>
-
-          <Table 
-            columnDefs={columnDefs} 
-            rows={investments}>
-          </Table>
-
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage} />
-
-        </div>
+        )}
       </div>
       {/* 모달창 불러오기 */}
       {isInvestOpen && (
