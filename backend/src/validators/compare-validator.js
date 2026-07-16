@@ -40,13 +40,80 @@ const COMPARE_STATUS_SORT_VALUES = [
   'investmentAsc',
 ];
 
+const COMPARE_RESULT_SORT_VALUES = [
+  'investmentDesc',
+  'investmentAsc',
+  'revenueDesc',
+  'revenueAsc',
+  'employeeDesc',
+  'employeeAsc',
+];
+
 const CompareStatusSort = enums(COMPARE_STATUS_SORT_VALUES);
+const CompareResultSort = enums(COMPARE_RESULT_SORT_VALUES);
 
 const CompareStatusQuery = object({
   page: optional(Page),
   pageSize: optional(PageSize),
   sort: optional(CompareStatusSort),
 });
+
+const MyCompanyIds = refine(string(), 'MyCompanyIds', (value) => {
+  const companyIds = value
+    .split(',')
+    .map((companyId) => companyId.trim());
+
+  const hasEmptyCompanyId = companyIds.some((companyId) => {
+    return companyId === '';
+  });
+
+  if (hasEmptyCompanyId) {
+    return false;
+  }
+
+  if (companyIds.length !== 1) {
+    return false;
+  }
+
+  return COMPANY_ID_REGEX.test(companyIds[0]);
+})
+
+const CompareResultCompanyIds = refine(
+  string(),
+  'CompareResultCompanyIds',
+  (value) => {
+    const companyIds = value
+      .split(',')
+      .map((companyId) => companyId.trim());
+
+    const hasEmptyCompanyId = companyIds.some((companyId) => {
+      return companyId === '';
+    });
+
+    if (hasEmptyCompanyId) {
+      return false;
+    }
+
+    if (
+      companyIds.length < 1 ||
+      companyIds.length > MAX_COMPARE_COMPANY_COUNT
+    ) {
+      return false;
+    }
+
+    const hasInvalidCompanyId = companyIds.some((companyId) => {
+      return !COMPANY_ID_REGEX.test(companyId);
+    });
+
+    if (hasInvalidCompanyId) {
+      return false;
+    }
+      // Id 중복 검사 
+    const uniqueCompanyIds = new Set(companyIds);
+
+    return uniqueCompanyIds.size === companyIds.length;
+  }
+);
 
 const CompareCompanyIds = refine(string(), 'CompareCompanyIds', (value) => {
   if (value.trim() === '') {
@@ -82,6 +149,12 @@ const CompareCompaniesQuery = object({
   compareCompanyIds: optional(CompareCompanyIds),
 });
 
+const CompareResultQuery = object({
+  myCompanyIds: MyCompanyIds,
+  compareCompanyIds: CompareResultCompanyIds,
+  sort: optional(CompareResultSort),
+});
+
 function validateCompareCompaniesQuery(query) {
   const [error] = validate(query, CompareCompaniesQuery);
 
@@ -115,6 +188,49 @@ function validateCompareCompaniesQuery(query) {
       pageSizeNumber,
       keyword: trimmedKeyword,
       compareCompanyIds: parsedCompareCompanyIds,
+    },
+  };
+}
+
+function validateCompareResultQuery(query) {
+  const [error] = validate(query, CompareResultQuery);
+
+  if (error) {
+    return {
+      error: '잘못된 요청입니다.',
+    };
+  }
+
+  const {
+    myCompanyIds,
+    compareCompanyIds,
+    sort = 'investmentDesc',
+  } = query;
+
+  const parsedMyCompanyIds = myCompanyIds
+    .split(',')
+    .map((companyId) => companyId.trim());
+
+  const parsedCompareCompanyIds = compareCompanyIds
+    .split(',')
+    .map((companyId) => companyId.trim());
+    
+    // 나의 기업 -> 비교기업에 중복 검사
+  const hasDuplicatedCompanyId = parsedMyCompanyIds.some((companyId) => {
+    return parsedCompareCompanyIds.includes(companyId);
+  });
+
+  if (hasDuplicatedCompanyId) {
+    return {
+      error: '잘못된 요청입니다.',
+    };
+  }
+
+  return {
+    value: {
+      myCompanyIds: parsedMyCompanyIds,
+      compareCompanyIds: parsedCompareCompanyIds,
+      sort,
     },
   };
 }
@@ -177,4 +293,5 @@ export {
   validateCompareCompaniesQuery,
   validateCompareBody,
   validateCompareStatusQuery,
+  validateCompareResultQuery,
 };
