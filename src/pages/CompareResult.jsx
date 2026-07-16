@@ -9,6 +9,7 @@ import DefaultLogo from "../assets/images/logo_default.png";
 import "../assets/css/compareResult.css";
 
 import Table from "../components/Table";
+import ModalInvest from "../components/ModalInvest";
 
 const API_BASE_URL = "https://fullstack-beginner-api-test.ggeonwoo.workers.dev";
 
@@ -112,9 +113,43 @@ const formatAmount = (value) => {
 function CompareResult() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [openSlot, setOpenSlot] = useState(null);
   const { myCompany, targetCompanies } = location.state ?? {};
   const [sortOption, setSortOption] = useState(SORT_OPTIONS[0]);
   const [rankedCompanies, setRankedCompanies] = useState([]);
+
+  const handleOpenModal = () => {
+    setOpenSlot(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenSlot(false);
+  };
+
+  const handleInvest = async (form) => {
+    // 서버 스펙에 맞게 변환
+    const payload = {
+      companyId: myCompany.id,
+      investorName: form.investor,
+      amount: Number(form.amount),
+      comment: form.comment,
+      password: form.password,
+      passwordConfirmation: form.passwordConfirm,
+    };
+
+    // 콘솔로 확인
+    console.log(JSON.stringify(payload, null, 2));
+
+    try {
+      const response = await axios.post(`${API_BASE_URL}/api/investments`, payload);
+      console.log("투자 성공:", response.data);
+      alert("투자가 완료되었습니다!");
+      handleCloseModal();
+    } catch (error) {
+      console.error("투자 실패:", error.response?.data || error.message);
+    }
+  };
+
 
   // API 연결
   useEffect(() => {
@@ -272,11 +307,20 @@ function CompareResult() {
           size="large"
           variant="primary"
           selected
-        // onClick={() => navigate("/my-company-compare")}
+          onClick={() => handleOpenModal()}
         >
           나의 기업(을) 투자하기
         </Button>
       </div>
+
+      {openSlot && (
+        <ModalInvest
+          company={myCompany}
+          onClose={handleCloseModal}
+          onInvest={handleInvest}   // form을 인자로 받음
+        />
+      )}
+
     </div>
   );
 }
