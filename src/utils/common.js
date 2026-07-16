@@ -1,3 +1,6 @@
+// 공통으로 쓸 함수 모음
+
+
 export function formatAmount(value) {
   const amount = Number(value);
 

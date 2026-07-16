@@ -9,9 +9,6 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
   const renderCell = (column) => {
 
     const value = row[column.key];
-
-    const tdImage = "/src/assets/images/img_bi_" + row.id + ".png";
-
     // console.log("column.key:", column.key);
     // console.log("value:", value);
 
@@ -43,7 +40,7 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
             <Link to={`/company/${row.id}`} className="company_link td_inner" onClick={(e) => e.stopPropagation()}
             >
               <div className="img_wrap object_fit_cover">
-                <LogoImg src={tdImage} cNm={value} />
+                <LogoImg cId={row.id} cNm={value} />
               </div>
               <span className="c_nm">
                 <span className="ellipsis">{value}</span>
