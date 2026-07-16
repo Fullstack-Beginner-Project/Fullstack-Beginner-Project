@@ -1,0 +1,76 @@
+### 가상 투자 생성 성공
+POST http://localhost:3000/api/investments
+Content-Type: application/json
+
+{
+  "companyId": "f8q2mz",
+  "investorName": "홍길동",
+  "amount": 5000000,
+  "comment": "성장 가능성이 좋아 보여요.",
+  "password": "Ab232ffcd",
+  "passwordConfirmation": "Ab232ffcd"
+}
+
+### 가상 투자 생성 성공 - 실제 데이터 느낌
+POST http://localhost:3000/api/investments
+Content-Type: application/json
+
+{
+  "companyId": "k3p9av",
+  "investorName": "안유진",
+  "amount": 10000000,
+  "comment": "떡상 가즈아!!!",
+  "password": "abc1234@",
+  "passwordConfirmation": "abc1234@"
+}
+
+### 잘못된 body 요청
+POST http://localhost:3000/api/investments
+Content-Type: application/json
+
+{
+  "companyId": "f8q2mz",
+  "investorName": "홍",
+  "amount": 5,
+  "comment": "테스트",
+  "password": "abc",
+  "passwordConfirmation": "abc"
+}
+
+### investmentId 없는 PATCH 요청
+PATCH http://localhost:3000/api/investments
+Content-Type: application/json
+
+{
+  "investmentId": "k3p9av",
+  "investorName": "홍길동",
+  "amount": 5000000,
+  "comment": "수정 테스트",
+  "password": "Wrong123!"
+}
+
+### 비밀번호 틀린 PATCH 요청
+PATCH http://localhost:3000/api/investments
+Content-Type: application/json
+
+{
+  "investmentId": "jt73an",
+  "investorName": "홍길동",
+  "amount": 5000000,
+  "comment": "수정 테스트",
+  "password": "Ab232ffcd"
+}
+
+### 가상 투자 삭제
+DELETE http://localhost:3000/api/investments
+Content-Type: application/json
+
+{
+  "investmentId": "jt73an",
+  "password": "Ab232ffcd"
+}
+### 잘못된 메서드 요청
+GET http://localhost:3000/api/companies/f8q2mz/investments
+
+
+
