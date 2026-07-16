@@ -66,6 +66,7 @@ function CompanyDetail() {
     open: false,
     message: "",
   });
+  const rowsPerPage = 5;
 
   // API 연결
   const fetchData = async () => {
@@ -215,8 +216,9 @@ function CompanyDetail() {
 
             <Table 
               columnDefs={columnDefs} 
-              rows={investments}>
-            </Table>
+              rows={investments}
+              rowsPerPage={rowsPerPage}
+              currentPage={currentPage} />
 
             <Pagination
               currentPage={currentPage}
