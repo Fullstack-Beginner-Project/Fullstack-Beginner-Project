@@ -71,3 +71,17 @@ Content-Type: application/json
   "compareCompanyIds": ["f8q2mz", "r7x1tq"]
 }
 
+### 비교 결과 조회 - 기본 정렬
+GET http://localhost:3000/api/compare?myCompanyIds=z2h8kd&compareCompanyIds=f8q2mz,r7x1tq
+
+### 비교 결과 조회 - 직원 많은순
+GET http://localhost:3000/api/compare?myCompanyIds=z2h8kd&compareCompanyIds=f8q2mz,r7x1tq&sort=employeeDesc
+
+### 비교 결과 조회 - 잘못된 sort
+GET http://localhost:3000/api/compare?z2h8kd&compareCompanyIds=f8q2mz,r7x1tq&sort=wrongSort
+
+### 비교 결과 조회 - 비교 기업 6개라서 실패
+GET http://localhost:3000/api/compare?myCompanyIds=a4w7pz&compareCompanyIds=t5u9ve,w6r8tn,x1g6ra,z2h8kd,p4c7wu,b6n4yc
+
+### 비교 결과 조회 - 나의 기업과 비교 기업 중복
+GET http://localhost:3000/api/compare?myCompanyIds=a4w7pz&compareCompanyIds=a4w7pz,b6n4yc

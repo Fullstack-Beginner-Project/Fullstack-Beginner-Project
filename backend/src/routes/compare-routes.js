@@ -5,7 +5,9 @@ import {
   validateCompareCompaniesQuery,
   validateCompareBody,
   validateCompareStatusQuery,
+  validateCompareResultQuery,
 } from '../validators/compare-validator.js';
+import { func } from 'superstruct';
 
 
 
@@ -17,6 +19,10 @@ function sendBadRequest(res, message = '잘못된 요청입니다.') {
     code: 'Bad Request',
     message,
   });
+}
+
+function toSafeNumber(value) {
+  return typeof value === 'bigint' ? Number(value) : value;
 }
 
 // DB의 id 필드를 API 응답용 companyId로 변환한다.
@@ -43,6 +49,27 @@ const COMPARE_STATUS_SORT_OPTIONS = {
   },
 };
 
+const COMPARE_RESULT_SORT_OPTIONS = {
+  investmentDesc: {
+    actualInvestmentAmount: 'desc',
+  },
+  investmentAsc: {
+    actualInvestmentAmount: 'asc',
+  },
+  revenueDesc: {
+    revenue: 'desc',
+  },
+  revenueAsc: {
+    revenue: 'asc',
+  },
+  employeeDesc: {
+    employeeCount: 'desc',
+  },
+  employeeAsc: {
+    employeeCount: 'asc',
+  },
+};
+
 function serializeCompareStatusCompany(company) {
   return {
     companyId: company.id,
@@ -51,6 +78,18 @@ function serializeCompareStatusCompany(company) {
     category: company.category,
     myCompanySelectCount: company.myCompanySelectCount,
     compareCompanySelectCount: company.compareCompanySelectCount
+  };
+}
+
+function serializeCompareResultCompany(company) {
+  return {
+    id: company.id,
+    name: company.name,
+    description: company.description,
+    category: company.category,
+    actualInvestmentAmount: toSafeNumber(company.actualInvestmentAmount),
+    revenue: toSafeNumber(company.revenue),
+    employeeCount: company.employeeCount,
   };
 }
 
@@ -188,6 +227,61 @@ compareRouter.get('/compare/status', async (req, res) => {
       companies,
       total,
       totalPages,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return sendBadRequest(res);
+  }
+});
+
+compareRouter.get('/compare', async (req, res) => {
+  try {
+    const { error, value } = validateCompareResultQuery(req.query);
+
+    if (error) {
+      return sendBadRequest(res, error);
+    }
+
+    const {
+      myCompanyIds,
+      compareCompanyIds,
+      sort,
+    } = value;
+
+    const companyIds = [
+      ...myCompanyIds,
+      ...compareCompanyIds,
+    ];
+
+    const companyRows = await prisma.company.findMany({
+      where: {
+        id: {
+          in: companyIds,
+        },
+      },
+      orderBy: COMPARE_RESULT_SORT_OPTIONS[sort],
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        category: true,
+        actualInvestmentAmount: true,
+        revenue: true,
+        employeeCount: true,
+      },
+    });
+
+    if (companyRows.length !== companyIds.length) {
+      return sendBadRequest(res);
+    }
+
+    const companies = companyRows.map((company) => {
+      return serializeCompareResultCompany(company);
+    });
+
+    return res.status(200).json({
+      companies,
     });
   } catch (error) {
     console.error(error);
