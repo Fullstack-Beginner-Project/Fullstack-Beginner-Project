@@ -1,21 +1,16 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { formatAmount } from '/src/utils/common.js'
+import LogoImg from './LogoImg';
 
 
 function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, currentPage, rowsPerPage }) {
 
-  const formatAmount = (value) => {
-    const amount = Number(value);
-
-    if (!amount) return "0원";
-    if (amount >= 100_000_000) return `${(amount / 100_000_000).toLocaleString()}억 원`;
-    if (amount >= 10_000_000) return `${(amount / 10_000_000).toLocaleString()}천만 원`;
-    if (amount >= 1_000_000) return `${(amount / 1_000_000).toLocaleString()}백만 원`;
-
-    return `${amount.toLocaleString()}원`;
-  };
 
   const renderCell = (column) => {
+
     const value = row[column.key];
+
+    const tdImage = "/src/assets/images/img_bi_" + row.id + ".png";
 
     // console.log("column.key:", column.key);
     // console.log("value:", value);
@@ -48,7 +43,7 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
             <Link to={`/company/${row.id}`} className="company_link td_inner" onClick={(e) => e.stopPropagation()}
             >
               <div className="img_wrap object_fit_cover">
-                <img src={row.img || row.logo} alt={`${value} 기업 로고`} />
+                <LogoImg src={tdImage} cNm={value} />
               </div>
               <span className="c_nm">
                 <span className="ellipsis">{value}</span>
@@ -125,7 +120,6 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
                   <span className="no_text">코멘트 메뉴</span>
                 </button>
               </form>
-
             </div>
           </td>
         );
