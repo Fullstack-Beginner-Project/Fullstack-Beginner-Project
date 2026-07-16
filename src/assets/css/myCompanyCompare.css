@@ -1,0 +1,194 @@
+.my_company_compare_wrap {
+  padding-top: 40px;
+}
+/* 제안 */
+
+.my_company_compare_wrap .my_company_compare_title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+/* 수정 */
+.my_company_compare_wrap .section_head {
+    display: flex;
+    align-items: center;
+    height: 64px; /* Dropbox 높이를 고려한 height 통일 */
+}
+
+.my_company_compare_wrap .page_title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.my_company_compare_wrap .company_slot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  height: 160px;
+  background-color: var(--black_200);
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.my_company_compare_wrap .company_slot_cancel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.my_company_compare_wrap .company_slot_cancel .btn_outline {
+  border-color: transparent;
+}
+
+.my_company_compare_wrap .company_slot_empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--gray_200);
+}
+
+.my_company_compare_wrap .company_slot_empty .plus_icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--gray_400);
+  color: var(--gray_400);
+  font-size: 20px;
+}
+
+.my_company_compare_wrap .company_slot_multi {
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  overflow-x: auto;
+}
+
+.my_company_compare_wrap .company_slot_multi .company_slot_selected {
+  flex: 0 0 auto;
+  width: 120px;
+  padding: 16px 8px;
+  background-color: var(--black_300);
+  border-radius: 8px;
+}
+
+.my_company_compare_wrap .company_slot_selected {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.my_company_compare_wrap .company_slot_selected p {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.my_company_compare_wrap .company_slot_remove {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--black_300);
+  color: #fff;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.my_company_compare_wrap .company_slot_selected img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.my_company_compare_wrap .company_slot_placeholder {
+  text-align: center;
+  color: var(--gray_200);
+}
+
+.my_company_compare_wrap .company_slot_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.my_company_compare_wrap .company_slot_header h3 span {
+  color: var(--gray_200);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.my_company_compare_wrap .btn_wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.my_company_compare_wrap .compare_result {
+  margin-top: 40px;
+}
+
+.my_company_compare_wrap .compare_result_title {
+  margin-bottom: 16px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.my_company_compare_wrap .compare_result_list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding: 24px;
+  background-color: var(--black_200);
+  border-radius: 12px;
+}
+
+.my_company_compare_wrap .compare_result_item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 120px;
+  padding: 16px 8px;
+  background-color: var(--black_300);
+  border-radius: 8px;
+}
+
+.my_company_compare_wrap .compare_result_item img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.my_company_compare_wrap .compare_result_item p {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.my_company_compare_wrap .compare_result_rank {
+  color: var(--main_color);
+  font-size: 13px;
+  font-weight: 600;
+}

@@ -1,0 +1,10 @@
+.modal_desc {
+    text-align: center;
+    font-size: 15px;
+}
+
+@media (max-width: 768px) {
+    .modal_desc {
+    font-size: 14px;
+  }
+}

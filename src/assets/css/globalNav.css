@@ -1,0 +1,105 @@
+.gnb_wrap {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  width: 1200px;
+  height: 60px;
+  margin: 0 auto;
+  background-color: var(--black_400);
+}
+
+.gnb_wrap .gnb_logo {
+  display: flex;
+  align-items: center;
+}
+
+.gnb_wrap .gnb_logo img {
+  height: 28px;
+}
+
+.gnb_wrap .gnb_nav ul {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.gnb_wrap .gnb_link {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray_100);
+}
+
+.gnb_wrap .gnb_link:hover {
+  color: #fff;
+}
+
+.gnb_wrap .gnb_link.is-active {
+  color: #fff;
+}
+
+.gnb_wrap .gnb_inner {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  margin-left: calc(50% - 600px + 40px); /* 20px만큼 오른쪽 이동 */
+}
+
+
+/*  반응형 Tablet (1280px) */
+@media (max-width: 1280px) {
+  .gnb_wrap {
+    width: 100%;
+  }
+
+  .gnb_wrap .gnb_inner {
+    gap: 24px;
+    width: 100%;
+    margin-left: 0;
+    padding: 0 24px 0 44px;
+  }
+
+  .gnb_wrap .gnb_logo img {
+    height: 24px;
+  }
+
+  .gnb_wrap .gnb_nav ul {
+    gap: 20px;
+  }
+
+  .gnb_wrap .gnb_link {
+    font-size: 13px;
+  }
+}
+
+/* 반응형 Mobile (768px) */
+@media (max-width: 768px) {
+  .gnb_wrap {
+    width: 100%;
+  }
+
+  .gnb_wrap .gnb_inner {
+    width: 100%;
+    height: 56px;
+    margin-left: 0;
+    padding: 0 16px 0 36px;
+  }
+
+  .gnb_wrap .gnb_logo img {
+    height: 20px;
+  }
+
+  .gnb_wrap .gnb_nav ul {
+    gap: 10px;
+  }
+
+  .gnb_wrap .gnb_link {
+    font-size: 11px;
+  }
+}
