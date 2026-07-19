@@ -8,13 +8,15 @@ import ModalInvest from "../components/ModalInvest";
 import ModalConfirm from "../components/ModalConfirm";
 import "../assets/css/CompanyDetail.css";
 import DefaultLogo from "../assets/images/logo_default.png";
-import axios from "axios";
+
+import axios from "../api/axios.js";
+import LogoImg from "../components/LogoImg.jsx";
 
 const PAGE_SIZE = 5;
 // const MENU_WIDTH = 154;
 // const MENU_HEIGHT = 90;
 // const GAP = 8;
-const API_BASE_URL = "https://fullstack-beginner-api-test.ggeonwoo.workers.dev";
+
 function CompanyDetail() {
   // const [commentMenu, setCommentMenu] = useState({
   //   row: null,
@@ -72,13 +74,13 @@ function CompanyDetail() {
   const fetchData = async () => {
     try {
       const companyResponse = await axios.get(
-        `${API_BASE_URL}/api/companies/${companyId}`
+        `/api/companies/${companyId}`
       );
 
       setCompany(companyResponse.data.company);
 
       const investmentResponse = await axios.get(
-        `${API_BASE_URL}/api/companies/${companyId}/investments?page=${currentPage}&pageSize=${PAGE_SIZE}`
+        `/api/companies/${companyId}/investments?page=${currentPage}&pageSize=${PAGE_SIZE}`
       );
 
       setInvestments(investmentResponse.data.list);
@@ -123,7 +125,7 @@ function CompanyDetail() {
 
   const handleInvest = async (form) => {
     try {
-      await axios.post(`${API_BASE_URL}/api/investments`, {
+      await axios.post(`/api/investments`, {
         companyId: company.id,
         investorName: form.investor,
         amount: Number(form.amount),
@@ -151,6 +153,8 @@ function CompanyDetail() {
     }
   };
 
+
+
   return (
     <>
       <div className="content_wrap companydetail_page">
@@ -163,11 +167,7 @@ function CompanyDetail() {
             {/* 회사 정보 */}
             <div className="company_detail_info">
               <div className="company_detail_top">
-                <img
-                  src={company.logo ?? DefaultLogo}
-                  alt={company.name}
-                />
-
+                <LogoImg cId={company.id} cNm={company.name} />
                 <div className="company_detail_info">
                   <h2>{company.name}</h2>
                   <p>{company.category}</p>
