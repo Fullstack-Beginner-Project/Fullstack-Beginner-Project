@@ -13,49 +13,9 @@ import axios from "../api/axios.js";
 import LogoImg from "../components/LogoImg.jsx";
 
 const PAGE_SIZE = 5;
-// const MENU_WIDTH = 154;
-// const MENU_HEIGHT = 90;
-// const GAP = 8;
 
 function CompanyDetail() {
-  // const [commentMenu, setCommentMenu] = useState({
-  //   row: null,
-  //   top: 0,
-  //   left: 0,
-  // });
 
-  // const handleOpenCommentMenu = (event, row) => {
-  //   event.stopPropagation();
-
-  //   const rect = event.currentTarget.getBoundingClientRect();
-
-  //   const left = Math.min(
-  //     Math.max(GAP, rect.right - MENU_WIDTH),
-  //     window.innerWidth - MENU_WIDTH - GAP
-  //   );
-
-  //   const top =
-  //     rect.bottom + MENU_HEIGHT + GAP <= window.innerHeight
-  //       ? rect.bottom + GAP
-  //       : rect.top - MENU_HEIGHT - GAP;
-
-  //   setCommentMenu((prev) => {
-  //     // 같은 행의 버튼을 다시 누르면 닫기
-  //     if (prev.row?.id === row.id) {
-  //       return {
-  //         row: null,
-  //         top: 0,
-  //         left: 0,
-  //       };
-  //     }
-
-  //     return {
-  //       row,
-  //       top,
-  //       left,
-  //     };
-  //   });
-  // };
   const {companyId} = useParams();
   const [company, setCompany] = useState(null);
   const [investments, setInvestments] = useState([]);
