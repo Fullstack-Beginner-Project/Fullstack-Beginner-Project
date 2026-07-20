@@ -25,7 +25,11 @@ function CompanyLists({
               className={company.isMyCompany ? "is_my_company" : undefined}
             >
               <div>
-                <img src={company.logo ?? DefaultLogo} alt={company.name} />
+                <img
+                  src={"/src/assets/images/company-logo-" + company.id + ".webp"}
+                  alt={company.name}
+                  onError={(e) => { e.currentTarget.src = DefaultLogo }}
+                />
                 <p>{company.name}</p>
                 <span>{company.category}</span>
               </div>
