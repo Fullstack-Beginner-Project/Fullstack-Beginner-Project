@@ -77,7 +77,7 @@
 
 .table_wrap .table_body_wrap{
     display: block;
-    padding-top: 16px;
+    margin-top: 16px;
     border-radius: 4px;
     overflow: hidden;
 }

@@ -11,12 +11,14 @@ import DefaultLogo from "../assets/images/logo_default.png";
 
 import axios from "../api/axios.js";
 import LogoImg from "../components/LogoImg.jsx";
+import ModalEditInvest from "../components/ModalEditInvest.jsx";
+import ModalDelete from "../components/ModalDelete.jsx";
 
 const PAGE_SIZE = 5;
 
 function CompanyDetail() {
 
-  const {companyId} = useParams();
+  const { companyId } = useParams();
   const [company, setCompany] = useState(null);
   const [investments, setInvestments] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -28,6 +30,10 @@ function CompanyDetail() {
     open: false,
     message: "",
   });
+
+  const [selectedInvestment, setSelectedInvestment] = useState(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const rowsPerPage = 5;
 
   // API 연결
@@ -114,6 +120,117 @@ function CompanyDetail() {
   };
 
 
+  // 수정하기
+  const handleEditInvestment = async (form) => {
+    if (!selectedInvestment) return;
+
+    try {
+      await axios.patch("/api/investments", {
+        investmentsId: selectedInvestment.id,
+        investorName: form.investorName,
+        amount: Number(String(form.amount).replaceAll(",", "")),
+        comment: form.comment,
+        password: form.password,
+      });
+
+      setIsEditOpen(false);
+      setSelectedInvestment(null);
+
+      setConfirmModal({
+        open: true,
+        message: "투자 내역이 수정되었어요!",
+      });
+
+      await fetchData();
+    } catch (error) {
+      console.error("투자 수정 실패:", error);
+
+      const status = error.response?.status;
+      const serverMessage = error.response?.data?.message ?? "";
+
+      let message = "투자 내역 수정에 실패했습니다.";
+
+      if (!error.response) {
+        message = "서버에 연결할 수 없습니다.";
+      } else if (status === 400) {
+        message = serverMessage ?? "입력한 정보를 확인해 주세요.";
+      } else if (status >= 500) {
+        message = "서버 오류가 발생했습니다.";
+      }
+
+      // 수정 모달 닫기
+      setIsEditOpen(false);
+      setSelectedInvestment(null);
+
+      setConfirmModal({
+        open: true,
+        message:
+          message,
+      });
+    }
+  };
+  const handleOpenEditInvestment = (investment) => {
+    setSelectedInvestment(investment);
+    setIsEditOpen(true);
+  };
+
+  // 삭제하기
+  const handleDeleteInvestment = async (password) => {
+    if (!selectedInvestment) return;
+
+    try {
+      await axios.delete("/api/investments", {
+        data: {
+          investmentsId: selectedInvestment.id,
+          password: password,
+        },
+      });
+
+      setIsDeleteOpen(false);
+      setSelectedInvestment(null);
+
+      setConfirmModal({
+        open: true,
+        message: "투자 내역이 삭제되었어요!",
+      });
+
+      await fetchData();
+    } catch (error) {
+      console.error("투자 삭제 실패:", error);
+      console.log("삭제 오류 응답:", error.response?.data);
+
+      const status = error.response?.status;
+      const serverMessage = error.response?.data?.message ?? "";
+
+      let message = "투자 내역 삭제에 실패했습니다.";
+
+
+      if (!error.response) {
+        message = "서버에 연결할 수 없습니다.";
+      } else if (status === 400) {
+        message = serverMessage || "입력한 정보를 확인해 주세요.";
+      } else if (status >= 500) {
+        message = "서버 오류가 발생했습니다.";
+      } else if (serverMessage) {
+        message = serverMessage;
+      }
+
+      setIsDeleteOpen(false);
+      setSelectedInvestment(null);
+
+      setConfirmModal({
+        open: true,
+        message:
+          message,
+      });
+    }
+  };
+  const handleOpenDeleteInvestment = (investment) => {
+    setSelectedInvestment(investment);
+    setIsDeleteOpen(true);
+  };
+
+
 
   return (
     <>
@@ -174,16 +291,20 @@ function CompanyDetail() {
               <p>총 {Number(company.actualInvestmentAmount / 100000000).toLocaleString()}억 원</p>
             </div>
 
-            <Table 
-              columnDefs={columnDefs} 
+            <Table
+              columnDefs={columnDefs}
               rows={investments}
               rowsPerPage={rowsPerPage}
-              currentPage={currentPage} />
+              currentPage={currentPage}
+              onEditInvestment={handleOpenEditInvestment}
+              onDeleteInvestment={handleOpenDeleteInvestment}
+            />
 
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
-              onPageChange={setCurrentPage} />
+              onPageChange={setCurrentPage}
+            />
 
           </div>
         )}
@@ -208,7 +329,32 @@ function CompanyDetail() {
           }
         />
       )}
-  </>
+
+      {/* 투자 수정 모달 */}
+      {isEditOpen && selectedInvestment && (
+
+        <ModalEditInvest
+          company={company}
+          initialData={selectedInvestment}
+          onClose={() => {
+            setIsEditOpen(false);
+            setSelectedInvestment(null);
+          }}
+          onInvest={handleEditInvestment}
+        />
+      )}
+
+      {/* 투자 삭제 모달 */}
+      {isDeleteOpen && selectedInvestment && (
+        <ModalDelete
+          onClose={() => {
+            setIsDeleteOpen(false);
+            setSelectedInvestment(null);
+          }}
+          onDelete={handleDeleteInvestment}
+        />
+      )}
+    </>
   );
 }
 
