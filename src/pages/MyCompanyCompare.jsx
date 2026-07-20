@@ -41,12 +41,6 @@ function MyCompanyCompare() {
   const handleSelectCompany = (company) => {
     setMyCompany(company);
     setHasSelectedMyCompany(true);
-
-    // axios
-    //   .patch(`/api/companies/${company.id}/my-company`)
-    //   .catch((error) => {
-    //     console.error("나의 기업 선택 횟수 반영 실패:", error);
-    //   });
   };
 
   const handleSelectTargetCompanies = (companies) => {
