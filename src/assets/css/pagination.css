@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 4px;
   padding: 24px 0;
 }
 
@@ -11,8 +11,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border: none;
   border-radius: 8px;
   background-color: var(--black_200);
@@ -29,15 +29,15 @@
 .pagination_wrap .page {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .pagination_wrap .page_number {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border: none;
   border-radius: 8px;
   background-color: var(--black_200);
@@ -50,4 +50,42 @@
 .pagination_wrap .page_number.is-active {
   background-color: var(--main_color);
   color: #fff;
+}
+
+@media (max-width: 1280px) {
+  .pagination_wrap {
+    gap: 2px;
+  }
+
+  .pagination_wrap .btn_left,
+  .pagination_wrap .btn_right,
+  .pagination_wrap .page_number {
+    width: 32px;
+    height: 32px;
+    font-size: 13px;
+  }
+
+  .pagination_wrap .page {
+    gap: 2px;
+  }
+}
+
+@media (max-width: 768px) {
+  .pagination_wrap {
+    gap: 2px;
+    padding: 16px 0;
+  }
+
+  .pagination_wrap .btn_left,
+  .pagination_wrap .btn_right,
+  .pagination_wrap .page_number {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+
+  .pagination_wrap .page {
+    gap: 2px;
+  }
 }
