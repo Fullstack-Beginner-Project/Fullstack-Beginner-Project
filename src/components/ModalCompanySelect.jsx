@@ -81,7 +81,7 @@ function ModalCompanySelect({
           setRecentTargetCompanies(
             compareResponse.data.selectedCompanies.map((company) => ({
               ...company,
-              id: company.companyId,
+              id: company.id ?? company.companyId,
             }))
           );
           setSearchCompanies(
@@ -128,11 +128,15 @@ function ModalCompanySelect({
     typeof maxSelectable === 'number' && checkedIds.size >= maxSelectable;
 
   const withSelectedFlag = (list) =>
-    list.map((company) => ({
-      ...company,
-      selected: checkedIds.has(company.id),
-      disabled: excludedIdSet.has(company.id),
-    }));
+    list.map((company) => {
+      const cid = company.id ?? company.companyId;
+      return {
+        ...company,
+        id: cid,
+        selected: checkedIds.has(cid),
+        disabled: excludedIdSet.has(cid),
+      };
+    });
 
   const handleSelect = (id) => {
     if (excludedIdSet.has(id)) return;

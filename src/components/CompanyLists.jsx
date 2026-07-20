@@ -35,12 +35,14 @@ function CompanyLists({
                 variant="primary"
                 selected={company.selected}
                 disabled={company.disabled}
-                onClick={() => onSelect(company.id)}
+                onClick={() => {onSelect(company.id);
+                  console.log(company.id);
+                }}
               >
                 {company.disabled
-                  ? '선택 불가'
+                  ? '선택불가'
                   : company.selected
-                  ? '선택 해제'
+                  ? '선택해제'
                   : '선택하기'}
               </Button>
             </li>
