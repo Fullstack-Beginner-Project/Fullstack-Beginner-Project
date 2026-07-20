@@ -1,4 +1,6 @@
 import '../assets/css/pagination.css';
+import IconBtnLeft from '../assets/images/icon_btn_left.png';
+import IconBtnRight from '../assets/images/icon_btn_right.png';
 
 
 
@@ -30,7 +32,7 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
         disabled={currentPage === 1}
         onClick={handlePrev}
       >
-        {'<'}
+        <img src={IconBtnLeft} alt="이전 페이지" />
       </button>
 
       <ul className="page">
@@ -53,7 +55,7 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
         disabled={currentPage === totalPages}
         onClick={handleNext}
       >
-        {'>'}
+        <img src={IconBtnRight} alt="다음 페이지" />
       </button>
     </div>
   );
