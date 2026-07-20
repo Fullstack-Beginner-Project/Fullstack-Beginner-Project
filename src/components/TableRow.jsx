@@ -77,7 +77,16 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
             </div>
           </td>
         );
-
+      
+      case "userInvestmentAmount":
+        return (
+          <td key={column.key} className={column.className}>
+            <div className="td_inner">
+              {formatAmount(value)}
+            </div>
+          </td>
+        );
+        
       case "revenue":
         return (
           <td key={column.key} className={column.className}>
@@ -112,32 +121,10 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
               <p className="text">
                 {value}
               </p>
-              <form action="" className='comment_wrap'>
-                <button type="button" className='btn_comment_menu' onClick={(event) => {
-                  const currentButton = event.currentTarget;
-                  const wasClicked = currentButton.classList.contains('clicked');
-
-                  document
-                    .querySelectorAll('.btn_comment_menu.clicked')
-                    .forEach((button) => {
-                      button.classList.remove('clicked');
-                    });
-
-                  if (!wasClicked) {
-                    currentButton.classList.add('clicked');
-                  }
-                }}>
+              <form action="">
+                <button type="button" className='btn_comment_menu' onClick={(event) => { onOpenCommentMenu?.(event, row); }}>
                   <span className="no_text">코멘트 메뉴</span>
                 </button>
-
-                <ul className="comment_menu">
-                  <li>
-                    <button type="button" className='text'>수정하기</button>
-                  </li>
-                  <li>
-                    <button type="button" className='text'>삭제하기</button>
-                  </li>
-                </ul>
               </form>
             </div>
           </td>

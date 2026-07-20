@@ -11,8 +11,8 @@ const columnDefs = [
   { key: "name", label: "기업명", colClassName: "title" },
   { key: "description", label: "기업소개", colClassName: "content" },
   { key: "category", label: "카테고리", colClassName: "etc" },
-  { key: "amount", label: "View My Startup 투자 금액", colClassName: "etc_3" },
-  { key: "revenue", label: "실제 누적 투자 금액", colClassName: "etc_3" },
+  { key: "actualInvestmentAmount", label: "View My Startup 투자 금액", colClassName: "etc_3" },
+  { key: "userInvestmentAmount", label: "실제 누적 투자 금액", colClassName: "etc_3" },
 ];
 
 function InvestmentStatus() {
