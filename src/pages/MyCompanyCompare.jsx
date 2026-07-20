@@ -1,15 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../api/axios.js";
 
 import Button from "../components/Button";
 import ModalCompanySelect from "../components/ModalCompanySelect";
 import DefaultLogo from "../assets/images/logo_default.png";
 import "../assets/css/myCompanyCompare.css";
 
-
-
-const API_BASE_URL = "https://fullstack-beginner-api-test.ggeonwoo.workers.dev";
 // ModalCompanySelect.jsx와 동일한 키를 사용해 최근 비교 세션을 공유
 const LAST_COMPARE_SESSION_KEY = "lastCompareSession";
 
@@ -45,11 +42,11 @@ function MyCompanyCompare() {
     setMyCompany(company);
     setHasSelectedMyCompany(true);
 
-    axios
-      .patch(`${API_BASE_URL}/api/companies/${company.id}/my-company-select-count`)
-      .catch((error) => {
-        console.error("나의 기업 선택 횟수 반영 실패:", error);
-      });
+    // axios
+    //   .patch(`/api/companies/${company.id}/my-company`)
+    //   .catch((error) => {
+    //     console.error("나의 기업 선택 횟수 반영 실패:", error);
+    //   });
   };
 
   const handleSelectTargetCompanies = (companies) => {
@@ -68,10 +65,11 @@ function MyCompanyCompare() {
     if (!isCompareReady) return;
 
     try {
-      await axios.post(`${API_BASE_URL}/api/compare`, {
-        compareCompanyIds: targetCompanies.map((company) => company.id).join(","),
-        myCompanyIds: myCompany.id,
+      await axios.post(`/api/compare`, {
+        myCompanyIds: [myCompany.id], // 단일이라도 배열로 감싸야 함
+        compareCompanyIds: targetCompanies.map((company) => company.id), // 배열 그대로 전달
       });
+
       localStorage.setItem(
         LAST_COMPARE_SESSION_KEY,
         JSON.stringify({
@@ -79,11 +77,13 @@ function MyCompanyCompare() {
           compareCompanyIds: targetCompanies.map((company) => company.id),
         })
       );
+
       navigate("/compare-result", { state: { myCompany, targetCompanies } });
     } catch (error) {
       console.error("기업 비교 실행 실패:", error);
     }
   };
+
 
   const handleCancelMyCompany = (event) => {
     event.stopPropagation();

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../api/axios.js";
 
 import Modal from "../components/Modal";
 import Search from "./Search";
@@ -7,8 +7,6 @@ import CompanyLists from "../components/CompanyLists";
 import Pagination from "../components/Pagination";
 import Button from "../components/Button";
 import "../assets/css/ModalCompanySelect.css";
-
-const API_BASE_URL = "https://fullstack-beginner-api-test.ggeonwoo.workers.dev";
 
 const PAGE_SIZE = 5;
 // compareCompanyIds는 API 스펙상 요청 시 최대 5개까지만 허용됨
@@ -66,10 +64,10 @@ function ModalCompanySelect({
           const [myCompanyResponse, compareResponse] = await Promise.all([
             myCompanyId
               ? axios
-                  .get(`${API_BASE_URL}/api/companies/${myCompanyId}`)
+                  .get(`/api/companies/${myCompanyId}`)
                   .catch(() => null)
               : Promise.resolve(null),
-            axios.get(`${API_BASE_URL}/api/compare/companies`, {
+            axios.get(`/api/compare/companies`, {
               params: {
                 page: currentPage,
                 pageSize: PAGE_SIZE,
@@ -89,7 +87,7 @@ function ModalCompanySelect({
           setSearchCompanies(
             compareResponse.data.companies.map((company) => ({
               ...company,
-              id: company.companyId,
+              id: company.id ?? company.companyId,
             }))
           );
           setTotalPages(compareResponse.data.totalPages);
@@ -100,10 +98,10 @@ function ModalCompanySelect({
           const [myCompanyResponse, response] = await Promise.all([
             myCompanyId
               ? axios
-                  .get(`${API_BASE_URL}/api/companies/${myCompanyId}`)
+                  .get(`/api/companies/${myCompanyId}`)
                   .catch(() => null)
               : Promise.resolve(null),
-            axios.get(`${API_BASE_URL}/api/companies/my-company`, {
+            axios.get(`/api/companies/my-company`, {
               params: {
                 page: currentPage,
                 pageSize: PAGE_SIZE,
