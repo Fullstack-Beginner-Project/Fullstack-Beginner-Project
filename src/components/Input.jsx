@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../assets/css/input.css";
 import visibilityIcon from "../assets/images/icon_visibility_on.png";
+import nonvisibilityIcon from "../assets/images/icon_visibility_off.png";
 /* 
   Input 컴포넌트입니다.
   type : [password, text] 타입 설정해주세요.
@@ -39,7 +40,7 @@ function Input({ type, placeholder, onValueChange }) {
             />
           ) : (
             <img
-              src="./src/assets/images/icon_visibility_off.png"
+              src={nonvisibilityIcon}
               alt="숨기기"
               onClick={() => setVisible(false)}
             />
