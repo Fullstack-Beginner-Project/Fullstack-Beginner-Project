@@ -11,8 +11,6 @@ import "../assets/css/compareResult.css";
 import Table from "../components/Table";
 import ModalInvest from "../components/ModalInvest";
 
-
-
 const SORT_OPTIONS = [
   "누적 투자금액 높은순",
   "누적 투자금액 낮은순",
@@ -229,7 +227,11 @@ function CompareResult() {
         }
       >
         <div className="compare_result_my_company">
-          <img src={myCompany.logo ?? DefaultLogo} alt={myCompany.name} />
+          <img
+            src={"/src/assets/images/company-logo-" + myCompany.id + ".webp"}
+            alt={myCompany.name}
+            onError={(e) => { e.currentTarget.src = DefaultLogo }}
+          />
           <p>{myCompany.name}</p>
           <span>{myCompany.category}</span>
         </div>

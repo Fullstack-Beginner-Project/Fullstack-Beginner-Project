@@ -21,10 +21,12 @@ function CompareOverview() {
         const response = await axios.get(
           `/api/compare/status?page=${currentPage}&pageSize=${rowsPerPage}&sort=${sortOption}`
         );
-        setCompanies(response.data.list);
-        setTotalPages(Math.ceil(response.data.totalCount / rowsPerPage));
+        const list = response.data?.companies ?? [];
+        setCompanies(list);
+        setTotalPages(response.data?.totalPages ?? 1);
       } catch (error) {
         console.error("데이터 불러오기 실패:", error);
+        setCompanies([]);
       } finally {
         setLoading(false); // 호출 끝나면 로딩 끄기
       }

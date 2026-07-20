@@ -8,8 +8,6 @@ import Pagination from "../components/Pagination";
 import Button from "../components/Button";
 import "../assets/css/ModalCompanySelect.css";
 
-
-
 const PAGE_SIZE = 5;
 // compareCompanyIds는 API 스펙상 요청 시 최대 5개까지만 허용됨
 const MAX_COMPARE_COMPANY_IDS_PER_REQUEST = 5;
@@ -83,13 +81,13 @@ function ModalCompanySelect({
           setRecentTargetCompanies(
             compareResponse.data.selectedCompanies.map((company) => ({
               ...company,
-              id: company.companyId,
+              id: company.id ?? company.companyId,
             }))
           );
           setSearchCompanies(
             compareResponse.data.companies.map((company) => ({
               ...company,
-              id: company.companyId,
+              id: company.id ?? company.companyId,
             }))
           );
           setTotalPages(compareResponse.data.totalPages);
@@ -116,7 +114,7 @@ function ModalCompanySelect({
           setRecentMyCompany(myCompanyResponse?.data?.company ?? null);
           setRecentTargetCompanies(response.data.recentCompanies);
           setSearchCompanies(response.data.companies);
-          setTotalPages(response.data.totalPages);
+          setTotalPages(Math.ceil(response.data.totalCount / PAGE_SIZE));
         }
       } catch (error) {
         console.error("기업 목록 불러오기 실패:", error);
@@ -130,11 +128,15 @@ function ModalCompanySelect({
     typeof maxSelectable === 'number' && checkedIds.size >= maxSelectable;
 
   const withSelectedFlag = (list) =>
-    list.map((company) => ({
-      ...company,
-      selected: checkedIds.has(company.id),
-      disabled: excludedIdSet.has(company.id),
-    }));
+    list.map((company) => {
+      const cid = company.id ?? company.companyId;
+      return {
+        ...company,
+        id: cid,
+        selected: checkedIds.has(cid),
+        disabled: excludedIdSet.has(cid),
+      };
+    });
 
   const handleSelect = (id) => {
     if (excludedIdSet.has(id)) return;
