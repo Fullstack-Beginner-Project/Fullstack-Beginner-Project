@@ -40,11 +40,11 @@ const COMPARE_STATUS_SORT_OPTIONS = {
   selectCountAsc: {
     myCompanySelectCount: 'asc',
   },
-  investmentDesc: {
-    actualInvestmentAmount: 'desc',
+  compareCountDesc: {
+    compareCompanySelectCount: 'desc',
   },
-  investmentAsc: {
-    actualInvestmentAmount: 'asc',
+  compareCountAsc: {
+    compareCompanySelectCount: 'asc',
   },
 };
 
