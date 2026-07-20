@@ -7,7 +7,6 @@ import {
   validateCompareStatusQuery,
   validateCompareResultQuery,
 } from '../validators/compare-validator.js';
-import { func } from 'superstruct';
 
 
 
@@ -25,10 +24,10 @@ function toSafeNumber(value) {
   return typeof value === 'bigint' ? Number(value) : value;
 }
 
-// DB의 id 필드를 API 응답용 companyId로 변환한다.
+
 function serializeCompareCompany(company) {
   return {
-    companyId: company.id,
+    id: company.id,
     name: company.name,
     category: company.category,
   };
@@ -72,7 +71,7 @@ const COMPARE_RESULT_SORT_OPTIONS = {
 
 function serializeCompareStatusCompany(company) {
   return {
-    companyId: company.id,
+    id: company.id,
     name: company.name,
     description: company.description,
     category: company.category,
