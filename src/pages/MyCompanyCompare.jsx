@@ -132,8 +132,9 @@ function MyCompanyCompare() {
               </div>
               <div className="company_slot_selected">
                 <img
-                  src={myCompany.logo ?? DefaultLogo}
+                  src={"/src/assets/images/company-logo-" + myCompany.id + ".webp"}
                   alt={myCompany.name}
+                  onError={(e) => { e.currentTarget.src = DefaultLogo }}
                 />
                 <p>{myCompany.name}</p>
                 <span>{myCompany.category}</span>
@@ -180,8 +181,9 @@ function MyCompanyCompare() {
                       -
                     </button>
                     <img
-                      src={company.logo ?? DefaultLogo}
+                      src={"/src/assets/images/company-logo-" + company.id + ".webp"}
                       alt={company.name}
+                      onError={(e) => { e.currentTarget.src = DefaultLogo }}
                     />
                     <p>{company.name}</p>
                     <span>{company.category}</span>
