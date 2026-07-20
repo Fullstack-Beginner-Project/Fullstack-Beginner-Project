@@ -4,7 +4,7 @@ import Dropdown from "../components/Dropdown.jsx";
 import Section from "../components/Section";
 import Table from "../components/Table.jsx";
 import Pagination from "../components/Pagination.jsx";
-import axios from "axios";
+import axios from "../api/axios.js";
 
 function CompareOverview() {
   const [companies, setCompanies] = useState([]);
@@ -19,7 +19,7 @@ function CompareOverview() {
       setLoading(true); // 호출 시작 시 로딩 켜기
       try {
         const response = await axios.get(
-          `https://fullstack-beginner-api-test.ggeonwoo.workers.dev/api/compare/status?page=${currentPage}&pageSize=${rowsPerPage}&sort=${sortOption}`
+          `/api/compare/status?page=${currentPage}&pageSize=${rowsPerPage}&sort=${sortOption}`
         );
         setCompanies(response.data.list);
         setTotalPages(Math.ceil(response.data.totalCount / rowsPerPage));
