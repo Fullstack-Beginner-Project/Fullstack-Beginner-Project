@@ -4,7 +4,7 @@ import Dropdown from "../components/Dropdown.jsx";
 import Section from "../components/Section";
 import Table from "../components/Table.jsx";
 import Pagination from "../components/Pagination.jsx";
-import axios from "axios";
+import axios from "../api/axios.js";
 
 const columnDefs = [
   { key: "rank", label: "순위", colClassName: "short" },
@@ -29,7 +29,7 @@ function InvestmentStatus() {
       setLoading(true);
       try {
         const response = await axios.get(
-          `https://codeit-sprint-for-api-test-1.geonwoo.dev/api/companies/investmentStatus?page=${currentPage}&pageSize=${rowsPerPage}&orderBy=${orderBy}&order=${order}`
+          `/api/companies/investmentStatus?page=${currentPage}&pageSize=${rowsPerPage}&orderBy=${orderBy}&order=${order}`
         );
         setCompanies(response.data.list);
         setTotalPages(Math.ceil(response.data.totalCount / rowsPerPage));
