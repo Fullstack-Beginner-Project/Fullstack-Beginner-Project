@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../api/axios.js";
 
 import Section from "../components/Section";
 import Dropdown from "../components/Dropdown";
@@ -10,10 +10,6 @@ import "../assets/css/compareResult.css";
 
 import Table from "../components/Table";
 import ModalInvest from "../components/ModalInvest";
-
-
-
-const API_BASE_URL = "https://fullstack-beginner-api-test.ggeonwoo.workers.dev";
 
 const SORT_OPTIONS = [
   "누적 투자금액 높은순",
@@ -147,7 +143,7 @@ function CompareResult() {
     console.log(JSON.stringify(payload, null, 2));
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/investments`, payload);
+      const response = await axios.post(`/api/investments`, payload);
       console.log("투자 성공:", response.data);
       alert("투자가 완료되었습니다!");
       handleCloseModal();
@@ -164,7 +160,7 @@ function CompareResult() {
     const fetchRankedCompanies = async () => {
       try {
         // 1. 전체 기업 리스트 가져오기
-        const response = await axios.get(`${API_BASE_URL}/api/companies`, {
+        const response = await axios.get(`/api/companies`, {
           params: {
             page: 1,
             pageSize: 9999, // 전체 긁어오기
@@ -231,7 +227,11 @@ function CompareResult() {
         }
       >
         <div className="compare_result_my_company">
-          <img src={myCompany.logo ?? DefaultLogo} alt={myCompany.name} />
+          <img
+            src={"/src/assets/images/company-logo-" + myCompany.id + ".webp"}
+            alt={myCompany.name}
+            onError={(e) => { e.currentTarget.src = DefaultLogo }}
+          />
           <p>{myCompany.name}</p>
           <span>{myCompany.category}</span>
         </div>
