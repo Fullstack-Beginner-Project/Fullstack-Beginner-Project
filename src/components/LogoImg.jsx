@@ -2,8 +2,6 @@ import noImage from "/src/assets/images/img_thm_noimg.png";
 
 function LogoImg({ cId, cNm = '' }) {
     const tdImage = "/src/assets/images/company-logo-" + cId + ".webp";
-    console.log('tdImage');
-    console.log(tdImage);
     return (
         <img src={tdImage} alt={`${cNm} 기업 로고 이미지`} onError={(e) => {
             // 현재 요소에 등록된 onerror 이벤트를 제거
