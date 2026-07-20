@@ -8,27 +8,29 @@ import Pagination from "../components/Pagination";
 import Button from "../components/Button";
 import "../assets/css/ModalCompanySelect.css";
 
+
+
 const API_BASE_URL = "https://fullstack-beginner-api-test.ggeonwoo.workers.dev";
 const PAGE_SIZE = 5;
-const RECENT_MY_COMPANY_KEY = "recentMyCompanyIds";
-const RECENT_COMPARE_COMPANY_KEY = "recentCompareCompanyIds";
-const MAX_RECENT_IDS = 10;
+// compareCompanyIds는 API 스펙상 요청 시 최대 5개까지만 허용됨
+const MAX_COMPARE_COMPANY_IDS_PER_REQUEST = 5;
+// MyCompanyCompare.jsx의 "기업 비교하기" 클릭 시 저장되는 마지막 비교 세션
+const LAST_COMPARE_SESSION_KEY = "lastCompareSession";
 
-const readRecentIds = (key) => {
+// 마지막 비교 세션(나의 기업 1개 + 비교 기업 최대 5개)을 반환
+const readLastCompareSession = () => {
   try {
-    const stored = JSON.parse(localStorage.getItem(key));
-    return Array.isArray(stored) ? stored : [];
+    const stored = JSON.parse(localStorage.getItem(LAST_COMPARE_SESSION_KEY));
+    if (!stored || typeof stored.myCompanyId !== "string") {
+      return { myCompanyId: null, compareCompanyIds: [] };
+    }
+    const compareCompanyIds = Array.isArray(stored.compareCompanyIds)
+      ? stored.compareCompanyIds.slice(0, MAX_COMPARE_COMPANY_IDS_PER_REQUEST)
+      : [];
+    return { myCompanyId: stored.myCompanyId, compareCompanyIds };
   } catch {
-    return [];
+    return { myCompanyId: null, compareCompanyIds: [] };
   }
-};
-
-const addRecentId = (key, id) => {
-  const next = [id, ...readRecentIds(key).filter((existingId) => existingId !== id)].slice(
-    0,
-    MAX_RECENT_IDS
-  );
-  localStorage.setItem(key, JSON.stringify(next));
 };
 
 function ModalCompanySelect({
@@ -46,51 +48,74 @@ function ModalCompanySelect({
     () => new Set(selectedCompanies.map((company) => company.id))
   );
 
-  const [recentCompanies, setRecentCompanies] = useState([]);
+  const [selectedCompaniesState, setSelectedCompaniesState] = useState(selectedCompanies);
+  // "최근 비교한 기업"을 나의 기업 / 비교 기업으로 분리 표시 (단일·다중 모드 공통)
+  const [recentMyCompany, setRecentMyCompany] = useState(null);
+  const [recentTargetCompanies, setRecentTargetCompanies] = useState([]);
   const [searchCompanies, setSearchCompanies] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
 
   const excludedIdSet = new Set(excludedIds);
-  const recentKey = multiple ? RECENT_COMPARE_COMPANY_KEY : RECENT_MY_COMPANY_KEY;
 
   // API 연결
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const recentIds = readRecentIds(recentKey).join(",");
-
         if (multiple) {
-          const response = await axios.get(`${API_BASE_URL}/api/compare/companies`, {
-            params: {
-              page: currentPage,
-              pageSize: PAGE_SIZE,
-              keyword,
-              compareCompanyIds: recentIds || undefined,
-            },
-          });
-          setRecentCompanies(
-            response.data.selectedCompanies.map((company) => ({
+          const { myCompanyId, compareCompanyIds } = readLastCompareSession();
+
+          const [myCompanyResponse, compareResponse] = await Promise.all([
+            myCompanyId
+              ? axios
+                  .get(`${API_BASE_URL}/api/companies/${myCompanyId}`)
+                  .catch(() => null)
+              : Promise.resolve(null),
+            axios.get(`${API_BASE_URL}/api/compare/companies`, {
+              params: {
+                page: currentPage,
+                pageSize: PAGE_SIZE,
+                keyword,
+                compareCompanyIds: compareCompanyIds.join(",") || undefined,
+              },
+            }),
+          ]);
+
+          setRecentMyCompany(myCompanyResponse?.data?.company ?? null);
+          setRecentTargetCompanies(
+            compareResponse.data.selectedCompanies.map((company) => ({
               ...company,
               id: company.companyId,
             }))
           );
           setSearchCompanies(
-            response.data.companies.map((company) => ({
+            compareResponse.data.companies.map((company) => ({
               ...company,
               id: company.companyId,
             }))
           );
-          setTotalPages(response.data.totalPages);
+          setTotalPages(compareResponse.data.totalPages);
         } else {
-          const response = await axios.get(`${API_BASE_URL}/api/companies/my-company`, {
-            params: {
-              page: currentPage,
-              pageSize: PAGE_SIZE,
-              keyword,
-              myRecentCompanyIds: recentIds || undefined,
-            },
-          });
-          setRecentCompanies(response.data.recentCompanies);
+          // 마지막 비교 세션(나의 기업 1개 + 비교 기업 최대 5개)을 "최근 비교한 기업"으로 표시
+          const { myCompanyId, compareCompanyIds } = readLastCompareSession();
+
+          const [myCompanyResponse, response] = await Promise.all([
+            myCompanyId
+              ? axios
+                  .get(`${API_BASE_URL}/api/companies/${myCompanyId}`)
+                  .catch(() => null)
+              : Promise.resolve(null),
+            axios.get(`${API_BASE_URL}/api/companies/my-company`, {
+              params: {
+                page: currentPage,
+                pageSize: PAGE_SIZE,
+                keyword,
+                myRecentCompanyIds: compareCompanyIds.join(",") || undefined,
+              },
+            }),
+          ]);
+
+          setRecentMyCompany(myCompanyResponse?.data?.company ?? null);
+          setRecentTargetCompanies(response.data.recentCompanies);
           setSearchCompanies(response.data.companies);
           setTotalPages(response.data.totalPages);
         }
@@ -100,7 +125,7 @@ function ModalCompanySelect({
     };
 
     fetchCompanies();
-  }, [currentPage, keyword, multiple, recentKey]);
+  }, [currentPage, keyword, multiple]);
 
   const isCheckLimitReached =
     typeof maxSelectable === 'number' && checkedIds.size >= maxSelectable;
@@ -116,10 +141,12 @@ function ModalCompanySelect({
     if (excludedIdSet.has(id)) return;
 
     if (!multiple) {
-      const company = [...recentCompanies, ...searchCompanies].find(
-        (company) => company.id === id
-      );
-      addRecentId(recentKey, id);
+      const knownCompanies = [
+        ...(recentMyCompany ? [recentMyCompany] : []),
+        ...recentTargetCompanies,
+        ...searchCompanies,
+      ];
+      const company = knownCompanies.find((company) => company.id === id);
       onSelectCompany(company);
       onClose();
       return;
@@ -129,20 +156,26 @@ function ModalCompanySelect({
       const next = new Set(prev);
       if (next.has(id)) {
         next.delete(id);
+        setSelectedCompaniesState((prevList) => prevList.filter(c => c.id !== id));
       } else {
         if (isCheckLimitReached) return prev;
         next.add(id);
+        const knownCompanies = [
+          ...(recentMyCompany ? [recentMyCompany] : []),
+          ...recentTargetCompanies,
+          ...searchCompanies,
+        ];
+        const company = knownCompanies.find(c => c.id === id);
+        if (company) {
+          setSelectedCompaniesState((prevList) => [...prevList, company]);
+        }
       }
       return next;
     });
   };
 
   const handleConfirm = () => {
-    const selected = [...recentCompanies, ...searchCompanies].filter(
-      (company) => checkedIds.has(company.id)
-    );
-    selected.forEach((company) => addRecentId(recentKey, company.id));
-    onSelectCompanies(selected);
+    onSelectCompanies(selectedCompaniesState);
     onClose();
   };
 
@@ -153,7 +186,7 @@ function ModalCompanySelect({
 
   return (
     <Modal
-      title="나의 기업 선택하기"
+      title={multiple ? "비교할 기업 선택하기" : "나의 기업 선택하기"}
       onClose={onClose}
       footer={
         multiple ? (
@@ -185,7 +218,10 @@ function ModalCompanySelect({
       <div className='company_select_list_wrap'>
         <CompanyLists
           title="최근 비교한 기업"
-          companies={withSelectedFlag(recentCompanies)}
+          companies={withSelectedFlag([
+            ...(recentMyCompany ? [{ ...recentMyCompany, isMyCompany: true }] : []),
+            ...recentTargetCompanies,
+          ])}
           onSelect={handleSelect}
         />
 
@@ -199,5 +235,7 @@ function ModalCompanySelect({
     </Modal>
   );
 }
+
+
 
 export default ModalCompanySelect;

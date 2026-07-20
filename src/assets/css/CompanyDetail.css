@@ -80,6 +80,20 @@
     margin-bottom: 16px;
 }
 
+#root>.wrap .companydetail_page .no_data,
+#root>.wrap .companydetail_page .in_loading {
+  position: fixed;          /* 화면에 고정 */
+  top: 50%;                 /* 세로 중앙 */
+  left: 50%;                /* 가로 중앙 */
+  transform: translate(-50%, -50%); /* 정확히 중앙으로 이동 */
+  color: var(--gray_200);
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
 @media (max-width: 1280px) {
     .company_detail_top {
         padding: 40px 0 24px 0;
