@@ -1,9 +1,9 @@
 
 .table_conatiner{
     position: relative;
-    border-radius: 12px;
+    /* border-radius: 12px; */
     overflow: hidden;
-    background-color: var(--black_200);
+    /* background-color: var(--black_200); */
 }
 
 .table_wrap {
@@ -82,6 +82,15 @@
     overflow: hidden;
 }
 
+.company_detail_wrap .overflow_x{
+    padding-bottom: 0;
+}
+
+.company_detail_wrap .table_body{
+    border-radius: 4px;
+    overflow: hidden;
+}
+
 .table_wrap td{
     padding: 0;
     vertical-align: middle;
@@ -147,12 +156,14 @@
     width: 100%;
 }
 
-.table_wrap .table_body td.content.comment form{
+.table_wrap .table_body td.content.comment .comment_wrap{
+    position: relative;
     flex-shrink: 0;
     padding-left: 15px;
     width: 39px;
     height: 24px;
 }
+
 
 .table_wrap .table_body td.content.comment form button .no_text{
     width: 100%;
@@ -164,6 +175,38 @@
     height: 100%;
     background: url('/src/assets/images/icon_table_menu.svg') center no-repeat;
 }
+
+
+.comment_menu{
+    position: fixed;
+    z-index: 10;
+    
+    display: none;
+    width: 127px;
+    background-color: var(--black_400);
+    border: 1px solid var(--gray_200);
+    border-radius: 10px;
+    transform: translate(calc(-100% + 24px), calc(-50% - 16px));
+}
+
+.comment_menu li{
+    width: 100%;
+    padding: 12px;
+    text-align: center;
+}
+
+.comment_menu li + li{
+    border-top: 1px solid var(--gray_200);
+}
+
+.comment_menu li .text{
+    text-align: center;
+}
+
+.btn_comment_menu.clicked + .comment_menu{
+    display: block;
+}
+
 
 .table_wrap .table_body td.title{
     padding: 0;
