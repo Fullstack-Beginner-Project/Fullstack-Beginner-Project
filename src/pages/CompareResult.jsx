@@ -11,11 +11,6 @@ import "../assets/css/compareResult.css";
 import Table from "../components/Table";
 import ModalInvest from "../components/ModalInvest";
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> ad8b9006924564b2082150b2a128e4847e1fbff6
 const SORT_OPTIONS = [
   "누적 투자금액 높은순",
   "누적 투자금액 낮은순",
