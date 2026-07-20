@@ -6,7 +6,7 @@ import Input from "../components/Input";
 import "../assets/css/ModalInput.css";
 import "../assets/css/ModalInvest.css";
 import DefaultLogo from '../assets/images/logo_default.png';
-import axios from "axios";
+
 function ModalInvest({
   company,
   onClose,
