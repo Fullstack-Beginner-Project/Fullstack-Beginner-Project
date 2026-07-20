@@ -15,9 +15,16 @@
   height: 40px;
   border: none;
   border-radius: 8px;
-  background-color: var(--black_200);
+  background-color: var(--black_100);
   color: var(--gray_200);
   cursor: pointer;
+}
+
+.pagination_wrap .btn_left img,
+.pagination_wrap .btn_right img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .pagination_wrap .btn_left:disabled,
@@ -40,15 +47,21 @@
   height: 40px;
   border: none;
   border-radius: 8px;
-  background-color: var(--black_200);
-  color: var(--gray_200);
+  background-color: var(--black_100);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
 }
 
+#root .pagination_wrap .page_number {
+  color: var(--gray_200);
+}
+
 .pagination_wrap .page_number.is-active {
   background-color: var(--main_color);
+}
+
+#root .pagination_wrap .page_number.is-active {
   color: #fff;
 }
 
