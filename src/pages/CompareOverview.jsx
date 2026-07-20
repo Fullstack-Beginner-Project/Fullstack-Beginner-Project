@@ -37,8 +37,8 @@ function CompareOverview() {
   const options = [
     "나의 기업 선택 횟수 높은순",
     "나의 기업 선택 횟수 낮은순",
-    "실제 누적 투자 금액 높은순",
-    "실제 누적 투자 금액 낮은순",
+    "비교 기업 선택 횟수 높은순",
+    "비교 기업 선택 횟수 낮은순",
   ];
 
   const handleSortChange = (selected) => {
@@ -49,11 +49,11 @@ function CompareOverview() {
       case "나의 기업 선택 횟수 낮은순":
         setSortOption("selectCountAsc");
         break;
-      case "실제 누적 투자 금액 높은순":
-        setSortOption("investmentDesc");
+      case "비교 기업 선택 횟수 높은순":
+        setSortOption("compareCompanySelectCountDesc");
         break;
-      case "실제 누적 투자 금액 낮은순":
-        setSortOption("investmentAsc");
+      case "비교 기업 선택 횟수 낮은순":
+        setSortOption("compareCompanySelectCountAsc");
         break;
       default:
         setSortOption("selectCountDesc");
