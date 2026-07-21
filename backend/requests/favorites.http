@@ -1,0 +1,44 @@
+### 찜한 기업 모달 1페이지 조회
+GET http://localhost:3000/api/companies/favorites?favoriteCompanyIds=f8q2mz,k3p9av,r7x1tq,b6n4yc,z2h8kd&page=1&pageSize=5&sort=favoriteDesc
+
+### 찜한 기업 모달 2페이지 조회
+GET http://localhost:3000/api/companies/favorites?favoriteCompanyIds=f8q2mz,k3p9av,r7x1tq,b6n4yc,z2h8kd,m9v5jx,p4c7wu&page=2&pageSize=5&sort=favoriteDesc
+
+### 찜한 기업 목록 페이지 조회
+GET http://localhost:3000/api/companies/favorites?favoriteCompanyIds=f8q2mz,k3p9av,r7x1tq,b6n4yc,z2h8kd&page=1&pageSize=10&sort=favoriteDesc
+
+### 처음 찜한 순서로 조회
+GET http://localhost:3000/api/companies/favorites?favoriteCompanyIds=f8q2mz,k3p9av,r7x1tq&page=1&pageSize=10&sort=favoriteAsc
+
+### sort를 생략한 기본 조회
+GET http://localhost:3000/api/companies/favorites?favoriteCompanyIds=f8q2mz,k3p9av,r7x1tq&page=1&pageSize=10
+
+### page와 pageSize를 생략한 기본 조회
+GET http://localhost:3000/api/companies/favorites?favoriteCompanyIds=f8q2mz,k3p9av,r7x1tq
+
+### 찜한 기업이 없는 경우
+GET http://localhost:3000/api/companies/favorites?favoriteCompanyIds=&page=1&pageSize=10
+
+### 존재하지 않는 형식상 정상 ID가 포함된 경우
+GET http://localhost:3000/api/companies/favorites?favoriteCompanyIds=f8q2mz,aaaaaa&page=1&pageSize=10&sort=favoriteAsc
+
+### 중복 기업 ID
+GET http://localhost:3000/api/companies/favorites?favoriteCompanyIds=f8q2mz,f8q2mz&page=1&pageSize=10
+
+### 잘못된 기업 ID 형식
+GET http://localhost:3000/api/companies/favorites?favoriteCompanyIds=잘못된회사Id&page=1&pageSize=10
+
+### 잘못된 page
+GET http://localhost:3000/api/companies/favorites?favoriteCompanyIds=f8q2mz&page=0&pageSize=10
+
+### 잘못된 pageSize
+GET http://localhost:3000/api/companies/favorites?favoriteCompanyIds=f8q2mz&page=1&pageSize=0
+
+### 잘못된 정렬 옵션
+GET http://localhost:3000/api/companies/favorites?favoriteCompanyIds=f8q2mz&page=1&pageSize=10&sort=잘못된정렬
+
+### 허용되지 않은 메서드
+POST http://localhost:3000/api/companies/favorites
+Content-Type: application/json
+
+{}
