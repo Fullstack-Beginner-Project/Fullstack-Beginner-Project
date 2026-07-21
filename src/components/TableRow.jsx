@@ -3,7 +3,7 @@ import { formatAmount } from '/src/utils/common.js'
 import LogoImg from './LogoImg';
 
 
-function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, currentPage, rowsPerPage }) {
+function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, currentPage, rowsPerPage, onEditInvestment, onDeleteInvestment }) {
 
 
   const renderCell = (column) => {
@@ -77,7 +77,7 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
             </div>
           </td>
         );
-      
+
       case "userInvestmentAmount":
         return (
           <td key={column.key} className={column.className}>
@@ -86,7 +86,7 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
             </div>
           </td>
         );
-        
+
       case "revenue":
         return (
           <td key={column.key} className={column.className}>
@@ -121,10 +121,28 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
               <p className="text">
                 {value}
               </p>
-              <form action="">
-                <button type="button" className='btn_comment_menu' onClick={(event) => { onOpenCommentMenu?.(event, row); }}>
+              <form action="" className='comment_wrap'>
+                <button type="button" className='btn_comment_menu'
+                  onClick={(event) => {
+                    const currentButton = event.currentTarget;
+                    const wasClicked = currentButton.classList.contains('clicked');
+
+                    document
+                      .querySelectorAll('.btn_comment_menu.clicked')
+                      .forEach((button) => {
+                        button.classList.remove('clicked');
+                      });
+
+                    if (!wasClicked) {
+                      currentButton.classList.add('clicked');
+                    }
+                  }}>
                   <span className="no_text">코멘트 메뉴</span>
                 </button>
+                <ul className="comment_menu">
+                  <li><button type="button" onClick={() => onEditInvestment?.(row)}>수정하기</button></li>
+                  <li><button type="button" onClick={() => onDeleteInvestment?.(row)}>삭제하기</button></li>
+                </ul>
               </form>
             </div>
           </td>
@@ -141,9 +159,9 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
     }
   };
 
-  console.log(myCompany)
-  console.log('row.id******************')
-  console.log(row.id)
+  // console.log(myCompany)
+  // console.log('row.id******************')
+  // console.log(row.id)
 
   return (
     <tr className={row.id === myCompany ? "selection" : undefined}>
