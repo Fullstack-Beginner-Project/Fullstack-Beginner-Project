@@ -10,9 +10,9 @@ import favoriteRouter from './favorite-routes.js';
 const router = Router();
 
 router.use(investmentRouter);
+router.use(favoriteRouter);
 router.use(companyRouter);
 router.use(compareRouter);
-router.use(favoriteRouter);
 
 
 
