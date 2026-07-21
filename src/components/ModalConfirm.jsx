@@ -6,7 +6,7 @@ function ModalConfirm({
   message,
   onClose,
 }) {
-    // 코드 재사용을 위해 추후 props를 활용해 직접적인 텍스트는 지양
+    // 코드 재사용을 위해 props를 활용해 직접적인 텍스트는 지양
   return (
     <Modal
       footer={
