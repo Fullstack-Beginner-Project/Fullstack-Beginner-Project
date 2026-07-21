@@ -441,7 +441,6 @@ companyRouter.get('/companies/:companyId/investments/chart', async (req, res) =>
       select: {
         id: true,
         companyId: true,
-        investorName: true,
         amount: true,
         createdAt: true,
       },
