@@ -13,6 +13,8 @@ import axios from "../api/axios.js";
 import LogoImg from "../components/LogoImg.jsx";
 import ModalEditInvest from "../components/ModalEditInvest.jsx";
 import ModalDelete from "../components/ModalDelete.jsx";
+import Section from "../components/Section.jsx";
+import Chart from "../components/Chart.jsx";
 
 const PAGE_SIZE = 5;
 
@@ -21,6 +23,7 @@ function CompanyDetail() {
   const { companyId } = useParams();
   const [company, setCompany] = useState(null);
   const [investments, setInvestments] = useState([]);
+  const [chartData, setCartData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isInvestOpen, setIsInvestOpen] = useState(false);
@@ -61,10 +64,34 @@ function CompanyDetail() {
     }
   };
 
+  const fetcCharthData = async () => {
+    try {
+      const chartResponse = await axios.get(
+        `/api/companies/${companyId}/investments/chart`
+      );
+
+
+      setCartData(chartResponse.data.list);
+
+      console.log('chartData');
+      console.log(chartData);
+
+    } catch (error) {
+      console.error("데이터 불러오기 실패:", error);
+    } finally {
+      setLoading(false); // 호출 시작 시 로딩 켜기
+    }
+  };
+
   useEffect(() => {
     setLoading(true); // 호출 시작 시 로딩 켜기
     fetchData();
   }, [companyId, currentPage]);
+
+
+  useEffect(() => {
+    fetcCharthData();
+  }, [])
 
   const columnDefs = [
     {
@@ -126,7 +153,7 @@ function CompanyDetail() {
 
     try {
       await axios.patch("/api/investments", {
-        investmentsId: selectedInvestment.id,
+        investmentId: selectedInvestment.id,
         investorName: form.investorName,
         amount: Number(String(form.amount).replaceAll(",", "")),
         comment: form.comment,
@@ -181,7 +208,7 @@ function CompanyDetail() {
     try {
       await axios.delete("/api/investments", {
         data: {
-          investmentsId: selectedInvestment.id,
+          investmentId: selectedInvestment.id,
           password: password,
         },
       });
@@ -270,8 +297,11 @@ function CompanyDetail() {
 
               <div className="company_description">
                 <h4>기업소개</h4>
-
                 <p>{company.description}</p>
+              </div>
+
+              <div className="compay_chart summary_box company_description">
+                <Chart dataList={chartData}></Chart>
               </div>
             </div>
 

@@ -234,3 +234,10 @@
     height: 32px;
     overflow: hidden;
 }
+
+
+@media screen and (max-width: 768px) {
+    .table_wrap td *{
+        font-size: 14px;
+    }
+}
