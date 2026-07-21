@@ -44,9 +44,9 @@
     color: var(--gray_200);
     font-size: 14px;
 }
-.search_wrap {
+/* .search_wrap {
     width: 100%;
-}
+} */
 
 @media (max-width: 768px) {
     .company_list_wrap h4 {

@@ -58,6 +58,8 @@ function CompanyList() {
         const response = await axios.get(
           `/api/companies?page=${currentPage}&pageSize=${rowsPerPage}&sort=${sortOption}&keyword=${keyword}`
         );
+
+        console.log(response.data);
         setCompanies(response.data.list);
         setTotalPages(Math.ceil(response.data.totalCount / rowsPerPage));
       } catch (error) {
