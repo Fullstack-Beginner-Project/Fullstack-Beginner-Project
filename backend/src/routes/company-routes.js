@@ -411,6 +411,53 @@ companyRouter.get('/companies/:companyId/investments', async (req, res) => {
   }
 });
 
+companyRouter.get('/companies/:companyId/investments/chart', async (req, res) => {
+  try {
+    const paramsValidation = validateCompanyIdParam(req.params);
+
+    if (paramsValidation.error) {
+      return sendBadRequest(res, paramsValidation.error);
+    }
+
+    const { companyId } = paramsValidation.value;
+
+    const company = await prisma.company.findUnique({
+      where: {
+        id: companyId,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!company) {
+      return sendBadRequest(res);
+    }
+
+    const investments = await prisma.investment.findMany({
+      where: {
+        companyId,
+      },
+      select: {
+        id: true,
+        companyId: true,
+        investorName: true,
+        amount: true,
+        createdAt: true,
+      },
+    });
+
+    return res.status(200).json({
+      list: investments,
+    });
+  } catch (error) {
+    console.error(error);
+
+    return sendBadRequest(res);
+  }
+});
+
+
 companyRouter.all('/companies', (req, res) => {
   return sendBadRequest(res);
 });
