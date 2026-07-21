@@ -1034,6 +1034,63 @@ const investments = [
   },
 ];
 
+const INVESTMENT_DATE_POOL_START = new Date('2026-06-03T09:00:00.000Z');
+const INVESTMENT_DATE_POOL_END = new Date('2026-07-21T09:00:00.000Z');
+const INVESTMENT_BUCKET_COUNT = 5;
+const companyInvestmentCounts = new Map();
+
+function getSeedNumber(text) {
+  let seed = 0;
+
+  for (let index = 0; index < text.length; index += 1) {
+    seed += text.charCodeAt(index);
+  }
+
+  return seed;
+}
+
+function buildInvestmentDatePool() {
+  const pool = [];
+  const current = new Date(INVESTMENT_DATE_POOL_START);
+
+  while (current <= INVESTMENT_DATE_POOL_END) {
+    pool.push(new Date(current));
+    current.setUTCDate(current.getUTCDate() + 1);
+  }
+
+  return pool;
+}
+
+function getCompanyCreatedAtBuckets(companyId) {
+  const pool = buildInvestmentDatePool();
+  const buckets = [];
+  const usedIndexes = new Set();
+  let seed = getSeedNumber(companyId);
+
+  while (buckets.length < INVESTMENT_BUCKET_COUNT) {
+    const index = seed % pool.length;
+
+    if (!usedIndexes.has(index)) {
+      buckets.push(pool[index]);
+      usedIndexes.add(index);
+    }
+
+    seed += 7;
+  }
+
+  buckets.sort((left, right) => left.getTime() - right.getTime());
+  return buckets;
+}
+
+function getInvestmentCreatedAt(companyId) {
+  const buckets = getCompanyCreatedAtBuckets(companyId);
+  const currentCount = companyInvestmentCounts.get(companyId) || 0;
+
+  companyInvestmentCounts.set(companyId, currentCount + 1);
+
+  return buckets[currentCount % buckets.length];
+}
+
 function assertSeedPassword(investmentId, plainPassword) {
   const isDefaultValue =
     !plainPassword || plainPassword === 'changetopassword' || /^change_?me/i.test(plainPassword);
@@ -1045,38 +1102,9 @@ function assertSeedPassword(investmentId, plainPassword) {
   }
 }
 
-async function seedGeneratedInvestments() {
-  if (!fs.existsSync(generatedInvestmentsPath)) {
-    return;
-  }
-
-  const generated = JSON.parse(fs.readFileSync(generatedInvestmentsPath, 'utf8'));
-  const existing = await prisma.investment.findMany({ select: { id: true } });
-  const existingIds = new Set(existing.map((row) => row.id));
-  const companyIds = new Set(companies.map((company) => company.id));
-
-  const toCreate = generated
-    .filter((investment) => !existingIds.has(investment.id))
-    .filter((investment) => companyIds.has(investment.companyId))
-    .map((investment) => ({
-      id: investment.id,
-      companyId: investment.companyId,
-      investorName: investment.investorName,
-      amount: BigInt(investment.amount),
-      comment: investment.comment ?? null,
-      password: investment.password,
-    }));
-
-  const BATCH_SIZE = 500;
-  for (let start = 0; start < toCreate.length; start += BATCH_SIZE) {
-    const batch = toCreate.slice(start, start + BATCH_SIZE);
-    await prisma.investment.createMany({ data: batch, skipDuplicates: true });
-  }
-
-  console.log(`샘플 투자 시드 완료: 신규 ${toCreate.length}건 (파일 총 ${generated.length}건)`);
-}
-
 async function main() {
+  companyInvestmentCounts.clear();
+
   for (const company of companies) {
     await prisma.company.upsert({
       where: { id: company.id },
@@ -1085,10 +1113,13 @@ async function main() {
     });
   }
 
+  await prisma.investment.deleteMany();
+
   for (const investment of investments) {
     const { plainPassword, ...investmentData } = investment;
     assertSeedPassword(investment.id, plainPassword);
     investmentData.password = await bcrypt.hash(plainPassword, 10);
+    investmentData.createdAt = getInvestmentCreatedAt(investment.companyId);
 
     await prisma.investment.upsert({
       where: { id: investment.id },
@@ -1098,6 +1129,35 @@ async function main() {
   }
 
   await seedGeneratedInvestments();
+}
+
+async function seedGeneratedInvestments() {
+  if (!fs.existsSync(generatedInvestmentsPath)) {
+    return;
+  }
+
+  const generated = JSON.parse(fs.readFileSync(generatedInvestmentsPath, 'utf8'));
+  const companyIds = new Set(companies.map((company) => company.id));
+
+  const toCreate = generated
+    .filter((investment) => companyIds.has(investment.companyId))
+    .map((investment) => ({
+      id: investment.id,
+      companyId: investment.companyId,
+      investorName: investment.investorName,
+      amount: BigInt(investment.amount),
+      comment: investment.comment ?? null,
+      password: investment.password,
+      createdAt: getInvestmentCreatedAt(investment.companyId),
+    }));
+
+  const BATCH_SIZE = 500;
+  for (let start = 0; start < toCreate.length; start += BATCH_SIZE) {
+    const batch = toCreate.slice(start, start + BATCH_SIZE);
+    await prisma.investment.createMany({ data: batch, skipDuplicates: true });
+  }
+
+  console.log(`샘플 투자 시드 완료: 신규 ${toCreate.length}건 (파일 총 ${generated.length}건)`);
 }
 
 main()
