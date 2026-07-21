@@ -7,28 +7,14 @@ import CompanyLists from "../components/CompanyLists";
 import Pagination from "../components/Pagination";
 import Button from "../components/Button";
 import "../assets/css/ModalCompanySelect.css";
+import {
+  normalizeCompany,
+  findCompanyById,
+  withSelectedFlag,
+  readLastCompareSession,
+} from "../utils/common";
 
 const PAGE_SIZE = 5;
-// compareCompanyIds는 API 스펙상 요청 시 최대 5개까지만 허용됨
-const MAX_COMPARE_COMPANY_IDS_PER_REQUEST = 5;
-// MyCompanyCompare.jsx의 "기업 비교하기" 클릭 시 저장되는 마지막 비교 세션
-const LAST_COMPARE_SESSION_KEY = "lastCompareSession";
-
-// 마지막 비교 세션(나의 기업 1개 + 비교 기업 최대 5개)을 반환
-const readLastCompareSession = () => {
-  try {
-    const stored = JSON.parse(localStorage.getItem(LAST_COMPARE_SESSION_KEY));
-    if (!stored || typeof stored.myCompanyId !== "string") {
-      return { myCompanyId: null, compareCompanyIds: [] };
-    }
-    const compareCompanyIds = Array.isArray(stored.compareCompanyIds)
-      ? stored.compareCompanyIds.slice(0, MAX_COMPARE_COMPANY_IDS_PER_REQUEST)
-      : [];
-    return { myCompanyId: stored.myCompanyId, compareCompanyIds };
-  } catch {
-    return { myCompanyId: null, compareCompanyIds: [] };
-  }
-};
 
 function ModalCompanySelect({
   onClose,
@@ -79,16 +65,10 @@ function ModalCompanySelect({
 
           setRecentMyCompany(myCompanyResponse?.data?.company ?? null);
           setRecentTargetCompanies(
-            compareResponse.data.selectedCompanies.map((company) => ({
-              ...company,
-              id: company.id ?? company.companyId,
-            }))
+            compareResponse.data.selectedCompanies.map(normalizeCompany)
           );
           setSearchCompanies(
-            compareResponse.data.companies.map((company) => ({
-              ...company,
-              id: company.id ?? company.companyId,
-            }))
+            compareResponse.data.companies.map(normalizeCompany)
           );
           setTotalPages(compareResponse.data.totalPages);
         } else {
@@ -112,8 +92,12 @@ function ModalCompanySelect({
           ]);
 
           setRecentMyCompany(myCompanyResponse?.data?.company ?? null);
-          setRecentTargetCompanies(response.data.recentCompanies);
-          setSearchCompanies(response.data.companies);
+          setRecentTargetCompanies(
+            response.data.recentCompanies.map(normalizeCompany)
+          );
+          setSearchCompanies(
+            response.data.companies.map(normalizeCompany)
+          );
           setTotalPages(Math.ceil(response.data.totalCount / PAGE_SIZE));
         }
       } catch (error) {
@@ -127,31 +111,23 @@ function ModalCompanySelect({
   const isCheckLimitReached =
     typeof maxSelectable === 'number' && checkedIds.size >= maxSelectable;
 
-  const withSelectedFlag = (list) =>
-    list.map((company) => {
-      const cid = company.id ?? company.companyId;
-      return {
-        ...company,
-        id: cid,
-        selected: checkedIds.has(cid),
-        disabled: excludedIdSet.has(cid),
-      };
-    });
+  const myCompanyList = recentMyCompany ? [recentMyCompany] : [];
 
   const handleSelect = (id) => {
-    if (excludedIdSet.has(id)) return;
+    if (excludedIdSet.has(id)) return;  
 
-    if (!multiple) {
-      const knownCompanies = [
-        ...(recentMyCompany ? [recentMyCompany] : []),
-        ...recentTargetCompanies,
-        ...searchCompanies,
-      ];
-      const company = knownCompanies.find((company) => company.id === id);
-      onSelectCompany(company);
-      onClose();
-      return;
-    }
+  if (!multiple) {
+    const company = findCompanyById(
+      id,
+      myCompanyList,
+      recentTargetCompanies,
+      searchCompanies
+    );
+
+    onSelectCompany(company);
+    onClose();
+    return;
+  }
 
     setCheckedIds((prev) => {
       const next = new Set(prev);
@@ -161,12 +137,12 @@ function ModalCompanySelect({
       } else {
         if (isCheckLimitReached) return prev;
         next.add(id);
-        const knownCompanies = [
-          ...(recentMyCompany ? [recentMyCompany] : []),
-          ...recentTargetCompanies,
-          ...searchCompanies,
-        ];
-        const company = knownCompanies.find(c => c.id === id);
+        const company = findCompanyById(
+          id,
+          myCompanyList,
+          recentTargetCompanies,
+          searchCompanies
+        );
         if (company) {
           setSelectedCompaniesState((prevList) => [...prevList, company]);
         }
@@ -219,16 +195,26 @@ function ModalCompanySelect({
       <div className='company_select_list_wrap'>
         <CompanyLists
           title="최근 비교한 기업"
-          companies={withSelectedFlag([
-            ...(recentMyCompany ? [{ ...recentMyCompany, isMyCompany: true }] : []),
-            ...recentTargetCompanies,
-          ])}
+            companies={withSelectedFlag(
+              [
+                ...(recentMyCompany
+                  ? [{ ...recentMyCompany, isMyCompany: true }]
+                  : []),
+                ...recentTargetCompanies,
+              ],
+              checkedIds,
+              excludedIdSet
+            )}
           onSelect={handleSelect}
         />
 
         <CompanyLists
           title="검색 결과"
-          companies={withSelectedFlag(searchCompanies)}
+          companies={withSelectedFlag(
+            searchCompanies,
+            checkedIds,
+            excludedIdSet
+          )}
           onSelect={handleSelect}
           emptyMessage="검색 결과가 없습니다."
         />
