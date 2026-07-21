@@ -110,6 +110,16 @@
     .company_detail_top {
         padding: 24px 0 16px 0;
     }    
+    .company_detail_top img {
+        width: 48px;
+        height: 48px;
+    }
+    .company_detail_info h2 {
+        font-size: 20px;
+    }
+    .company_detail_info p {
+        font-size: 16px;
+    }
     .company_summary {
         gap: 0 16px;
         padding: 16px 0;
