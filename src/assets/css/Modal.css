@@ -27,6 +27,7 @@
   top: 0;
   background: var(--black_200);
   z-index: 10;
+  margin-bottom: 24px;
 }
 .modal_wrap .modal_top h3 {
     color: #ffffff;
@@ -66,9 +67,19 @@
   width: 100%;
 }
 
+@media (max-width: 1280px) {
+    .modal_wrap .modal_content .search_wrap {
+        width: 100%;
+        min-width: 100%;
+    }
+}
+
 @media (max-width: 768px) {
     .modal_wrap .modal {
         margin: 0 16px;
+    }
+    .modal_wrap .modal_top {
+        margin-bottom: 16px;
     }
     .modal_footer_btns button {
         width: 135px;
