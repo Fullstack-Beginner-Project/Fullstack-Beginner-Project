@@ -11,10 +11,12 @@ import nonvisibilityIcon from "../assets/images/icon_visibility_off.png";
   ex)
   <Input type={"text"} placeholder={"Test"} onValueChange={(value) => console.log(value)}/>
  */
-function Input({ type, placeholder, onValueChange }) {
+function Input({ type, placeholder, onValueChange, initialValue = "", }) {
   const [first, setFirst] = useState(true);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(initialValue);
   const [visible, setVisible] = useState(false);
+
+  
 
   const handleChange = (e) => { // 부모로 값 보내기
     setValue(e.target.value);
