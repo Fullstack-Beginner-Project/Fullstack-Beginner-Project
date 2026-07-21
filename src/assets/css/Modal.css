@@ -67,11 +67,11 @@
   width: 100%;
 }
 
-@media (max-width: 1280px) {
+/* @media (max-width: 1280px) {
     .search_wrap {
       min-width: 100%;
     }
-}
+} */
 
 @media (max-width: 768px) {
     .modal_wrap .modal {
