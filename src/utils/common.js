@@ -54,6 +54,68 @@ export function readLastCompareSession() {
   }
 }
 
+// 찜한 기업 localStorage 관리
+const FAVORITE_COMPANY_IDS_KEY = "favoriteCompanyIds";
+
+// localStorage에서 찜한 기업 ID 목록을 읽는다.
+export function getFavoriteCompanyIds() {
+
+  try{
+    const stored = localStorage.getItem(FAVORITE_COMPANY_IDS_KEY);
+
+    if (!stored) {
+      return [];
+    }
+    const parsed = JSON.parse(stored);
+
+    if (Array.isArray(parsed)) {
+      return parsed;
+    }
+
+    return [];
+  } catch {
+    return [];
+  }
+}
+
+// 찜한 기업 ID 목록을 localStorage에 저장한다.
+export function saveFavoriteCompanyIds(companyIds) {
+
+  try{
+    localStorage.setItem(
+      FAVORITE_COMPANY_IDS_KEY,
+      JSON.stringify(companyIds)
+    );
+  } catch (error){
+    console.error("찜한 기업 저장 실패", error);
+  }
+}
+
+// 특정 기업이 찜되어 있는지 확인한다.
+export function isFavoriteCompany(companyId) {
+  const favoriteCompanyIds = getFavoriteCompanyIds();
+
+  return favoriteCompanyIds.includes(companyId);
+}
+
+// 찜 추가 또는 해제 후 변경된 ID 목록을 반환한다.
+export function toggleFavoriteCompany(companyId) {
+  const favoriteCompanyIds = getFavoriteCompanyIds();
+
+  let updatedFavoriteCompanyIds;
+
+  if (favoriteCompanyIds.includes(companyId)) {
+    updatedFavoriteCompanyIds = favoriteCompanyIds.filter(
+      (id) => id !== companyId 
+    );
+  } else {
+    updatedFavoriteCompanyIds = [...favoriteCompanyIds, companyId];
+  }
+
+  saveFavoriteCompanyIds(updatedFavoriteCompanyIds);
+  return updatedFavoriteCompanyIds;
+}
+
 // selected / disabled 추가
 export function withSelectedFlag(list, checkedIds, excludedIdSet) {
   return list.map(company => {
