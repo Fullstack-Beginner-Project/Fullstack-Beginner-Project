@@ -47,10 +47,10 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
                 <span className="ellipsis">{value}</span>
 
                 {isFavoriteCompany(row.id) && (
-                <img
-                  src={FilledHeartIcon}
-                  alt="찜한 기업"
-                  className="favorite_icon"
+                  <img
+                    src={FilledHeartIcon}
+                    alt="찜한 기업"
+                    className="favorite_icon"
                   />
                 )}
               </span>
@@ -131,21 +131,42 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
                 {value}
               </p>
               <form action="" className='comment_wrap'>
-                <button type="button" className='btn_comment_menu'
+                <button
+                  type="button"
+                  className="btn_comment_menu"
                   onClick={(event) => {
+                    event.stopPropagation();
                     const currentButton = event.currentTarget;
-                    const wasClicked = currentButton.classList.contains('clicked');
+                    const wasClicked = currentButton.classList.contains("clicked");
 
                     document
-                      .querySelectorAll('.btn_comment_menu.clicked')
+                      .querySelectorAll(".btn_comment_menu.clicked")
                       .forEach((button) => {
-                        button.classList.remove('clicked');
+                        button.classList.remove("clicked");
+
+                        if (button.closeMenuHandler) {
+                          document.removeEventListener("click", button.closeMenuHandler);
+                          button.closeMenuHandler = null;
+                        }
                       });
 
                     if (!wasClicked) {
-                      currentButton.classList.add('clicked');
+                      currentButton.classList.add("clicked");
+
+                      const closeMenu = () => {
+                        currentButton.classList.remove("clicked");
+                        document.removeEventListener("click", closeMenu);
+                        currentButton.closeMenuHandler = null;
+                      };
+
+                      currentButton.closeMenuHandler = closeMenu;
+
+                      setTimeout(() => {
+                        document.addEventListener("click", closeMenu);
+                      }, 0);
                     }
-                  }}>
+                  }}
+                >
                   <span className="no_text">코멘트 메뉴</span>
                 </button>
                 <ul className="comment_menu">

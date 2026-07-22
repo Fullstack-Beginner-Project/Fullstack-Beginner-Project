@@ -176,18 +176,21 @@
     background: url('/src/assets/images/icon_table_menu.svg') center no-repeat;
 }
 
-
+/* comment_menu 위치 */
+.table_wrap .table_body tr:first-child .comment_menu { top: -10px; }
+.table_wrap .table_body tr:last-child .comment_menu { top: -0px; }
 .comment_menu{
-    position: fixed;
+    position: absolute!important;
     z-index: 10;
     
     display: none;
-    left: calc(100% - 230px);
+    top: -30px;
+    left: -115px;
     width: 127px;
     background-color: var(--black_400);
     border: 1px solid var(--gray_200);
     border-radius: 10px;
-    transform: translateY(calc(-50% - 78px));
+    
 }
 
 .comment_menu li{
