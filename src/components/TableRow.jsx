@@ -6,7 +6,8 @@ import LogoImg from "../components/LogoImg.jsx";
 import FilledHeartIcon from "../assets/images/icon_btn_filled_heart.png";
 
 
-function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, currentPage, rowsPerPage, onEditInvestment, onDeleteInvestment }) {
+
+function TableRow({ row, rowIndex, columnDefs, myCompany, currentPage, rowsPerPage, onEditInvestment, onDeleteInvestment }) {
 
   const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0 });    
 
@@ -51,8 +52,8 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
                 <span
                   className="ellipsis"
                   data-fulltext={value}
-                  onMouseEnter={() =>
-                    setTooltip({ visible: true, x: 0, y: 0, text: value })
+                  onMouseEnter={(e) =>
+                    setTooltip({ visible: true, x: e.clientX, y: e.clientY, text: value })
                   }
                   onMouseMove={(e) =>
                     setTooltip({ visible: true, x: e.clientX, y: e.clientY, text: value })

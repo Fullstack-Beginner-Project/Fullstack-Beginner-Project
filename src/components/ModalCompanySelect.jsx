@@ -11,6 +11,7 @@ import {
   normalizeCompany,
   findCompanyById,
   withSelectedFlag,
+  getFavoriteCompanyIds,
   readLastCompareSession,
 } from "../utils/common";
 
@@ -32,7 +33,13 @@ function ModalCompanySelect({
   );
 
   const [selectedCompaniesState, setSelectedCompaniesState] = useState(selectedCompanies);
-  // "최근 비교한 기업"을 나의 기업 / 비교 기업으로 분리 표시 (단일·다중 모드 공통)
+  // 찜한 기업 조회
+  const [favoriteCompanies, setFavoriteCompanies] = useState([]);
+  const [favoriteTotalCount, setFavoriteTotalCount] = useState(0);
+  const [favoritePage, setFavoritePage] = useState(1);
+  const [favoriteTotalPages, setFavoriteTotalPages] = useState(1);
+  const [searchTotalCount, setSearchTotalCount] = useState(0);
+  // 최근 비교한 기업 조회
   const [recentMyCompany, setRecentMyCompany] = useState(null);
   const [recentTargetCompanies, setRecentTargetCompanies] = useState([]);
   const [searchCompanies, setSearchCompanies] = useState([]);
@@ -42,74 +49,81 @@ function ModalCompanySelect({
 
   // API 연결
   useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
-        if (multiple) {
-          const { myCompanyId, compareCompanyIds } = readLastCompareSession();
+  const fetchCompanies = async () => {
+    try {
+      if (multiple) {
+        const { myCompanyId, compareCompanyIds } = readLastCompareSession();
 
-          const [myCompanyResponse, compareResponse] = await Promise.all([
-            myCompanyId
-              ? axios
-                  .get(`/api/companies/${myCompanyId}`)
-                  .catch(() => null)
-              : Promise.resolve(null),
-            axios.get(`/api/compare/companies`, {
-              params: {
-                page: currentPage,
-                pageSize: PAGE_SIZE,
-                keyword,
-                compareCompanyIds: compareCompanyIds.join(",") || undefined,
-              },
-            }),
-          ]);
+        const [myCompanyResponse, compareResponse] = await Promise.all([
+          myCompanyId
+            ? axios
+                .get(`/api/companies/${myCompanyId}`)
+                .catch(() => null)
+            : Promise.resolve(null),
 
-          setRecentMyCompany(myCompanyResponse?.data?.company ?? null);
-          setRecentTargetCompanies(
-            compareResponse.data.selectedCompanies.map(normalizeCompany)
-          );
-          setSearchCompanies(
-            compareResponse.data.companies.map(normalizeCompany)
-          );
-          setTotalPages(compareResponse.data.totalPages);
-        } else {
-          // 마지막 비교 세션(나의 기업 1개 + 비교 기업 최대 5개)을 "최근 비교한 기업"으로 표시
-          const { myCompanyId, compareCompanyIds } = readLastCompareSession();
+          axios.get(`/api/compare/companies`, {
+            params: {
+              page: currentPage,
+              pageSize: PAGE_SIZE,
+              keyword,
+              compareCompanyIds: compareCompanyIds.join(",") || undefined,
+            },
+          }),
+        ]);
 
-          const [myCompanyResponse, response] = await Promise.all([
-            myCompanyId
-              ? axios
-                  .get(`/api/companies/${myCompanyId}`)
-                  .catch(() => null)
-              : Promise.resolve(null),
-            axios.get(`/api/companies/my-company`, {
-              params: {
-                page: currentPage,
-                pageSize: PAGE_SIZE,
-                keyword,
-                myRecentCompanyIds: compareCompanyIds.join(",") || undefined,
-              },
-            }),
-          ]);
+        setRecentMyCompany(myCompanyResponse?.data?.company ?? null);
+        setRecentTargetCompanies(
+          compareResponse.data.selectedCompanies.map(normalizeCompany)
+        );
+        setSearchCompanies(
+          compareResponse.data.companies.map(normalizeCompany)
+        );
+        setSearchTotalCount(compareResponse.data.total);
+        setTotalPages(compareResponse.data.totalPages);
+      } else {
+        const favoriteCompanyIds = getFavoriteCompanyIds();
 
-          setRecentMyCompany(myCompanyResponse?.data?.company ?? null);
-          setRecentTargetCompanies(
-            response.data.recentCompanies.map(normalizeCompany)
-          );
-          setSearchCompanies(
-            response.data.companies.map(normalizeCompany)
-          );
-          setTotalPages(Math.ceil(response.data.totalCount / PAGE_SIZE));
-        }
-      } catch (error) {
-        console.error("기업 목록 불러오기 실패:", error);
+        const [favoriteResponse, response] = await Promise.all([
+          axios.get(`/api/companies/favorites`, {
+            params: {
+              page: favoritePage,
+              pageSize: PAGE_SIZE,
+              sort: "favoriteDesc",
+              favoriteCompanyIds: favoriteCompanyIds.join(",") || undefined,
+            },
+          }),
+
+          axios.get(`/api/companies/my-company`, {
+            params: {
+              page: currentPage,
+              pageSize: PAGE_SIZE,
+              keyword,
+            },
+          }),
+        ]);
+
+        setFavoriteCompanies(
+          favoriteResponse.data.companies.map(normalizeCompany)
+        );
+        setFavoriteTotalCount(favoriteResponse.data.total);
+        setFavoriteTotalPages(favoriteResponse.data.totalPages);
+
+        setSearchCompanies(
+          response.data.companies.map(normalizeCompany)
+        );
+        setSearchTotalCount(response.data.totalCount);
+        setTotalPages(Math.ceil(response.data.totalCount / PAGE_SIZE));
       }
-    };
+    } catch (error) {
+      console.error("기업 목록 불러오기 실패:", error);
+    }
+  };
 
-    fetchCompanies();
-  }, [currentPage, keyword, multiple]);
+  fetchCompanies();
+}, [currentPage, favoritePage, keyword, multiple]);
 
   const isCheckLimitReached =
-    typeof maxSelectable === 'number' && checkedIds.size >= maxSelectable;
+  typeof maxSelectable === 'number' && checkedIds.size >= maxSelectable;
 
   const myCompanyList = recentMyCompany ? [recentMyCompany] : [];
 
@@ -119,8 +133,8 @@ function ModalCompanySelect({
   if (!multiple) {
     const company = findCompanyById(
       id,
-      myCompanyList,
-      recentTargetCompanies,
+      selectedCompaniesState,
+      favoriteCompanies,
       searchCompanies
     );
 
@@ -161,6 +175,21 @@ function ModalCompanySelect({
     setCurrentPage(1);
   };
 
+  const topCompanies = multiple
+  ? [
+      ...(recentMyCompany
+        ? [{ ...recentMyCompany, isMyCompany: true }]
+        : []),
+      ...recentTargetCompanies,
+    ]
+  : favoriteCompanies;
+
+  // 모달 타이틀 정의
+  const topListTitle = multiple ? "최근 비교한 기업" : "찜한 기업";
+  const topEmptyMessage = multiple
+    ? "최근 비교한 기업이 없습니다."
+    : "찜한 기업이 없습니다.";
+
   return (
     <Modal
       title={multiple ? "비교할 기업 선택하기" : "나의 기업 선택하기"}
@@ -194,22 +223,28 @@ function ModalCompanySelect({
       />
       <div className='company_select_list_wrap'>
         <CompanyLists
-          title="최근 비교한 기업"
-            companies={withSelectedFlag(
-              [
-                ...(recentMyCompany
-                  ? [{ ...recentMyCompany, isMyCompany: true }]
-                  : []),
-                ...recentTargetCompanies,
-              ],
-              checkedIds,
-              excludedIdSet
-            )}
+          title={topListTitle}
+          totalCount={multiple ? topCompanies.length : favoriteTotalCount}
+          companies={withSelectedFlag(
+            topCompanies,
+            checkedIds,
+            excludedIdSet
+          )}
           onSelect={handleSelect}
+          emptyMessage={topEmptyMessage}
         />
+
+          {!multiple && favoriteTotalPages > 1 && (
+            <Pagination
+              currentPage={favoritePage}
+              totalPages={favoriteTotalPages}
+              onPageChange={setFavoritePage}
+              />
+          )}
 
         <CompanyLists
           title="검색 결과"
+          totalCount={searchTotalCount}
           companies={withSelectedFlag(
             searchCompanies,
             checkedIds,

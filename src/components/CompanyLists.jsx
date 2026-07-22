@@ -5,18 +5,24 @@ import "../assets/css/CompanyLists.css";
 
 function CompanyLists({ 
   title,
+  totalCount,
   companies, 
   onSelect,
   emptyMessage,
 }) {
+  const resolveEmpthMesssage =
+    title === "검색결과" 
+    ? "검색 결과가 없습니다."
+    : emptyMessage;
+
   return (
     <div className="company_list_wrap">
       <h4>
-        {title} ({companies.length})
+        {title} ({totalCount ?? companies.length})
       </h4>
       {/* 리스트 검색 결과가 있는 경우와 없는 경우 고려 */}
       {companies.length === 0 ? (
-        <p className="empty_message">검색 결과가 없습니다.</p>
+        <p className="empty_message">{resolveEmpthMesssage}</p>
       ) : (
         <ul className="company_list">
           {companies.map((company) => (
