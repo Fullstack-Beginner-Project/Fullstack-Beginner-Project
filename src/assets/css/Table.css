@@ -176,21 +176,28 @@
     background: url('/src/assets/images/icon_table_menu.svg') center no-repeat;
 }
 
-/* comment_menu 위치 */
-.table_wrap .table_body tr:first-child .comment_menu { top: -10px; }
-.table_wrap .table_body tr:last-child .comment_menu { top: -0px; }
+
+
 .comment_menu{
-    position: absolute!important;
+    position: absolute;
     z-index: 10;
     
     display: none;
-    top: -30px;
-    left: -115px;
+    top: calc(50% - 43px);
+    right: calc(100% - 10px);
     width: 127px;
     background-color: var(--black_400);
     border: 1px solid var(--gray_200);
     border-radius: 10px;
-    
+}
+
+/* comment_menu 위치 */
+.table_wrap .table_body tr:first-child .comment_menu{
+    top: -10px;
+}
+.table_wrap .table_body tr:last-child .comment_menu,
+.table_wrap .table_body tr:nth-child(-n+1) .comment_menu{
+    top: -60px;
 }
 
 .comment_menu li{
