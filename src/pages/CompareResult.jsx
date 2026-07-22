@@ -5,7 +5,7 @@ import LogoImg from "../components/LogoImg.jsx";
 import Section from "../components/Section";
 import Dropdown from "../components/Dropdown";
 import Button from "../components/Button";
-import DefaultLogo from "../assets/images/logo_default.png";
+import LogoImg from "../components/LogoImg.jsx";
 import "../assets/css/compareResult.css";
 import ModalConfirm from "../components/ModalConfirm.jsx";
 import Table from "../components/Table";
