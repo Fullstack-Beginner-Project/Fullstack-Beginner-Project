@@ -132,6 +132,14 @@
     gap: 12px;
 }
 
+.table_wrap .table_body tr:has(td.title:hover) > td,
+.table_wrap .table_body td.title:hover ~ td{
+    background-color: var(--black_300);
+}
+
+
+
+
 .table_wrap .table_body td.content .td_inner{
     padding: 15px 11px;
     text-align: left;
