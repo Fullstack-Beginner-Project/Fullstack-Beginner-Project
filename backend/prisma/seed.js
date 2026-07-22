@@ -1,6 +1,12 @@
 import 'dotenv/config';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import bcrypt from 'bcryptjs';
 import prisma from '../src/lib/prisma.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const generatedInvestmentsPath = path.join(__dirname, 'seed-data', 'investments.json');
 
 const companies = [
   {
@@ -39,7 +45,6 @@ const companies = [
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
   },
-  
   {
     id: 'b6n4yc',
     name: '야놀자',
@@ -124,7 +129,7 @@ const companies = [
     myCompanySelectCount: 0,
     compareCompanySelectCount: 0,
   },
-    {
+  {
     id: 'a4w7pz',
     name: '두나무',
     description:
@@ -699,9 +704,407 @@ const investments = [
     comment: 'AI 상담 자동화와 CRM이 함께 있는 SaaS 구조가 매력적입니다.',
     plainPassword: process.env.SEED_PASSWORD_H8S2BN,
   },
+  {
+    id: 'y72sev',
+    companyId: 'a4w7pz',
+    investorName: '김정숙',
+    amount: 5000000000n,
+    comment: '사용자 반응이 좋아 제품의 미래가 기대되는 회사입니다.',
+    plainPassword: process.env.SEED_PASSWORD_A4W7PZ,
+  },
+  {
+    id: '3rbobg',
+    companyId: 'v3n8ka',
+    investorName: '김보람',
+    amount: 470000000n,
+    comment: '수익 구조가 단순하고 예측 가능해서 성장의 초입에 있는 회사라고 판단했습니다.',
+    plainPassword: process.env.SEED_PASSWORD_V3N8KA,
+  },
+  {
+    id: '1pkei2',
+    companyId: 't5u9ve',
+    investorName: '고은비',
+    amount: 59000000n,
+    comment: '진입 장벽이 높고 방어력이 있어서 시간이 지날수록 가치가 더 커질 것이라고 봅니다.',
+    plainPassword: process.env.SEED_PASSWORD_T5U9VE,
+  },
+  {
+    id: 'd0twak',
+    companyId: 'u9s2dg',
+    investorName: '방준혁',
+    amount: 22000000n,
+    comment: '고객 획득 비용이 꾸준히 낮아지고 있어 앞으로의 성장 잠재력이 충분하다고 판단했습니다.',
+    plainPassword: process.env.SEED_PASSWORD_U9S2DG,
+  },
+  {
+    id: '2puayo',
+    companyId: 'w6r8tn',
+    investorName: '홍승기',
+    amount: 2700000000n,
+    comment: null,
+    plainPassword: process.env.SEED_PASSWORD_W6R8TN,
+  },
+  {
+    id: '9vb9gk',
+    companyId: 'd7b3ai',
+    investorName: '박정호',
+    amount: 14000000n,
+    comment: '팀의 실행력이 검증되어 있고 결과적으로 좋은 선택이 될 것이라고 판단했습니다.',
+    plainPassword: process.env.SEED_PASSWORD_D7B3AI,
+  },
+  {
+    id: 'a3qixx',
+    companyId: 'm5k8st',
+    investorName: '정해성',
+    amount: 1100000000n,
+    comment: '초기 고객의 만족도가 높게 유지되고 있어 조심스럽지만 긍정적으로 전망하고 있습니다.',
+    plainPassword: process.env.SEED_PASSWORD_M5K8ST,
+  },
+  {
+    id: '1y4621',
+    companyId: 'x2d9xp',
+    investorName: '하도현',
+    amount: 7300000n,
+    comment: '핵심 지표가 꾸준히 우상향하고 있어 지켜볼 가치가 충분한 회사라고 봅니다.',
+    plainPassword: process.env.SEED_PASSWORD_X2D9XP,
+  },
+  {
+    id: 'inr6co',
+    companyId: 'r4b7ll',
+    investorName: '조현아',
+    amount: 84000000n,
+    comment: '파트너십이 안정적으로 확대되고 있어 좋은 기업으로 성장해 나갈 것이라고 믿습니다.',
+    plainPassword: process.env.SEED_PASSWORD_R4B7LL,
+  },
+  {
+    id: 'i1matw',
+    companyId: 'l6f2ex',
+    investorName: '서지원',
+    amount: 36000000n,
+    comment: '시장 흐름과 제품 방향이 잘 맞물려 있고 시장에서 의미 있는 위치를 차지할 것으로 기대합니다.',
+    plainPassword: process.env.SEED_PASSWORD_L6F2EX,
+  },
+  {
+    id: 'arvxll',
+    companyId: 'asdekf',
+    investorName: '박태호',
+    amount: 4100000000n,
+    comment: '시장의 크기와 팀의 역량을 함께 보고 투자를 결정했습니다.',
+    plainPassword: process.env.SEED_PASSWORD_ASDEKF,
+  },
+  {
+    id: 'gc35sd',
+    companyId: 'wd301j',
+    investorName: '김우진',
+    amount: 230000000n,
+    comment: '팀이 어려운 문제에 정면으로 부딪히고 있어 기대 이상의 성과가 나올 가능성이 높다고 봅니다.',
+    plainPassword: process.env.SEED_PASSWORD_WD301J,
+  },
+  {
+    id: 'pt2pnp',
+    companyId: 'hf202h',
+    investorName: '이민석',
+    amount: 520000000n,
+    comment: '창업자의 문제 이해도가 깊고 장기 투자에 적합한 회사라고 판단했습니다.',
+    plainPassword: process.env.SEED_PASSWORD_HF202H,
+  },
+  {
+    id: 'q5m0bv',
+    companyId: 'pl088x',
+    investorName: '김명자',
+    amount: 9700000000n,
+    comment: '데이터 지표가 가설을 잘 뒷받침하고 있어 잠재력에 비해 아직 저평가되어 있다고 봅니다.',
+    plainPassword: process.env.SEED_PASSWORD_PL088X,
+  },
+  {
+    id: '4kxvj1',
+    companyId: 'go119g',
+    investorName: '김재원',
+    amount: 18000000n,
+    comment: '시장의 크기와 팀의 역량을 함께 보고 투자를 결정했습니다.',
+    plainPassword: process.env.SEED_PASSWORD_GO119G,
+  },
+  {
+    id: 'y4xyml',
+    companyId: 'ap187b',
+    investorName: '김소율',
+    amount: 45000000n,
+    comment: '시장 진입 시점이 적절해 보이고 시장을 선도할 잠재력이 있다고 봅니다.',
+    plainPassword: process.env.SEED_PASSWORD_AP187B,
+  },
+  {
+    id: 'zs0bkk',
+    companyId: 'nb203e',
+    investorName: '안소희',
+    amount: 9600000000n,
+    comment: '브랜드 신뢰도가 꾸준히 쌓이고 있어 잠재력에 비해 아직 저평가되어 있다고 봅니다.',
+    plainPassword: process.env.SEED_PASSWORD_NB203E,
+  },
+  {
+    id: '1ateo5',
+    companyId: 'fw195z',
+    investorName: '이성민',
+    amount: 4400000000n,
+    comment: '앞으로의 성장 여정을 함께하고 싶어 투자를 결정했습니다.',
+    plainPassword: process.env.SEED_PASSWORD_FW195Z,
+  },
+  {
+    id: 'oy1xsj',
+    companyId: 'fp686d',
+    investorName: '허준호',
+    amount: 57000000n,
+    comment: '매출처가 다변화되어 있어 리스크가 분산되고 장기적으로 든든한 파트너가 될 것 같습니다.',
+    plainPassword: process.env.SEED_PASSWORD_FP686D,
+  },
+  {
+    id: 'hqw99r',
+    companyId: 'tb094e',
+    investorName: '장원준',
+    amount: 21000000n,
+    comment: '브랜드 신뢰도가 꾸준히 쌓이고 있어 투자를 결심하는 데 큰 힘이 되었습니다.',
+    plainPassword: process.env.SEED_PASSWORD_TB094E,
+  },
+  {
+    id: '3vlm62',
+    companyId: 'sr682f',
+    investorName: '정우진',
+    amount: 98000000n,
+    comment: '확장 가능성이 여러 방향으로 열려 있어서 앞으로의 행보를 응원하며 투자하기로 했습니다.',
+    plainPassword: process.env.SEED_PASSWORD_SR682F,
+  },
+  {
+    id: 'vtr5tc',
+    companyId: 'ob877g',
+    investorName: '강예서',
+    amount: 23000000n,
+    comment: '조직이 빠르게 성장하면서도 문화가 안정적이라서 향후 몇 년간 꾸준히 성장할 것으로 전망합니다.',
+    plainPassword: process.env.SEED_PASSWORD_OB877G,
+  },
+  {
+    id: 'uc16uw',
+    companyId: 'ld074h',
+    investorName: '이서윤',
+    amount: 680000000n,
+    comment: '고객 추천을 통한 유입이 늘고 있어 성장의 방향성이 분명하다고 판단했습니다.',
+    plainPassword: process.env.SEED_PASSWORD_LD074H,
+  },
+  {
+    id: '8f1wlr',
+    companyId: 'bs179x',
+    investorName: '남기훈',
+    amount: 740000000n,
+    comment: '시장의 미충족 수요가 크고 다음 단계로의 도약이 기대됩니다.',
+    plainPassword: process.env.SEED_PASSWORD_BS179X,
+  },
+  {
+    id: '33ajen',
+    companyId: 'cl029y',
+    investorName: '임수아',
+    amount: 960000000n,
+    comment: '작지만 단단하게 성장하는 모습이 인상적이었습니다.',
+    plainPassword: process.env.SEED_PASSWORD_CL029Y,
+  },
+  {
+    id: 'oh3est',
+    companyId: 'ss116s',
+    investorName: '김예진',
+    amount: 31000000n,
+    comment: '견고한 리텐션이 이 사업의 지속 가능성을 뒷받침합니다.',
+    plainPassword: process.env.SEED_PASSWORD_SS116S,
+  },
+  {
+    id: 'o62vcz',
+    companyId: 'sw854t',
+    investorName: '조민기',
+    amount: 3300000000n,
+    comment: '제품 완성도가 높고 사용자 반응이 좋아서 장기적으로 든든한 파트너가 될 것 같습니다.',
+    plainPassword: process.env.SEED_PASSWORD_SW854T,
+  },
+  {
+    id: 'kv024b',
+    companyId: 'rc280u',
+    investorName: '박상현',
+    amount: 26000000n,
+    comment: '브랜드 신뢰도가 꾸준히 쌓이고 있어 기대 이상의 성과가 나올 가능성이 높다고 봅니다.',
+    plainPassword: process.env.SEED_PASSWORD_RC280U,
+  },
+  {
+    id: 'hqnqu9',
+    companyId: 'dd027m',
+    investorName: '박민호',
+    amount: 3500000n,
+    comment: null,
+    plainPassword: process.env.SEED_PASSWORD_DD027M,
+  },
+  {
+    id: '5peqgm',
+    companyId: 'hc007m',
+    investorName: '전유정',
+    amount: 7800000n,
+    comment: '초기 트랙션만으로도 충분한 가능성을 확인했습니다.',
+    plainPassword: process.env.SEED_PASSWORD_HC007M,
+  },
+  {
+    id: 's2k2di',
+    companyId: 'mg071x',
+    investorName: '윤서희',
+    amount: 5000000n,
+    comment: '아직 초기지만 수익성 개선의 신호가 뚜렷하게 보입니다.',
+    plainPassword: process.env.SEED_PASSWORD_MG071X,
+  },
+  {
+    id: '1uw276',
+    companyId: 'hw060e',
+    investorName: '오승우',
+    amount: 77000000n,
+    comment: '시장 규모가 크고 성장 속도가 빨라서 기대를 걸어볼 만한 회사라고 생각합니다.',
+    plainPassword: process.env.SEED_PASSWORD_HW060E,
+  },
+  {
+    id: 'zunm6f',
+    companyId: 'lv425d',
+    investorName: '이도윤',
+    amount: 980000000n,
+    comment: '반복 구매가 자연스럽게 일어나고 있어 흔들림 없이 성장해 나갈 것으로 기대합니다.',
+    plainPassword: process.env.SEED_PASSWORD_LV425D,
+  },
+  {
+    id: 'mpablb',
+    companyId: 'wc147z',
+    investorName: '나윤호',
+    amount: 9200000000n,
+    comment: '서비스 확장에 필요한 기반이 잘 갖춰져 있어서 지금 합류하기에 좋은 시점이라고 봅니다.',
+    plainPassword: process.env.SEED_PASSWORD_WC147Z,
+  },
+  {
+    id: 'mu62wm',
+    companyId: 'ma050y',
+    investorName: '문서희',
+    amount: 970000000n,
+    comment: null,
+    plainPassword: process.env.SEED_PASSWORD_MA050Y,
+  },
+  {
+    id: '1vwo2n',
+    companyId: 'gb013x',
+    investorName: '서지원',
+    amount: 2900000000n,
+    comment: '수익 구조가 단순하고 예측 가능해서 꾸준한 성장이 이어질 것으로 전망합니다.',
+    plainPassword: process.env.SEED_PASSWORD_GB013X,
+  },
+  {
+    id: 'acbfyd',
+    companyId: 'ps014q',
+    investorName: '이재훈',
+    amount: 22000000n,
+    comment: '오랜 검토 끝에 함께 성장하고 싶다는 확신이 들었습니다.',
+    plainPassword: process.env.SEED_PASSWORD_PS014Q,
+  },
+  {
+    id: 'p18e6q',
+    companyId: 're053v',
+    investorName: '김명자',
+    amount: 7700000000n,
+    comment: null,
+    plainPassword: process.env.SEED_PASSWORD_RE053V,
+  },
+  {
+    id: 'gzkcuz',
+    companyId: 'pc050u',
+    investorName: '강예서',
+    amount: 1700000000n,
+    comment: '시장의 미충족 수요를 정확히 겨냥한 점이 매력적입니다.',
+    plainPassword: process.env.SEED_PASSWORD_PC050U,
+  },
+  {
+    id: '0g65bp',
+    companyId: 'ts733a',
+    investorName: '박현준',
+    amount: 620000000n,
+    comment: '실행 속도와 학습 속도가 모두 빨라서 성장의 여지가 아직 많이 남아 있다고 봅니다.',
+    plainPassword: process.env.SEED_PASSWORD_TS733A,
+  },
+  {
+    id: 'fv5o1j',
+    companyId: 'ag015b',
+    investorName: '장예나',
+    amount: 810000000n,
+    comment: '고객 추천을 통한 유입이 늘고 있어 지속적인 관심을 가지고 지켜보려 합니다.',
+    plainPassword: process.env.SEED_PASSWORD_AG015B,
+  },
 ];
 
+const INVESTMENT_DATE_POOL_START = new Date('2026-06-03T09:00:00.000Z');
+const INVESTMENT_DATE_POOL_END = new Date('2026-07-21T09:00:00.000Z');
+const INVESTMENT_BUCKET_COUNT = 5;
+const companyInvestmentCounts = new Map();
+
+function getSeedNumber(text) {
+  let seed = 0;
+
+  for (let index = 0; index < text.length; index += 1) {
+    seed += text.charCodeAt(index);
+  }
+
+  return seed;
+}
+
+function buildInvestmentDatePool() {
+  const pool = [];
+  const current = new Date(INVESTMENT_DATE_POOL_START);
+
+  while (current <= INVESTMENT_DATE_POOL_END) {
+    pool.push(new Date(current));
+    current.setUTCDate(current.getUTCDate() + 1);
+  }
+
+  return pool;
+}
+
+function getCompanyCreatedAtBuckets(companyId) {
+  const pool = buildInvestmentDatePool();
+  const buckets = [];
+  const usedIndexes = new Set();
+  let seed = getSeedNumber(companyId);
+
+  while (buckets.length < INVESTMENT_BUCKET_COUNT) {
+    const index = seed % pool.length;
+
+    if (!usedIndexes.has(index)) {
+      buckets.push(pool[index]);
+      usedIndexes.add(index);
+    }
+
+    seed += 7;
+  }
+
+  buckets.sort((left, right) => left.getTime() - right.getTime());
+  return buckets;
+}
+
+function getInvestmentCreatedAt(companyId) {
+  const buckets = getCompanyCreatedAtBuckets(companyId);
+  const currentCount = companyInvestmentCounts.get(companyId) || 0;
+
+  companyInvestmentCounts.set(companyId, currentCount + 1);
+
+  return buckets[currentCount % buckets.length];
+}
+
+function assertSeedPassword(investmentId, plainPassword) {
+  const isDefaultValue =
+    !plainPassword || plainPassword === 'changetopassword' || /^change_?me/i.test(plainPassword);
+
+  if (isDefaultValue) {
+    throw new Error(
+      `시드 투자(${investmentId})의 비밀번호가 비어 있거나 기본값입니다. .env의 SEED_PASSWORD_* 값을 고유한 값으로 변경해주세요.`
+    );
+  }
+}
+
 async function main() {
+  companyInvestmentCounts.clear();
+
   for (const company of companies) {
     await prisma.company.upsert({
       where: { id: company.id },
@@ -710,9 +1113,13 @@ async function main() {
     });
   }
 
+  await prisma.investment.deleteMany();
+
   for (const investment of investments) {
     const { plainPassword, ...investmentData } = investment;
+    assertSeedPassword(investment.id, plainPassword);
     investmentData.password = await bcrypt.hash(plainPassword, 10);
+    investmentData.createdAt = getInvestmentCreatedAt(investment.companyId);
 
     await prisma.investment.upsert({
       where: { id: investment.id },
@@ -720,6 +1127,37 @@ async function main() {
       create: investmentData,
     });
   }
+
+  await seedGeneratedInvestments();
+}
+
+async function seedGeneratedInvestments() {
+  if (!fs.existsSync(generatedInvestmentsPath)) {
+    return;
+  }
+
+  const generated = JSON.parse(fs.readFileSync(generatedInvestmentsPath, 'utf8'));
+  const companyIds = new Set(companies.map((company) => company.id));
+
+  const toCreate = generated
+    .filter((investment) => companyIds.has(investment.companyId))
+    .map((investment) => ({
+      id: investment.id,
+      companyId: investment.companyId,
+      investorName: investment.investorName,
+      amount: BigInt(investment.amount),
+      comment: investment.comment ?? null,
+      password: investment.password,
+      createdAt: getInvestmentCreatedAt(investment.companyId),
+    }));
+
+  const BATCH_SIZE = 500;
+  for (let start = 0; start < toCreate.length; start += BATCH_SIZE) {
+    const batch = toCreate.slice(start, start + BATCH_SIZE);
+    await prisma.investment.createMany({ data: batch, skipDuplicates: true });
+  }
+
+  console.log(`샘플 투자 시드 완료: 신규 ${toCreate.length}건 (파일 총 ${generated.length}건)`);
 }
 
 main()
