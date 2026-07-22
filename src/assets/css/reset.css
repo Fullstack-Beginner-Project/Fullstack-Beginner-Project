@@ -73,13 +73,13 @@ a{
     object-fit: cover;
 }
 
-.ellipsis{
-    display: inline-block;
-    width: 100%;
-    word-wrap: normal;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+.ellipsis {
+  display: inline-block;
+  width: 100%;
+  word-wrap: normal;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 input,

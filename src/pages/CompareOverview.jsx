@@ -52,10 +52,10 @@ function CompareOverview() {
         setSortOption("selectCountAsc");
         break;
       case "비교 기업 선택 횟수 높은순":
-        setSortOption("compareCompanySelectCountDesc");
+        setSortOption("compareCountDesc");
         break;
       case "비교 기업 선택 횟수 낮은순":
-        setSortOption("compareCompanySelectCountAsc");
+        setSortOption("compareCountAsc");
         break;
       default:
         setSortOption("selectCountDesc");

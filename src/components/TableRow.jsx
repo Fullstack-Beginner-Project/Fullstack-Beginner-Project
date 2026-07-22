@@ -1,17 +1,18 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
+import { Link } from 'react-router-dom';
 import { formatAmount, isFavoriteCompany } from '/src/utils/common.js'
 import LogoImg from './LogoImg';
 import FilledHeartIcon from "../assets/images/icon_btn_filled_heart.png";
 
 
-function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, currentPage, rowsPerPage, onEditInvestment, onDeleteInvestment }) {
+function TableRow({ row, rowIndex, columnDefs, myCompany, currentPage, rowsPerPage, onEditInvestment, onDeleteInvestment }) {
 
+  const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0 });    
 
   const renderCell = (column) => {
-
+  
     const value = row[column.key];
-    // console.log("column.key:", column.key);
-    // console.log("value:", value);
 
     switch (column.key) {
       case "own_rank":
@@ -38,19 +39,35 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
       case "name":
         return (
           <td key={column.key} className={'title'}>
-            <Link to={`/company/${row.id}`} className="company_link td_inner" onClick={(e) => e.stopPropagation()}
+            <Link
+              to={`/company/${row.id}`}
+              className="company_link td_inner"
+              onClick={(e) => e.stopPropagation()}
             >
               <div className="img_wrap object_fit_cover">
                 <LogoImg cId={row.id} cNm={value} />
               </div>
               <span className="c_nm">
-                <span className="ellipsis">{value}</span>
-
+                <span
+                  className="ellipsis"
+                  data-fulltext={value}
+                  onMouseEnter={(e) =>
+                    setTooltip({ visible: true, x: e.clientX, y: e.clientY, text: value })
+                  }
+                  onMouseMove={(e) =>
+                    setTooltip({ visible: true, x: e.clientX, y: e.clientY, text: value })
+                  }
+                  onMouseLeave={() =>
+                    setTooltip({ visible: false, x: 0, y: 0, text: "" })
+                  }
+                >
+                  {value}
+                </span>
                 {isFavoriteCompany(row.id) && (
-                <img
-                  src={FilledHeartIcon}
-                  alt="찜한 기업"
-                  className="favorite_icon"
+                  <img
+                    src={FilledHeartIcon}
+                    alt="찜한 기업"
+                    className="favorite_icon"
                   />
                 )}
               </span>
@@ -131,21 +148,42 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
                 {value}
               </p>
               <form action="" className='comment_wrap'>
-                <button type="button" className='btn_comment_menu'
+                <button
+                  type="button"
+                  className="btn_comment_menu"
                   onClick={(event) => {
+                    event.stopPropagation();
                     const currentButton = event.currentTarget;
-                    const wasClicked = currentButton.classList.contains('clicked');
+                    const wasClicked = currentButton.classList.contains("clicked");
 
                     document
-                      .querySelectorAll('.btn_comment_menu.clicked')
+                      .querySelectorAll(".btn_comment_menu.clicked")
                       .forEach((button) => {
-                        button.classList.remove('clicked');
+                        button.classList.remove("clicked");
+
+                        if (button.closeMenuHandler) {
+                          document.removeEventListener("click", button.closeMenuHandler);
+                          button.closeMenuHandler = null;
+                        }
                       });
 
                     if (!wasClicked) {
-                      currentButton.classList.add('clicked');
+                      currentButton.classList.add("clicked");
+
+                      const closeMenu = () => {
+                        currentButton.classList.remove("clicked");
+                        document.removeEventListener("click", closeMenu);
+                        currentButton.closeMenuHandler = null;
+                      };
+
+                      currentButton.closeMenuHandler = closeMenu;
+
+                      setTimeout(() => {
+                        document.addEventListener("click", closeMenu);
+                      }, 0);
                     }
-                  }}>
+                  }}
+                >
                   <span className="no_text">코멘트 메뉴</span>
                 </button>
                 <ul className="comment_menu">
@@ -173,11 +211,32 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
   // console.log(row.id)
 
   return (
-    <tr className={row.id === myCompany ? "selection" : undefined}>
-      {columnDefs.map((column) => {
-        return renderCell(column);
-      })}
-    </tr>
+    <>
+      <tr className={row.id === myCompany ? "selection" : undefined}>
+        {columnDefs.map((column) => renderCell(column))}
+      </tr>
+
+      {tooltip.visible && createPortal(
+        <div
+          className="tooltip"
+          style={{
+            position: "fixed",
+            top: tooltip.y + 15,
+            left: tooltip.x + 15,
+            background: "#333",
+            color: "#fff",
+            padding: "4px 8px",
+            borderRadius: "4px",
+            fontSize: "12px",
+            whiteSpace: "nowrap",
+            zIndex: 9999,
+          }}
+        >
+          {tooltip.text}
+        </div>,
+        document.body
+      )}
+    </>
   );
 }
 

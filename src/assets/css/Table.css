@@ -177,17 +177,28 @@
 }
 
 
+
+/* comment_menu 위치 */
 .comment_menu{
-    position: fixed;
+    position: absolute;
     z-index: 10;
     
     display: none;
-    left: calc(100% - 230px);
+    top: calc(50% - 43px);
+    right: calc(100% - 10px);
     width: 127px;
     background-color: var(--black_400);
     border: 1px solid var(--gray_200);
     border-radius: 10px;
-    transform: translateY(calc(-50% - 78px));
+}
+
+/* comment_menu 위치 */
+.table_wrap .table_body tr:first-child .comment_menu{
+    top: -10px;
+}
+.table_wrap .table_body tr:last-child .comment_menu,
+.table_wrap .table_body tr:nth-last-child(1) .comment_menu{
+    top: -60px;
 }
 
 .comment_menu li{
@@ -233,6 +244,20 @@
     width: 100%;
     height: 32px;
     overflow: hidden;
+    position: relative;
+}
+
+.table_wrap .table_body .company_link .favorite_icon {
+    width: 18px;
+    height: 18px;
+    margin-left: 8px;
+    flex-shrink: 0;
+}
+
+@media screen and (max-width: 768px) {
+    .table_wrap td *{
+        font-size: 14px;
+    }
 }
 
 .table_wrap .table_body .company_link .favorite_icon {

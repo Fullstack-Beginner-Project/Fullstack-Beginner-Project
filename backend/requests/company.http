@@ -34,6 +34,14 @@ GET http://localhost:3000/api/companies/f8q2mz/investments?page=1&pageSize=5
 ### 기업별 투자 목록 잘못된 page
 GET http://localhost:3000/api/companies/f8q2mz/investments?page=abc
 
+### 기업별 상세 조회의 차트 전용 조회
+GET http://localhost:3000/api/companies/f8q2mz/investments/chart
+
+### 기업별 상세 조회의 차트 전용 조회 - 잘못된 메서드
+POST http://localhost:3000/api/companies/f8q2mz/investments/chart
+
+### 기업별 상세 조회의 차트 전용 조회 - 잘못된 companyId
+GET http://localhost:3000/api/companies/zzzzzz/investments/chart
 
 
 ### 나의 기업 선택 모달 - 기본 조회
