@@ -1,0 +1,82 @@
+.chart_wrap {
+  width: 100%;
+  height: 390px;
+}
+
+.investment_status {
+  padding: 48px 56px;
+}
+
+.investment_status h2 {
+  margin-bottom: 32px;
+  color: #fff;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.investment_chart {
+  width: 100%;
+  height: 390px;
+
+  /* 현재 영역 확인용 */
+  /* border: 1px dashed #747474; */
+}
+
+/* 가로 그리드 선 */
+.investment_chart_grid{
+  stroke: #666;
+  /* stroke-dasharray: 3 3;   */
+}
+
+.investment_chart_grid line {
+  stroke: #333333;
+  stroke-dasharray: 3 3;
+}
+
+/* X축과 Y축 눈금 텍스트 */
+.investment_chart_axis .recharts-cartesian-axis-tick-value {
+  fill: #ff0000;
+}
+
+/* X축 기준선 */
+.investment_chart_x_axis .recharts-cartesian-axis-line {
+  stroke: #4b4b4b;
+}
+
+.investment_chart .recharts-wrapper:focus:not(:focus-visible),
+.investment_chart .recharts-surface:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.recharts-cartesian-axis-tick-labels.recharts-xAxis-tick-labels{
+    padding-top: 10px;
+    transform: translateY(12px);
+    
+}
+
+.recharts-cartesian-axis-tick-labels.recharts-yAxis-tick-labels{
+    padding-top: 10px;
+    transform: translateX(-6px);
+    
+}
+
+.chart_wrap,
+.investment_chart {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.chart_wrap .investment_chart{
+    min-width: 518px;
+}
+
+
+@media (max-width: 768px) {
+    .recharts-layer.recharts-cartesian-axis-tick-label text{
+        font-size: 14px;
+    }
+
+    .compay_chart.summary_box.company_description{
+        padding-right: 0;
+    }
+}
