@@ -36,8 +36,8 @@ const PageSize = refine(string(), 'PageSize', (value) => {
 const COMPARE_STATUS_SORT_VALUES = [
   'selectCountDesc',
   'selectCountAsc',
-  'investmentDesc',
-  'investmentAsc',
+  'compareCountDesc',
+  'compareCountAsc',
 ];
 
 const COMPARE_RESULT_SORT_VALUES = [
