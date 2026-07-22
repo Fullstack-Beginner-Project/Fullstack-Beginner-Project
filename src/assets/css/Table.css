@@ -203,8 +203,6 @@
 
 .comment_menu li{
     width: 100%;
-    padding: 12px;
-    text-align: center;
 }
 
 .comment_menu li + li{
@@ -215,10 +213,14 @@
     text-align: center;
 }
 
+.comment_menu li button{
+    width: 100%;
+    padding: 12px;
+    text-align: center;
+}
 .btn_comment_menu.clicked + .comment_menu{
     display: block;
 }
-
 
 .table_wrap .table_body td.title{
     padding: 0;
