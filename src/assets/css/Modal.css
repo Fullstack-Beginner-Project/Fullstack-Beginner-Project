@@ -100,17 +100,27 @@ input[type='number'] {
     }
 }
 
+/* 스크롤 영역 */
 /* 스크롤바의 폭 너비 */
 .modal_content::-webkit-scrollbar {
-    width: 7px;  
-}
-
-.modal_content::-webkit-scrollbar-thumb {
-    background-color: var(--black_400); /* 스크롤바 */
-    border-radius: 5px;
+    width: 12px;  
 }
 
 .modal_content::-webkit-scrollbar-track {
-    background-color: var(--gray_300);  /*스크롤바 뒷 배경*/
-    border-radius: 5px;
+    background-color: var(--black_300);  /*스크롤바 뒷 배경*/
+    border-radius: 10px;
+}
+.modal_content::-webkit-scrollbar-thumb {
+    background-color: var(--gray_400); /* 스크롤바 */
+  border-radius: 8px;
+  border: 2px solid var(--black_300);
+}
+
+.modal_content::-webkit-scrollbar-thumb:hover {
+  background: var(--gray_300);
+}
+
+/* 양옆 화살표 제거 */
+.modal_content::-webkit-scrollbar-button {
+  display: none;
 }
