@@ -197,7 +197,7 @@
     top: -10px;
 }
 .table_wrap .table_body tr:last-child .comment_menu,
-.table_wrap .table_body tr:nth-child(-n+1) .comment_menu{
+.table_wrap .table_body tr:nth-last-child(1) .comment_menu{
     top: -60px;
 }
 
