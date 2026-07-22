@@ -10,6 +10,7 @@ import "../assets/css/compareResult.css";
 
 import Table from "../components/Table";
 import ModalInvest from "../components/ModalInvest";
+import ModalConfirm from "../components/ModalConfirm";
 
 const SORT_OPTIONS = [
   "누적 투자금액 높은순",
@@ -119,6 +120,10 @@ function CompareResult() {
   const [sortOption, setSortOption] = useState(SORT_OPTIONS[0]);
   const [compareResultSortOption, setCompareResultSortOption] = useState(SORT_OPTIONS[0]);
   const [rankedCompanies, setRankedCompanies] = useState([]);
+  const [confirmModal, setConfirmModal] = useState({
+    open: false,
+    message: "",
+  });
 
   const handleOpenModal = () => {
     setOpenSlot(true);
@@ -145,10 +150,21 @@ function CompareResult() {
     try {
       const response = await axios.post(`/api/investments`, payload);
       console.log("투자 성공:", response.data);
-      alert("투자가 완료되었습니다!");
       handleCloseModal();
+
+      // 성공 모달 열기
+      setConfirmModal({
+        open: true,
+        message: "투자가 완료되었어요!",
+      });
     } catch (error) {
       console.error("투자 실패:", error.response?.data || error.message);
+
+      // 실패 모달 열기
+      setConfirmModal({
+        open: true,
+        message: "투자에 실패했습니다.",
+      });
     }
   };
 
@@ -300,6 +316,17 @@ function CompareResult() {
           company={myCompany}
           onClose={handleCloseModal}
           onInvest={handleInvest}   // form을 인자로 받음
+        />
+      )}
+      {confirmModal.open && (
+        <ModalConfirm
+          message={confirmModal.message}
+          onClose={() =>
+            setConfirmModal({
+              open: false,
+              message: "",
+            })
+          }
         />
       )}
 
