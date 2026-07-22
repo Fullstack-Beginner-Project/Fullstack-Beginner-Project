@@ -149,6 +149,7 @@ function CompareResult() {
         message: "투자가 완료되었습니다!",
       });
       handleCloseModal();
+
     } catch (error) {
       console.error("투자 실패:", error.response?.data || error.message);
       setConfirmModal({

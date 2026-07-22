@@ -14,7 +14,6 @@
 }
 .invest_company div {
     display: flex;
-    align-items: center;
     gap: 0 8px;
 }
 .invest_company div p {
