@@ -7,7 +7,7 @@ import Dropdown from "../components/Dropdown";
 import Button from "../components/Button";
 import DefaultLogo from "../assets/images/logo_default.png";
 import "../assets/css/compareResult.css";
-
+import ModalConfirm from "../components/ModalConfirm.jsx";
 import Table from "../components/Table";
 import ModalInvest from "../components/ModalInvest";
 import ModalConfirm from "../components/ModalConfirm";
@@ -124,6 +124,10 @@ function CompareResult() {
     open: false,
     message: "",
   });
+  const [confirmModal, setConfirmModal] = useState({
+    open: false,
+    message: "",
+  });
 
   const handleOpenModal = () => {
     setOpenSlot(true);
@@ -134,7 +138,6 @@ function CompareResult() {
   };
 
   const handleInvest = async (form) => {
-    // 서버 스펙에 맞게 변환
     const payload = {
       companyId: myCompany.id,
       investorName: form.investor,
@@ -143,13 +146,13 @@ function CompareResult() {
       password: form.password,
       passwordConfirmation: form.passwordConfirm,
     };
-
-    // 콘솔로 확인
-    console.log(JSON.stringify(payload, null, 2));
-
     try {
       const response = await axios.post(`/api/investments`, payload);
       console.log("투자 성공:", response.data);
+      setConfirmModal({
+        open: true,
+        message: "투자가 완료되었습니다!",
+      });
       handleCloseModal();
 
       // 성공 모달 열기
@@ -159,11 +162,9 @@ function CompareResult() {
       });
     } catch (error) {
       console.error("투자 실패:", error.response?.data || error.message);
-
-      // 실패 모달 열기
       setConfirmModal({
         open: true,
-        message: "투자에 실패했습니다.",
+        message: "투자에 실패했습니다. 다시 시도해주세요.",
       });
     }
   };
@@ -318,6 +319,7 @@ function CompareResult() {
           onInvest={handleInvest}   // form을 인자로 받음
         />
       )}
+
       {confirmModal.open && (
         <ModalConfirm
           message={confirmModal.message}
@@ -329,7 +331,6 @@ function CompareResult() {
           }
         />
       )}
-
     </div>
   );
 }
