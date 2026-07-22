@@ -244,6 +244,7 @@
     width: 100%;
     height: 32px;
     overflow: hidden;
+    position: relative;
 }
 
 .table_wrap .table_body .company_link .favorite_icon {

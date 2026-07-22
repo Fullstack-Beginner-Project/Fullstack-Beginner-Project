@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { formatAmount, isFavoriteCompany } from '/src/utils/common.js'
 import LogoImg from './LogoImg';
@@ -6,12 +7,11 @@ import FilledHeartIcon from "../assets/images/icon_btn_filled_heart.png";
 
 function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, currentPage, rowsPerPage, onEditInvestment, onDeleteInvestment }) {
 
+  const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0 });    
 
   const renderCell = (column) => {
-
+  
     const value = row[column.key];
-    // console.log("column.key:", column.key);
-    // console.log("value:", value);
 
     switch (column.key) {
       case "own_rank":
@@ -38,14 +38,30 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
       case "name":
         return (
           <td key={column.key} className={'title'}>
-            <Link to={`/company/${row.id}`} className="company_link td_inner" onClick={(e) => e.stopPropagation()}
+            <Link
+              to={`/company/${row.id}`}
+              className="company_link td_inner"
+              onClick={(e) => e.stopPropagation()}
             >
               <div className="img_wrap object_fit_cover">
                 <LogoImg cId={row.id} cNm={value} />
               </div>
               <span className="c_nm">
-                <span className="ellipsis">{value}</span>
-
+                <span
+                  className="ellipsis"
+                  data-fulltext={value}
+                  onMouseEnter={() =>
+                    setTooltip({ visible: true, x: 0, y: 0, text: value })
+                  }
+                  onMouseMove={(e) =>
+                    setTooltip({ visible: true, x: e.clientX, y: e.clientY, text: value })
+                  }
+                  onMouseLeave={() =>
+                    setTooltip({ visible: false, x: 0, y: 0, text: "" })
+                  }
+                >
+                  {value}
+                </span>
                 {isFavoriteCompany(row.id) && (
                   <img
                     src={FilledHeartIcon}
@@ -194,11 +210,31 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
   // console.log(row.id)
 
   return (
-    <tr className={row.id === myCompany ? "selection" : undefined}>
-      {columnDefs.map((column) => {
-        return renderCell(column);
-      })}
-    </tr>
+    <>
+      <tr className={row.id === myCompany ? "selection" : undefined}>
+        {columnDefs.map((column) => renderCell(column))}
+      </tr>
+
+      {tooltip.visible && (
+        <div
+          className="tooltip"
+          style={{
+            position: "fixed",
+            top: tooltip.y + 15,
+            left: tooltip.x + 15,
+            background: "#333",
+            color: "#fff",
+            padding: "4px 8px",
+            borderRadius: "4px",
+            fontSize: "12px",
+            whiteSpace: "nowrap",
+            zIndex: 9999,
+          }}
+        >
+          {tooltip.text}
+        </div>
+      )}
+    </>
   );
 }
 
