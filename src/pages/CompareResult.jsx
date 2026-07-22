@@ -10,7 +10,6 @@ import "../assets/css/compareResult.css";
 import ModalConfirm from "../components/ModalConfirm.jsx";
 import Table from "../components/Table";
 import ModalInvest from "../components/ModalInvest";
-import ModalConfirm from "../components/ModalConfirm";
 
 const SORT_OPTIONS = [
   "누적 투자금액 높은순",
