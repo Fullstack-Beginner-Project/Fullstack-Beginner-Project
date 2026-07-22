@@ -11,7 +11,7 @@ import nonvisibilityIcon from "../assets/images/icon_visibility_off.png";
   ex)
   <Input type={"text"} placeholder={"Test"} onValueChange={(value) => console.log(value)}/>
  */
-function Input({ type, placeholder, onValueChange, initialValue = "", }) {
+function Input({ type, placeholder, onValueChange, initialValue = "", message, condition}) {
   const [first, setFirst] = useState(true);
   const [value, setValue] = useState(initialValue);
   const [visible, setVisible] = useState(false);
@@ -51,6 +51,10 @@ function Input({ type, placeholder, onValueChange, initialValue = "", }) {
       </div>
       {!first && value === "" && (
         <p className="warning_message">* 필수 입력사항입니다.</p>
+      )}
+
+      {!first && value !== "" && !condition && (
+        <p className="warning_message">{message}</p>
       )}
     </div>
   )
