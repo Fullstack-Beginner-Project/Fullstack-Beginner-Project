@@ -10,6 +10,7 @@ lerna-debug.log*
 dist
 dist-ssr
 *.local
+
 node_modules/
 
 # Editor directories and files
@@ -26,3 +27,12 @@ node_modules/
 # Env
 .env
 .env.*
+!.env.example
+
+#personal
+src/components/TableBack.jsx
+src/components/TableHeadBack.jsx
+src/components/TableBodyBack.jsx
+src/components/TableRowBack.jsx
+src/components/TableRowBackBak.jsx
+src/components/TableColgroupBack.jsx

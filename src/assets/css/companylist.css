@@ -1,0 +1,79 @@
+.companylist_page .dropdown_wrap.medium {
+  height: 48px;
+  padding: 10px;
+}
+
+.companylist_page .section_head {
+  flex-wrap: wrap;
+}
+
+.companylist_page .search_wrap {
+  flex: 1;
+  min-width: 448px;
+}
+
+.companylist_page .dropdown_wrap {
+  flex-shrink: 0;
+}
+
+.companylist_page .search_wrap_parent {
+  gap: 16px;
+}
+
+.companylist_page .dropdown_wrap.small {
+  height: 50px;
+}
+
+.companylist_page .dropdown_list.small li {
+  width: 100%;
+  height: 48px;
+  padding: 10px;
+}
+
+#root>.wrap .companylist_page .section_body .no_data,
+#root>.wrap .companylist_page .section_body .in_loading {
+  position: fixed;          /* 화면에 고정 */
+  top: 50%;                 /* 세로 중앙 */
+  left: 50%;                /* 가로 중앙 */
+  transform: translate(-50%, -50%); /* 정확히 중앙으로 이동 */
+  color: var(--gray_200);
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+@media (max-width: 1280px) {
+  .companylist_page .search_wrap {
+    min-width: 269px;
+  }
+  .companylist_page .search_wrap_parent {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .companylist_page .section_right {
+      width: 100%;
+  }
+  .companylist_page .search_wrap_parent {
+    gap: 8px;
+  }
+  .companylist_page .dropdown_wrap.small {
+    width: 146px;
+    height: 42px;
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .companylist_page .dropdown_wrap.small p {
+    font-size: 12px;
+  }
+
+  .companylist_page .dropdown_list.small li {
+    width: 100%;
+    height: 42px;
+    padding: 8px 10px;
+  }
+}

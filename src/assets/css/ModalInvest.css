@@ -1,0 +1,69 @@
+.invest_company_info {
+    margin-bottom: 22px;
+}
+.invest_company_info > p {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+.invest_company {
+    display: flex;
+    align-items: center;
+    gap: 0 12px;
+}
+.invest_company div {
+    display: flex;
+    align-items: center;
+    gap: 0 8px;
+}
+.invest_company div p {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 500;
+}
+#root>.wrap * .invest_company div span {
+    color: var(--gray_200);
+    font-size: 16px;
+}
+
+.invest_comment {
+    width: 100%;
+    height: 108px;
+    padding: 16px 20px;
+
+    box-sizing: border-box;
+
+    border: 1px solid var(--gray_200);
+    border-radius: 10px;
+
+    background: transparent;
+    color: #fff;
+
+    font-size: 14px;
+    font-family: inherit;
+
+    resize: none;
+    outline: none;
+}
+
+.invest_comment::placeholder {
+    color: var(--gray_200);
+}
+
+.invest_comment:focus {
+    border-color: #fff;
+}
+
+@media (max-width: 768px) {
+
+    .invest_company_info > p {
+        font-size: 14px;
+    }
+    .invest_company div p {
+        font-size: 16px;
+    }
+    .invest_company div span {
+        font-size: 12px;
+    }
+}
