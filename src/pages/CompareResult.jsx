@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "../api/axios.js";
-
+import LogoImg from "../components/LogoImg.jsx";
 import Section from "../components/Section";
 import Dropdown from "../components/Dropdown";
 import Button from "../components/Button";
