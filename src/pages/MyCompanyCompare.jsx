@@ -4,7 +4,7 @@ import axios from "../api/axios.js";
 
 import Button from "../components/Button";
 import ModalCompanySelect from "../components/ModalCompanySelect";
-import DefaultLogo from "../assets/images/logo_default.png";
+import LogoImg from "../components/LogoImg.jsx";
 import "../assets/css/myCompanyCompare.css";
 
 // ModalCompanySelect.jsx와 동일한 키를 사용해 최근 비교 세션을 공유
