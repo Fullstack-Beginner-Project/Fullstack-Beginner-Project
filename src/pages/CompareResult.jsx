@@ -124,10 +124,6 @@ function CompareResult() {
     open: false,
     message: "",
   });
-  const [confirmModal, setConfirmModal] = useState({
-    open: false,
-    message: "",
-  });
 
   const handleOpenModal = () => {
     setOpenSlot(true);
@@ -155,11 +151,6 @@ function CompareResult() {
       });
       handleCloseModal();
 
-      // 성공 모달 열기
-      setConfirmModal({
-        open: true,
-        message: "투자가 완료되었어요!",
-      });
     } catch (error) {
       console.error("투자 실패:", error.response?.data || error.message);
       setConfirmModal({
