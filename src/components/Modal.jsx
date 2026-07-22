@@ -10,7 +10,6 @@ function Modal({
 
   return (
     <div className="wrap">
-      // 모달 레이아웃
       <div className="modal_wrap">
         <div className="modal">
 
