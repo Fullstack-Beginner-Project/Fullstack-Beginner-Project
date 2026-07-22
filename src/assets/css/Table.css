@@ -178,7 +178,7 @@
 
 /* comment_menu 위치 */
 .table_wrap .table_body tr:first-child .comment_menu { top: -10px; }
-.table_wrap .table_body tr:last-child .comment_menu { top: -0px; }
+.table_wrap .table_body tr:last-child .comment_menu { top: -60px; }
 .comment_menu{
     position: absolute!important;
     z-index: 10;
