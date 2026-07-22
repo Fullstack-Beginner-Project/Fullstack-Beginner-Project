@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { formatAmount } from '/src/utils/common.js'
+import { formatAmount, isFavoriteCompany } from '/src/utils/common.js'
 import LogoImg from './LogoImg';
+import FilledHeartIcon from "../assets/images/icon_btn_filled_heart.png";
 
 
 function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, currentPage, rowsPerPage, onEditInvestment, onDeleteInvestment }) {
@@ -44,6 +45,14 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
               </div>
               <span className="c_nm">
                 <span className="ellipsis">{value}</span>
+
+                {isFavoriteCompany(row.id) && (
+                <img
+                  src={FilledHeartIcon}
+                  alt="찜한 기업"
+                  className="favorite_icon"
+                  />
+                )}
               </span>
             </Link>
           </td>
