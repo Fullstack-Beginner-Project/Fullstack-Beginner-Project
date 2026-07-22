@@ -8,6 +8,7 @@ import ModalInvest from "../components/ModalInvest";
 import ModalConfirm from "../components/ModalConfirm";
 import "../assets/css/CompanyDetail.css";
 import DefaultLogo from "../assets/images/logo_default.png";
+import FavoriteButton from "../components/FavoriteButton.jsx";
 
 import axios from "../api/axios.js";
 import LogoImg from "../components/LogoImg.jsx";
@@ -271,11 +272,15 @@ function CompanyDetail() {
             {/* 회사 정보 */}
             <div className="company_detail_info">
               <div className="company_detail_top">
+                <div className="company_detail_company">
                 <LogoImg cId={company.id} cNm={company.name} />
                 <div className="company_detail_info">
                   <h2>{company.name}</h2>
                   <p>{company.category}</p>
                 </div>
+              </div>
+              
+                <FavoriteButton companyId={company.id} />
               </div>
 
               <div className="company_summary">

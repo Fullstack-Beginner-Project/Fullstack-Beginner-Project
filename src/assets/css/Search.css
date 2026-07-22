@@ -5,7 +5,7 @@
   border-radius: 10px;
   border: 1px solid var(--gray_200);
   background: var(--black_200);
-  width: 448px;
+  /* width: 448px; */
 }
 
 .search_wrap .frame {
