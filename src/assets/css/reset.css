@@ -75,11 +75,11 @@ a{
 
 .ellipsis {
   display: inline-block;
-  max-width: 150px;
+  width: 100%;
+  word-wrap: normal;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  position: relative;
 }
 
 input,
