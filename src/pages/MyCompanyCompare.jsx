@@ -157,6 +157,7 @@ function MyCompanyCompare() {
               <Button
                 size="small"
                 variant="primary"
+                subClassName ="btn_company_add"
                 selected
                 disabled={isTargetFull}
                 showResetIcon

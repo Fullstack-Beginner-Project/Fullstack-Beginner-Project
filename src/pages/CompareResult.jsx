@@ -149,6 +149,7 @@ function CompareResult() {
         message: "투자가 완료되었습니다!",
       });
       handleCloseModal();
+
     } catch (error) {
       console.error("투자 실패:", error.response?.data || error.message);
       setConfirmModal({
@@ -233,11 +234,7 @@ function CompareResult() {
         }
       >
         <div className="compare_result_my_company">
-          <img
-            src={"/src/assets/images/company-logo-" + myCompany.id + ".webp"}
-            alt={myCompany.name}
-            onError={(e) => { e.currentTarget.src = DefaultLogo }}
-          />
+          <LogoImg cId={myCompany.id} cNm={myCompany.name} />
           <p>{myCompany.name}</p>
           <span>{myCompany.category}</span>
         </div>

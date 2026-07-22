@@ -149,6 +149,7 @@
   display: flex;
   justify-content: center;
 }
+.my_company_compare_wrap .btn_company_add span { display: none; }
 
 .my_company_compare_wrap .compare_result {
   margin-top: 40px;
