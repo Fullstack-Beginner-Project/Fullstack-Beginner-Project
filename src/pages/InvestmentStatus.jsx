@@ -21,7 +21,7 @@ function InvestmentStatus() {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
   const [totalPages, setTotalPages] = useState(1);
-  const [orderBy, setOrderBy] = useState("userInvestmentAmount");
+  const [orderBy, setOrderBy] = useState("actualInvestmentAmount");
   const [order, setOrder] = useState("desc");
 
   useEffect(() => {
@@ -53,23 +53,23 @@ function InvestmentStatus() {
   const handleSortChange = (selected) => {
     switch (selected) {
       case "View My Startup 투자 금액 높은순":
-        setOrderBy("userInvestmentAmount");
+        setOrderBy("actualInvestmentAmount");
         setOrder("desc");
         break;
       case "View My Startup 투자 금액 낮은순":
-        setOrderBy("userInvestmentAmount");
+        setOrderBy("actualInvestmentAmount");
         setOrder("asc");
         break;
       case "실제 누적 투자 금액 높은순":
-        setOrderBy("actualInvestmentAmount");
+        setOrderBy("userInvestmentAmount");
         setOrder("desc");
         break;
       case "실제 누적 투자 금액 낮은순":
-        setOrderBy("actualInvestmentAmount");
+        setOrderBy("userInvestmentAmount");
         setOrder("asc");
         break;
       default:
-        setOrderBy("userInvestmentAmount");
+        setOrderBy("actualInvestmentAmount");
         setOrder("desc");
     }
   };
