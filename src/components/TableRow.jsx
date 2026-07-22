@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { formatAmount, isFavoriteCompany } from '/src/utils/common.js'
 import LogoImg from "../components/LogoImg.jsx";
@@ -194,25 +195,27 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
         {columnDefs.map((column) => renderCell(column))}
       </tr>
 
-      {tooltip.visible && (
-        <div
-          className="tooltip"
-          style={{
-            position: "fixed",
-            top: tooltip.y + 15,
-            left: tooltip.x + 15,
-            background: "#333",
-            color: "#fff",
-            padding: "4px 8px",
-            borderRadius: "4px",
-            fontSize: "12px",
-            whiteSpace: "nowrap",
-            zIndex: 9999,
-          }}
-        >
-          {tooltip.text}
-        </div>
-      )}
+      {tooltip.visible &&
+        createPortal(
+          <div
+            className="tooltip"
+            style={{
+              position: "fixed",
+              top: tooltip.y + 15,
+              left: tooltip.x + 15,
+              background: "#333",
+              color: "#fff",
+              padding: "4px 8px",
+              borderRadius: "4px",
+              fontSize: "12px",
+              whiteSpace: "nowrap",
+              zIndex: 9999,
+            }}
+          >
+      {tooltip.text}
+    </div>,
+    document.body
+  )}
     </>
   );
 }
