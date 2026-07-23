@@ -1,7 +1,7 @@
 import Button from "../components/Button";
 import DefaultLogo from "../assets/images/logo_default.png";
 
-import "../assets/css/CompanyLists.css";
+import "../assets/css/companyLists.css";
 
 function CompanyLists({ 
   title,

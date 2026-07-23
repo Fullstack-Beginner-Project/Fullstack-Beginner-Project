@@ -3,7 +3,7 @@ import { useState } from "react";
 import Modal from "../components/Modal";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import "../assets/css/ModalInput.css";
+import "../assets/css/modalInput.css";
 
 function ModalDelete({
   onClose,

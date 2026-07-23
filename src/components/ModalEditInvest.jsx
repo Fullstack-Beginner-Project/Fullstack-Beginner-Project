@@ -3,8 +3,8 @@ import { useState } from "react";
 import Modal from "../components/Modal";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import "../assets/css/ModalInput.css";
-import "../assets/css/ModalInvest.css";
+import "../assets/css/modalInput.css";
+import "../assets/css/modalInvest.css";
 import DefaultLogo from '../assets/images/logo_default.png';
 
 function ModalEditInvest({
