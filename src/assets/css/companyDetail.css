@@ -122,7 +122,7 @@
 }
 
 .invest_details .btn_primary {
-  background-color: var(--gray_200);
+  background-color: var(--black_100);
 }
 
 @media (max-width: 1280px) {
