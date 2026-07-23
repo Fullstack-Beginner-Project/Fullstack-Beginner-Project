@@ -201,25 +201,12 @@ function ModalCompanySelect({
       title={multiple ? "비교할 기업 선택하기" : "나의 기업 선택하기"}
       onClose={onClose}
       footer={
-        multiple ? (
-          <>
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
-            <div className="modal_footer_btns">
-              <Button size="large" variant="primary" selected onClick={handleConfirm}>
-                확인
-              </Button>
-            </div>
-          </>
-        ) : (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
+        multiple && (
+          <div className="modal_footer_btns">
+            <Button size="large" variant="primary" selected onClick={handleConfirm}>
+              확인
+            </Button>
+          </div>
         )
       }
     >
@@ -265,6 +252,12 @@ function ModalCompanySelect({
               onSelect={handleSelect}
               emptyMessage="검색 결과가 없습니다."
             />
+
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
           </>
         )}
       </div>
