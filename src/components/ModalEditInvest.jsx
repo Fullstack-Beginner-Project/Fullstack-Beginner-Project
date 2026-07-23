@@ -87,6 +87,9 @@ function ModalEditInvest({
             initialValue={form.amount}
             placeholder="투자 금액을 입력해 주세요"
             onValueChange={handleValueChange('amount')}
+            onKeyDown={(e) =>
+            ["e", "E", "+", "-"].includes(e.key) && e.preventDefault()
+          }
           />
         </div>
 

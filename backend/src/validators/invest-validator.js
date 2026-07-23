@@ -104,11 +104,11 @@ const PATCH_FIELD_MESSAGES = {
   investorName: '투자자 이름은 2자 이상 40자 이하로 입력해주세요.',
   amount: '투자 금액은 10원 이상 100억 이하로 입력해주세요.',
   comment: '투자 코멘트는 1000자 이하로 입력해주세요.',
-  password: '비밀번호갸 올바르지 않습니다.',
+  password: '비밀번호가 올바르지 않습니다.',
 };
 
 const DELETE_FIELD_MESSAGES = {
-  password: '비밀번호갸 올바르지 않습니다.',
+  password: '비밀번호가 올바르지 않습니다.',
 };
 
 function getFieldErrorMessage(error, fieldMessages) {
