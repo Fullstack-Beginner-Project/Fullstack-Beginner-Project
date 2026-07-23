@@ -1,6 +1,5 @@
 .company_select_list_wrap {
     display: flex;
     flex-direction: column;
-    gap: 40px 0;
     margin-top: 24px;
 }
