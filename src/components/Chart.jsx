@@ -91,7 +91,12 @@ function Chart({ dataList }) {
                 }
               />
 
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip
+                content={<CustomTooltip />}
+                isAnimationActive={false}
+                position={{ x: 0, y: 0 }}
+                wrapperStyle={{ pointerEvents: "none" }}
+              />
 
               <Area
                 type="monotone"
