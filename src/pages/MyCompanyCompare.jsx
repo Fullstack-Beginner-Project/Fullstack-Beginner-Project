@@ -124,7 +124,6 @@ function MyCompanyCompare() {
               <div className="company_slot_cancel">
                 <Button
                   size="small"
-                  variant="outline"
                   onClick={handleCancelMyCompany}
                 >
                   선택 취소
