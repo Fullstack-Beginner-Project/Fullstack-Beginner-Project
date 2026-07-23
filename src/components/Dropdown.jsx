@@ -1,6 +1,7 @@
 import "../assets/css/dropdown.css";
 import React, { useState } from "react";
 import Dropdown_list from "./Dropdown_list";
+import DropdownToggle from "../assets/images/icon_toggle.png";
 /* 
   Dropdown 컴포넌트입니다.
   size : [medium, small] 타입 설정해주세요.
@@ -28,7 +29,7 @@ function Dropdown({ size, options, onChange }) {
       <div className={className}>
         <div className="frame" onClick={() => setOpen(!open)}>
           <p>{selected || options[0]}</p>
-          <img src="./src/assets/images/icon_toggle.png" alt="토글" />
+          <img src={DropdownToggle} alt="토글" />
         </div>
         {open && (
           <Dropdown_list size={size} options={options} onSelect={handleSelect} />
