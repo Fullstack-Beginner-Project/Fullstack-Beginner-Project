@@ -1,5 +1,7 @@
 import '../assets/css/search.css';
 import React, { useState } from 'react';
+import searchimg from '../assets/images/icon_search.png';
+import deleteimg from '../assets/images/icon_delete_circle_small.png';
 /* 
   Search 컴포넌트입니다.
   size : [medium, small] 타입 설정해주세요. 페이지용은 적지 않습니다.
@@ -43,14 +45,14 @@ function Search({ size, onSubmit }) {
         <div className="icon_wrap">
           {value && (
             <img
-              src="./src/assets/images/icon_delete_circle_small.png"
+              src={deleteimg}
               alt="삭제"
               className="delete_icon"
               onClick={handleDelete}
             />
           )}
           <img
-            src="./src/assets/images/icon_search.png"
+            src={searchimg}
             alt="검색"
             className="search_icon"
             onClick={handleSearchClick}
