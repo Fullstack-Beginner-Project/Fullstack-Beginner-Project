@@ -53,7 +53,7 @@ function ModalInvest({
           </Button>
 
           <Button
-            onClick={() => onInvest(form)} 
+            onClick={() => onInvest(form)}
             disabled={!isFormValid()}
           >
             투자하기
@@ -96,6 +96,7 @@ function ModalInvest({
           placeholder="투자 금액을 입력해 주세요"
           onValueChange={handleValueChange('amount')}
           condition={Number(form.amount) >= 10 && Number(form.amount) <= 10000000000}
+      
           message="투자 금액은 10원 이상 100억 이하로 입력해주세요."
         />
       </div>

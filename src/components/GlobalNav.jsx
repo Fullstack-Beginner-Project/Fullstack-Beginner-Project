@@ -3,7 +3,6 @@ import logoImg from '../assets/images/icon_view_logo.png';
 import '../assets/css/globalNav.css';
 
 
-
 // 상단 네비게이션 메뉴 목록 (라벨과 이동 경로)
 const NAV_ITEMS = [
   { label: '나의 기업 비교', to: '/my-company-compare' },
