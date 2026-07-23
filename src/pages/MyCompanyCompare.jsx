@@ -181,11 +181,7 @@ function MyCompanyCompare() {
                     >
                       -
                     </button>
-                    <img
-                      src={"/src/assets/images/company-logo-" + company.id + ".webp"}
-                      alt={company.name}
-                      onError={(e) => { e.currentTarget.src = DefaultLogo }}
-                    />
+                    <LogoImg cId={company.id} cNm={company.name} />
                     <p>{company.name}</p>
                     <span>{company.category}</span>
                   </div>
