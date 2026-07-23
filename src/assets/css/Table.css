@@ -132,6 +132,14 @@
     gap: 12px;
 }
 
+.table_wrap .table_body tr:has(td.title:hover) > td,
+.table_wrap .table_body td.title:hover ~ td{
+    background-color: var(--black_300);
+}
+
+
+
+
 .table_wrap .table_body td.content .td_inner{
     padding: 15px 11px;
     text-align: left;
@@ -203,8 +211,6 @@
 
 .comment_menu li{
     width: 100%;
-    padding: 12px;
-    text-align: center;
 }
 
 .comment_menu li + li{
@@ -215,10 +221,14 @@
     text-align: center;
 }
 
+.comment_menu li button{
+    width: 100%;
+    padding: 12px;
+    text-align: center;
+}
 .btn_comment_menu.clicked + .comment_menu{
     display: block;
 }
-
 
 .table_wrap .table_body td.title{
     padding: 0;
