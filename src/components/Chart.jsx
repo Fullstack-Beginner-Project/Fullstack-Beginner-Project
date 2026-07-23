@@ -7,6 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import CustomTooltip from "./CustomTooltip";
 import "../assets/css/chart.css";
 
 
@@ -90,7 +91,7 @@ function Chart({ dataList }) {
                 }
               />
 
-              <Tooltip />
+              <Tooltip content={<CustomTooltip />} />
 
               <Area
                 type="monotone"
