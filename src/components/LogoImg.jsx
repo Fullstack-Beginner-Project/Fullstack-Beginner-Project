@@ -1,7 +1,8 @@
-import noImage from "/src/assets/images/img_thm_noimg.png";
+import { getCompanyLogo, noImage } from "../utils/companyLogos.js";
 
 function LogoImg({ cId, cNm = '' }) {
-    const tdImage = "/src/assets/images/company-logo-" + cId + ".webp";
+    const tdImage = getCompanyLogo(cId);
+
     return (
         <img src={tdImage} alt={`${cNm} 기업 로고 이미지`} onError={(e) => {
             // 현재 요소에 등록된 onerror 이벤트를 제거
@@ -12,4 +13,4 @@ function LogoImg({ cId, cNm = '' }) {
     )
 }
 
-export default LogoImg  
+export default LogoImg;
