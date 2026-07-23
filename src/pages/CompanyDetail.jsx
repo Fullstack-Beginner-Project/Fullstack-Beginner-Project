@@ -150,7 +150,7 @@ function CompanyDetail() {
 
     try {
       await axios.patch("/api/investments", {
-        investmentsId: selectedInvestment.id,
+        investmentId: selectedInvestment.id,
         investorName: form.investorName,
         amount: Number(String(form.amount).replaceAll(",", "")),
         comment: form.comment,
@@ -205,7 +205,7 @@ function CompanyDetail() {
     try {
       await axios.delete("/api/investments", {
         data: {
-          investmentsId: selectedInvestment.id,
+          investmentId: selectedInvestment.id,
           password: password,
         },
       });

@@ -11,8 +11,8 @@ const columnDefs = [
   { key: "name", label: "기업명", colClassName: "title" },
   { key: "description", label: "기업소개", colClassName: "content" },
   { key: "category", label: "카테고리", colClassName: "etc" },
-  { key: "actualInvestmentAmount", label: "View My Startup 투자 금액", colClassName: "etc_3" },
-  { key: "userInvestmentAmount", label: "실제 누적 투자 금액", colClassName: "etc_3" },
+  { key: "actualInvestmentAmount", label: "실제 누적 투자 금액", colClassName: "etc_3" },
+  { key: "userInvestmentAmount", label: "View My Startup 투자 금액", colClassName: "etc_3" },
 ];
 
 function InvestmentStatus() {
@@ -52,19 +52,19 @@ function InvestmentStatus() {
 
   const handleSortChange = (selected) => {
     switch (selected) {
-      case "View My Startup 투자 금액 높은순":
-        setOrderBy("actualInvestmentAmount");
-        setOrder("desc");
-        break;
-      case "View My Startup 투자 금액 낮은순":
-        setOrderBy("actualInvestmentAmount");
-        setOrder("asc");
-        break;
       case "실제 누적 투자 금액 높은순":
-        setOrderBy("userInvestmentAmount");
+        setOrderBy("actualInvestmentAmount");
         setOrder("desc");
         break;
       case "실제 누적 투자 금액 낮은순":
+        setOrderBy("actualInvestmentAmount");
+        setOrder("asc");
+        break;
+      case "View My Startup 투자 금액 높은순":
+        setOrderBy("userInvestmentAmount");
+        setOrder("desc");
+        break;
+      case "View My Startup 투자 금액 낮은순":
         setOrderBy("userInvestmentAmount");
         setOrder("asc");
         break;
