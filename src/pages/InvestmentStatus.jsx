@@ -4,15 +4,15 @@ import Dropdown from "../components/Dropdown.jsx";
 import Section from "../components/Section";
 import Table from "../components/Table.jsx";
 import Pagination from "../components/Pagination.jsx";
-import axios from "axios";
+import axios from "../api/axios.js";
 
 const columnDefs = [
   { key: "rank", label: "순위", colClassName: "short" },
   { key: "name", label: "기업명", colClassName: "title" },
   { key: "description", label: "기업소개", colClassName: "content" },
   { key: "category", label: "카테고리", colClassName: "etc" },
-  { key: "amount", label: "View My Startup 투자 금액", colClassName: "etc_3" },
-  { key: "revenue", label: "실제 누적 투자 금액", colClassName: "etc_3" },
+  { key: "actualInvestmentAmount", label: "View My Startup 투자 금액", colClassName: "etc_3" },
+  { key: "userInvestmentAmount", label: "실제 누적 투자 금액", colClassName: "etc_3" },
 ];
 
 function InvestmentStatus() {
@@ -21,7 +21,7 @@ function InvestmentStatus() {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
   const [totalPages, setTotalPages] = useState(1);
-  const [orderBy, setOrderBy] = useState("userInvestmentAmount");
+  const [orderBy, setOrderBy] = useState("actualInvestmentAmount");
   const [order, setOrder] = useState("desc");
 
   useEffect(() => {
@@ -29,7 +29,7 @@ function InvestmentStatus() {
       setLoading(true);
       try {
         const response = await axios.get(
-          `https://codeit-sprint-for-api-test-1.geonwoo.dev/api/companies/investmentStatus?page=${currentPage}&pageSize=${rowsPerPage}&orderBy=${orderBy}&order=${order}`
+          `/api/companies/investmentStatus?page=${currentPage}&pageSize=${rowsPerPage}&orderBy=${orderBy}&order=${order}`
         );
         setCompanies(response.data.list);
         setTotalPages(Math.ceil(response.data.totalCount / rowsPerPage));
@@ -53,23 +53,23 @@ function InvestmentStatus() {
   const handleSortChange = (selected) => {
     switch (selected) {
       case "View My Startup 투자 금액 높은순":
-        setOrderBy("userInvestmentAmount");
+        setOrderBy("actualInvestmentAmount");
         setOrder("desc");
         break;
       case "View My Startup 투자 금액 낮은순":
-        setOrderBy("userInvestmentAmount");
+        setOrderBy("actualInvestmentAmount");
         setOrder("asc");
         break;
       case "실제 누적 투자 금액 높은순":
-        setOrderBy("actualInvestmentAmount");
+        setOrderBy("userInvestmentAmount");
         setOrder("desc");
         break;
       case "실제 누적 투자 금액 낮은순":
-        setOrderBy("actualInvestmentAmount");
+        setOrderBy("userInvestmentAmount");
         setOrder("asc");
         break;
       default:
-        setOrderBy("userInvestmentAmount");
+        setOrderBy("actualInvestmentAmount");
         setOrder("desc");
     }
   };

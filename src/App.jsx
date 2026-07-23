@@ -8,6 +8,7 @@ import CompareOverview from './pages/CompareOverview.jsx';
 import InvestmentStatus from './pages/InvestmentStatus.jsx';
 import CompanyDetail from './pages/CompanyDetail.jsx';
 import CompareResult from './pages/CompareResult.jsx';
+import WishList from './pages/WishList.jsx';
 
 function App() {
 
@@ -29,6 +30,8 @@ function App() {
           <Route path="investment-status" element={<InvestmentStatus />} />
           {/* 기업 상세 */}
           <Route path="company/:companyId" element={<CompanyDetail />} />
+          {/* 찜한 목록 */}
+          <Route path="wish-list" element={<WishList />} />
         </Route>
       </Routes>
     </BrowserRouter>

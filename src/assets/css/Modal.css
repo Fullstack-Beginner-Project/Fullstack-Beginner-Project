@@ -12,19 +12,22 @@
     z-index: 1000;
 }
 .modal_wrap .modal {
-    width: 496px;
-    max-height: 100%;
-    border-radius: 16px;
-    background-color: var(--black_200);
-    padding: 24px;
-    overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  width: 496px;
+  max-height: 80vh;
+  border-radius: 16px;
+  background-color: var(--black_200);
+  padding: 24px;
 }
 .modal_wrap .modal_top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 24px;
-
+  display: flex;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  background: var(--black_200);
+  z-index: 10;
+  margin-bottom: 24px;
 }
 .modal_wrap .modal_top h3 {
     color: #ffffff;
@@ -33,6 +36,21 @@
 }
 .modal_wrap .modal_top button {
     margin-left: auto;
+}
+.modal_wrap .modal_content {
+  flex: 1;       
+  overflow-y: auto;    
+  overflow-x: hidden;
+  min-height: 0;
+
+  padding-right: 5px;
+  margin-right: 5px;
+}
+.modal_wrap .modal_content .search_wrap.medium {
+  width: 100%;
+}
+.modal_wrap .modal_footer {
+  flex-shrink: 0;
 }
 .modal_footer_btns {
     display: flex;
@@ -45,13 +63,64 @@
     width: 194px;
     height: 48px;
 }
+#root>.wrap .modal_input .input_wrap .frame {
+  width: 100%;
+}
+
+/* input type number */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox  */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+@media (max-width: 1280px) {
+    .modal_wrap .modal_content .search_wrap {
+        width: 100%;
+        min-width: 100%;
+    }
+}
 
 @media (max-width: 768px) {
     .modal_wrap .modal {
         margin: 0 16px;
     }
+    .modal_wrap .modal_top {
+        margin-bottom: 16px;
+    }
     .modal_footer_btns button {
         width: 135px;
         height: 44px;
     }
+}
+
+/* 스크롤 영역 */
+/* 스크롤바의 폭 너비 */
+.modal_content::-webkit-scrollbar {
+    width: 12px;  
+}
+
+.modal_content::-webkit-scrollbar-track {
+    background-color: var(--black_300);  /*스크롤바 뒷 배경*/
+    border-radius: 10px;
+}
+.modal_content::-webkit-scrollbar-thumb {
+    background-color: var(--gray_400); /* 스크롤바 */
+  border-radius: 8px;
+  border: 2px solid var(--black_300);
+}
+
+.modal_content::-webkit-scrollbar-thumb:hover {
+  background: var(--gray_300);
+}
+
+/* 양옆 화살표 제거 */
+.modal_content::-webkit-scrollbar-button {
+  display: none;
 }

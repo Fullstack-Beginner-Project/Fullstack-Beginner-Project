@@ -7,10 +7,8 @@ import Search from "../components/Search";
 import Dropdown from "../components/Dropdown";
 import GlobalNav from "../components/GlobalNav";
 import Pagination from "../components/Pagination.jsx";
-import axios from "axios";
+import axios from "../api/axios.js";
 
-const response = await axios.get('https://codeit-sprint-for-api-test-1.geonwoo.dev/api/companies/f8q2mz/investments');
-const data = response.data.list
 
 
 function CompanyList() {
@@ -58,8 +56,10 @@ function CompanyList() {
       setLoading(true); // 호출 시작 시 로딩 켜기
       try {
         const response = await axios.get(
-          `https://fullstack-beginner-api-test.ggeonwoo.workers.dev/api/companies?page=${currentPage}&pageSize=${rowsPerPage}&sort=${sortOption}&keyword=${keyword}`
+          `/api/companies?page=${currentPage}&pageSize=${rowsPerPage}&sort=${sortOption}&keyword=${keyword}`
         );
+
+        console.log(response.data);
         setCompanies(response.data.list);
         setTotalPages(Math.ceil(response.data.totalCount / rowsPerPage));
       } catch (error) {
@@ -174,14 +174,6 @@ function CompanyList() {
             </>
           )}
         </Section>
-
-        {/* 혹시 몰라 남겨둡니다. */}
-        {/* <Section title={'전체 스타트업 ddd목록'} sh_right={sectionRight}>
-
-          <Table columnDefs={columnDefs_invest} rows={data}></Table>
-
-          <Pagination currentPage={1} totalPages={10} />
-        </Section> */}
       </div>
       {/* pagnation 위치는 content_wrap안이 좋을지 밖이 좋을지 고려 */}
     </>

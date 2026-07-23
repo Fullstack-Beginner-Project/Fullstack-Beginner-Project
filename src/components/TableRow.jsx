@@ -1,24 +1,19 @@
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
+import { formatAmount, isFavoriteCompany } from '/src/utils/common.js'
+import LogoImg from "../components/LogoImg.jsx";
+import FilledHeartIcon from "../assets/images/icon_btn_filled_heart.png";
 
 
-function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, currentPage, rowsPerPage }) {
 
-  const formatAmount = (value) => {
-    const amount = Number(value);
+function TableRow({ row, rowIndex, columnDefs, myCompany, currentPage, rowsPerPage, onEditInvestment, onDeleteInvestment }) {
 
-    if (!amount) return "0원";
-    if (amount >= 100_000_000) return `${(amount / 100_000_000).toLocaleString()}억 원`;
-    if (amount >= 10_000_000) return `${(amount / 10_000_000).toLocaleString()}천만 원`;
-    if (amount >= 1_000_000) return `${(amount / 1_000_000).toLocaleString()}백만 원`;
-
-    return `${amount.toLocaleString()}원`;
-  };
+  const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0 });    
 
   const renderCell = (column) => {
+  
     const value = row[column.key];
-
-    // console.log("column.key:", column.key);
-    // console.log("value:", value);
 
     switch (column.key) {
       case "own_rank":
@@ -45,13 +40,37 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
       case "name":
         return (
           <td key={column.key} className={'title'}>
-            <Link to={`/company/${row.id}`} className="company_link td_inner" onClick={(e) => e.stopPropagation()}
+            <Link
+              to={`/company/${row.id}`}
+              className="company_link td_inner"
+              onClick={(e) => e.stopPropagation()}
             >
               <div className="img_wrap object_fit_cover">
-                <img src={row.img || row.logo} alt={`${value} 기업 로고`} />
+                <LogoImg cId={row.id} cNm={value} />
               </div>
               <span className="c_nm">
-                <span className="ellipsis">{value}</span>
+                <span
+                  className="ellipsis"
+                  data-fulltext={value}
+                  onMouseEnter={(e) =>
+                    setTooltip({ visible: true, x: e.clientX, y: e.clientY, text: value })
+                  }
+                  onMouseMove={(e) =>
+                    setTooltip({ visible: true, x: e.clientX, y: e.clientY, text: value })
+                  }
+                  onMouseLeave={() =>
+                    setTooltip({ visible: false, x: 0, y: 0, text: "" })
+                  }
+                >
+                  {value}
+                </span>
+                {isFavoriteCompany(row.id) && (
+                <img
+                  src={FilledHeartIcon}
+                  alt="찜한 기업"
+                  className="favorite_icon"
+                  />
+                )}
               </span>
             </Link>
           </td>
@@ -78,6 +97,15 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
         );
 
       case "actualInvestmentAmount":
+        return (
+          <td key={column.key} className={column.className}>
+            <div className="td_inner">
+              {formatAmount(value)}
+            </div>
+          </td>
+        );
+
+      case "userInvestmentAmount":
         return (
           <td key={column.key} className={column.className}>
             <div className="td_inner">
@@ -120,12 +148,29 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
               <p className="text">
                 {value}
               </p>
-              <form action="">
-                <button type="button" className='btn_comment_menu' onClick={(event) => { onOpenCommentMenu?.(event, row); }}>
+              <form action="" className='comment_wrap'>
+                <button type="button" className='btn_comment_menu'
+                  onClick={(event) => {
+                    const currentButton = event.currentTarget;
+                    const wasClicked = currentButton.classList.contains('clicked');
+
+                    document
+                      .querySelectorAll('.btn_comment_menu.clicked')
+                      .forEach((button) => {
+                        button.classList.remove('clicked');
+                      });
+
+                    if (!wasClicked) {
+                      currentButton.classList.add('clicked');
+                    }
+                  }}>
                   <span className="no_text">코멘트 메뉴</span>
                 </button>
+                <ul className="comment_menu">
+                  <li><button type="button" onClick={() => onEditInvestment?.(row)}>수정하기</button></li>
+                  <li><button type="button" onClick={() => onDeleteInvestment?.(row)}>삭제하기</button></li>
+                </ul>
               </form>
-
             </div>
           </td>
         );
@@ -141,16 +186,38 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, onOpenCommentMenu, cur
     }
   };
 
-  console.log(myCompany)
-  console.log('row.id******************')
-  console.log(row.id)
+  // console.log(myCompany)
+  // console.log('row.id******************')
+  // console.log(row.id)
 
   return (
-    <tr className={row.id === myCompany ? "selection" : undefined}>
-      {columnDefs.map((column) => {
-        return renderCell(column);
-      })}
-    </tr>
+    <>
+      <tr className={row.id === myCompany ? "selection" : undefined}>
+        {columnDefs.map((column) => renderCell(column))}
+      </tr>
+
+      {tooltip.visible &&
+        createPortal(
+          <div
+            className="tooltip"
+            style={{
+              position: "fixed",
+              top: tooltip.y + 15,
+              left: tooltip.x + 15,
+              background: "#333",
+              color: "#fff",
+              padding: "4px 8px",
+              borderRadius: "4px",
+              fontSize: "12px",
+              whiteSpace: "nowrap",
+              zIndex: 9999,
+            }}
+          >
+      {tooltip.text}
+    </div>,
+    document.body
+  )}
+    </>
   );
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../api/axios.js";
 
 import Modal from "../components/Modal";
 import Search from "./Search";
@@ -7,29 +7,15 @@ import CompanyLists from "../components/CompanyLists";
 import Pagination from "../components/Pagination";
 import Button from "../components/Button";
 import "../assets/css/ModalCompanySelect.css";
+import {
+  normalizeCompany,
+  findCompanyById,
+  withSelectedFlag,
+  getFavoriteCompanyIds,
+  readLastCompareSession,
+} from "../utils/common";
 
-const API_BASE_URL = "https://fullstack-beginner-api-test.ggeonwoo.workers.dev";
 const PAGE_SIZE = 5;
-const RECENT_MY_COMPANY_KEY = "recentMyCompanyIds";
-const RECENT_COMPARE_COMPANY_KEY = "recentCompareCompanyIds";
-const MAX_RECENT_IDS = 10;
-
-const readRecentIds = (key) => {
-  try {
-    const stored = JSON.parse(localStorage.getItem(key));
-    return Array.isArray(stored) ? stored : [];
-  } catch {
-    return [];
-  }
-};
-
-const addRecentId = (key, id) => {
-  const next = [id, ...readRecentIds(key).filter((existingId) => existingId !== id)].slice(
-    0,
-    MAX_RECENT_IDS
-  );
-  localStorage.setItem(key, JSON.stringify(next));
-};
 
 function ModalCompanySelect({
   onClose,
@@ -46,103 +32,141 @@ function ModalCompanySelect({
     () => new Set(selectedCompanies.map((company) => company.id))
   );
 
-  const [recentCompanies, setRecentCompanies] = useState([]);
+  const [selectedCompaniesState, setSelectedCompaniesState] = useState(selectedCompanies);
+  // 찜한 기업 조회
+  const [favoriteCompanies, setFavoriteCompanies] = useState([]);
+  const [favoriteTotalCount, setFavoriteTotalCount] = useState(0);
+  const [favoritePage, setFavoritePage] = useState(1);
+  const [favoriteTotalPages, setFavoriteTotalPages] = useState(1);
+  const [searchTotalCount, setSearchTotalCount] = useState(0);
+  // 최근 비교한 기업 조회
+  const [recentMyCompany, setRecentMyCompany] = useState(null);
+  const [recentTargetCompanies, setRecentTargetCompanies] = useState([]);
   const [searchCompanies, setSearchCompanies] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
 
   const excludedIdSet = new Set(excludedIds);
-  const recentKey = multiple ? RECENT_COMPARE_COMPANY_KEY : RECENT_MY_COMPANY_KEY;
 
   // API 연결
   useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
-        const recentIds = readRecentIds(recentKey).join(",");
+  const fetchCompanies = async () => {
+    try {
+      if (multiple) {
+        const { myCompanyId, compareCompanyIds } = readLastCompareSession();
 
-        if (multiple) {
-          const response = await axios.get(`${API_BASE_URL}/api/compare/companies`, {
+        const [myCompanyResponse, compareResponse] = await Promise.all([
+          myCompanyId
+            ? axios
+                .get(`/api/companies/${myCompanyId}`)
+                .catch(() => null)
+            : Promise.resolve(null),
+
+          axios.get(`/api/compare/companies`, {
             params: {
               page: currentPage,
               pageSize: PAGE_SIZE,
               keyword,
-              compareCompanyIds: recentIds || undefined,
+              compareCompanyIds: compareCompanyIds.join(",") || undefined,
             },
-          });
-          setRecentCompanies(
-            response.data.selectedCompanies.map((company) => ({
-              ...company,
-              id: company.companyId,
-            }))
-          );
-          setSearchCompanies(
-            response.data.companies.map((company) => ({
-              ...company,
-              id: company.companyId,
-            }))
-          );
-          setTotalPages(response.data.totalPages);
-        } else {
-          const response = await axios.get(`${API_BASE_URL}/api/companies/my-company`, {
+          }),
+        ]);
+
+        setRecentMyCompany(myCompanyResponse?.data?.company ?? null);
+        setRecentTargetCompanies(
+          compareResponse.data.selectedCompanies.map(normalizeCompany)
+        );
+        setSearchCompanies(
+          compareResponse.data.companies.map(normalizeCompany)
+        );
+        setSearchTotalCount(compareResponse.data.total);
+        setTotalPages(compareResponse.data.totalPages);
+      } else {
+        const favoriteCompanyIds = getFavoriteCompanyIds();
+
+        const [favoriteResponse, response] = await Promise.all([
+          axios.get(`/api/companies/favorites`, {
+            params: {
+              page: favoritePage,
+              pageSize: PAGE_SIZE,
+              sort: "favoriteDesc",
+              favoriteCompanyIds: favoriteCompanyIds.join(",") || undefined,
+            },
+          }),
+
+          axios.get(`/api/companies/my-company`, {
             params: {
               page: currentPage,
               pageSize: PAGE_SIZE,
               keyword,
-              myRecentCompanyIds: recentIds || undefined,
             },
-          });
-          setRecentCompanies(response.data.recentCompanies);
-          setSearchCompanies(response.data.companies);
-          setTotalPages(response.data.totalPages);
-        }
-      } catch (error) {
-        console.error("기업 목록 불러오기 실패:", error);
+          }),
+        ]);
+
+        setFavoriteCompanies(
+          favoriteResponse.data.companies.map(normalizeCompany)
+        );
+        setFavoriteTotalCount(favoriteResponse.data.total);
+        setFavoriteTotalPages(favoriteResponse.data.totalPages);
+
+        setSearchCompanies(
+          response.data.companies.map(normalizeCompany)
+        );
+        setSearchTotalCount(response.data.totalCount);
+        setTotalPages(Math.ceil(response.data.totalCount / PAGE_SIZE));
       }
-    };
+    } catch (error) {
+      console.error("기업 목록 불러오기 실패:", error);
+    }
+  };
 
-    fetchCompanies();
-  }, [currentPage, keyword, multiple, recentKey]);
+  fetchCompanies();
+}, [currentPage, favoritePage, keyword, multiple]);
 
   const isCheckLimitReached =
-    typeof maxSelectable === 'number' && checkedIds.size >= maxSelectable;
+  typeof maxSelectable === 'number' && checkedIds.size >= maxSelectable;
 
-  const withSelectedFlag = (list) =>
-    list.map((company) => ({
-      ...company,
-      selected: checkedIds.has(company.id),
-      disabled: excludedIdSet.has(company.id),
-    }));
+  const myCompanyList = recentMyCompany ? [recentMyCompany] : [];
 
   const handleSelect = (id) => {
-    if (excludedIdSet.has(id)) return;
+    if (excludedIdSet.has(id)) return;  
 
-    if (!multiple) {
-      const company = [...recentCompanies, ...searchCompanies].find(
-        (company) => company.id === id
-      );
-      addRecentId(recentKey, id);
-      onSelectCompany(company);
-      onClose();
-      return;
-    }
+  if (!multiple) {
+    const company = findCompanyById(
+      id,
+      selectedCompaniesState,
+      favoriteCompanies,
+      searchCompanies
+    );
+
+    onSelectCompany(company);
+    onClose();
+    return;
+  }
 
     setCheckedIds((prev) => {
       const next = new Set(prev);
       if (next.has(id)) {
         next.delete(id);
+        setSelectedCompaniesState((prevList) => prevList.filter(c => c.id !== id));
       } else {
         if (isCheckLimitReached) return prev;
         next.add(id);
+        const company = findCompanyById(
+          id,
+          myCompanyList,
+          recentTargetCompanies,
+          searchCompanies
+        );
+        if (company) {
+          setSelectedCompaniesState((prevList) => [...prevList, company]);
+        }
       }
       return next;
     });
   };
 
   const handleConfirm = () => {
-    const selected = [...recentCompanies, ...searchCompanies].filter(
-      (company) => checkedIds.has(company.id)
-    );
-    selected.forEach((company) => addRecentId(recentKey, company.id));
-    onSelectCompanies(selected);
+    onSelectCompanies(selectedCompaniesState);
     onClose();
   };
 
@@ -151,9 +175,24 @@ function ModalCompanySelect({
     setCurrentPage(1);
   };
 
+  const topCompanies = multiple
+  ? [
+      ...(recentMyCompany
+        ? [{ ...recentMyCompany, isMyCompany: true }]
+        : []),
+      ...recentTargetCompanies,
+    ]
+  : favoriteCompanies;
+
+  // 모달 타이틀 정의
+  const topListTitle = multiple ? "최근 비교한 기업" : "찜한 기업";
+  const topEmptyMessage = multiple
+    ? "최근 비교한 기업이 없습니다."
+    : "찜한 기업이 없습니다.";
+
   return (
     <Modal
-      title="나의 기업 선택하기"
+      title={multiple ? "비교할 기업 선택하기" : "나의 기업 선택하기"}
       onClose={onClose}
       footer={
         multiple ? (
@@ -184,14 +223,33 @@ function ModalCompanySelect({
       />
       <div className='company_select_list_wrap'>
         <CompanyLists
-          title="최근 비교한 기업"
-          companies={withSelectedFlag(recentCompanies)}
+          title={topListTitle}
+          totalCount={multiple ? topCompanies.length : favoriteTotalCount}
+          companies={withSelectedFlag(
+            topCompanies,
+            checkedIds,
+            excludedIdSet
+          )}
           onSelect={handleSelect}
+          emptyMessage={topEmptyMessage}
         />
+
+          {!multiple && favoriteTotalPages > 1 && (
+            <Pagination
+              currentPage={favoritePage}
+              totalPages={favoriteTotalPages}
+              onPageChange={setFavoritePage}
+              />
+          )}
 
         <CompanyLists
           title="검색 결과"
-          companies={withSelectedFlag(searchCompanies)}
+          totalCount={searchTotalCount}
+          companies={withSelectedFlag(
+            searchCompanies,
+            checkedIds,
+            excludedIdSet
+          )}
           onSelect={handleSelect}
           emptyMessage="검색 결과가 없습니다."
         />
@@ -199,5 +257,7 @@ function ModalCompanySelect({
     </Modal>
   );
 }
+
+
 
 export default ModalCompanySelect;

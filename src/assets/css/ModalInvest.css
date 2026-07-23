@@ -1,5 +1,5 @@
 .invest_company_info {
-    margin: 16px 0 22px 0;
+    margin-bottom: 22px;
 }
 .invest_company_info > p {
     color: #ffffff;
@@ -14,7 +14,6 @@
 }
 .invest_company div {
     display: flex;
-    align-items: center;
     gap: 0 8px;
 }
 .invest_company div p {
@@ -25,6 +24,18 @@
 #root>.wrap * .invest_company div span {
     color: var(--gray_200);
     font-size: 16px;
+}
+
+#root>.wrap .modal_footer_btns .btn_wrap .btn_secondary {
+  color: #111
+}
+
+.modal_footer_btns .btn_wrap .btn_primary:disabled {
+  background-color: var(--gray_300);
+}
+
+.modal_footer_btns .btn_wrap .btn_primary {
+  background-color: var(--main_color);
 }
 
 .invest_comment {

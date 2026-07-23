@@ -5,8 +5,6 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import "../assets/css/ModalInput.css";
 import "../assets/css/ModalInvest.css";
-
-
 import DefaultLogo from '../assets/images/logo_default.png';
 
 function ModalInvest({
@@ -14,6 +12,7 @@ function ModalInvest({
   onClose,
   onInvest,
 }) {
+  const [nameCon, setNameCon] = useState()
   const [form, setForm] = useState({
     investor: '',
     amount: '',
@@ -21,6 +20,20 @@ function ModalInvest({
     password: '',
     passwordConfirm: '',
   });
+
+  const isFormValid = () => {
+    return (
+      form.investor.trim() !== "" &&
+      form.investor.length <= 6 &&
+      form.amount !== "" &&
+      !isNaN(Number(form.amount)) &&
+      Number(form.amount) >= 10 &&
+      Number(form.amount) <= 10000000000 &&
+      form.password.length >= 8 &&
+      form.password.length <= 32 &&
+      form.password === form.passwordConfirm
+    );
+  };
 
   const handleValueChange = (key) => (value) => {
     setForm((prev) => ({
@@ -39,7 +52,10 @@ function ModalInvest({
             취소
           </Button>
 
-          <Button onClick={() => onInvest(form)}>
+          <Button
+            onClick={() => onInvest(form)} 
+            disabled={!isFormValid()}
+          >
             투자하기
           </Button>
         </div>
@@ -68,6 +84,8 @@ function ModalInvest({
           type="text"
           placeholder="투자자 이름을 입력해 주세요"
           onValueChange={handleValueChange('investor')}
+          condition={form.investor.length <= 6}
+          message="이름은 6자 이내로 입력해주세요."
         />
       </div>
 
@@ -77,6 +95,8 @@ function ModalInvest({
           type="number"
           placeholder="투자 금액을 입력해 주세요"
           onValueChange={handleValueChange('amount')}
+          condition={Number(form.amount) >= 10 && Number(form.amount) <= 10000000000}
+          message="투자 금액은 10원 이상 100억 이하로 입력해주세요."
         />
       </div>
 
@@ -96,6 +116,8 @@ function ModalInvest({
           type="password"
           placeholder="비밀번호를 입력해주세요"
           onValueChange={handleValueChange('password')}
+          condition={form.password.length >= 8 && form.password.length <= 32}
+          message="비밀번호는 8자 이상 32자 이하로 입력해주세요."
         />
       </div>
 
@@ -105,6 +127,8 @@ function ModalInvest({
           type="password"
           placeholder="비밀번호를 다시 한번 입력해주세요"
           onValueChange={handleValueChange('passwordConfirm')}
+          condition={form.password == form.passwordConfirm}
+          message="비밀번호가 일치하지 않습니다."
         />
       </div>
     </Modal>

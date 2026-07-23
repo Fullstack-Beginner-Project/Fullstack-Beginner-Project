@@ -5,6 +5,7 @@ import '../assets/css/Button.css';
 function Button({
   size = 'medium',
   variant = 'primary',
+  subClassName = '',
   selected = false,
   disabled = false,
   showResetIcon = false,
@@ -18,6 +19,8 @@ function Button({
     `btn_${size}`,
     `btn_${variant}`,
     selected ? 'is-selected' : '',
+    subClassName,
+
   ]
     .filter(Boolean) // 빈 문자열('is-selected' 아닐 때) 제거
     .join(' ');

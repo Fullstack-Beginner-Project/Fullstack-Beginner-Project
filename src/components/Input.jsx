@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "../assets/css/input.css";
+import visibilityIcon from "../assets/images/icon_visibility_on.png";
+import nonvisibilityIcon from "../assets/images/icon_visibility_off.png";
 /* 
   Input 컴포넌트입니다.
   type : [password, text] 타입 설정해주세요.
@@ -9,10 +11,12 @@ import "../assets/css/input.css";
   ex)
   <Input type={"text"} placeholder={"Test"} onValueChange={(value) => console.log(value)}/>
  */
-function Input({ type, placeholder, onValueChange }) {
+function Input({ type, placeholder, onValueChange, initialValue = "", message, condition}) {
   const [first, setFirst] = useState(true);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(initialValue);
   const [visible, setVisible] = useState(false);
+
+  
 
   const handleChange = (e) => { // 부모로 값 보내기
     setValue(e.target.value);
@@ -32,13 +36,13 @@ function Input({ type, placeholder, onValueChange }) {
         {type === "password" && (
           !visible ? (
             <img
-              src="./src/assets/images/icon_visibility_on.png"
+              src={visibilityIcon}
               alt="보이기"
               onClick={() => setVisible(true)}
             />
           ) : (
             <img
-              src="./src/assets/images/icon_visibility_off.png"
+              src={nonvisibilityIcon}
               alt="숨기기"
               onClick={() => setVisible(false)}
             />
@@ -47,6 +51,10 @@ function Input({ type, placeholder, onValueChange }) {
       </div>
       {!first && value === "" && (
         <p className="warning_message">* 필수 입력사항입니다.</p>
+      )}
+
+      {!first && value !== "" && !condition && (
+        <p className="warning_message">{message}</p>
       )}
     </div>
   )
