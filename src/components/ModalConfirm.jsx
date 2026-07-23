@@ -1,6 +1,6 @@
 import Modal from "../components/Modal";
 import Button from "./Button";
-import "../assets/css/ModalConfirm.css";
+import "../assets/css/modalConfirm.css";
 
 function ModalConfirm({
   message,

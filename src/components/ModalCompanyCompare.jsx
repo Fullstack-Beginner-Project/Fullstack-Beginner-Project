@@ -4,8 +4,8 @@ import Modal from "../components/Modal";
 import Search from "./Search";
 import CompanyLists from "../components/CompanyLists";
 import Pagination from "../components/Pagination";
-import "../assets/css/ModalCompanySelect.css";
-import "../assets/css/ModalCompanyCompare.css";
+import "../assets/css/modalCompanySelect.css";
+import "../assets/css/modalCompanyCompare.css";
 
 import { mockCompanies } from "../mock/companies";
 

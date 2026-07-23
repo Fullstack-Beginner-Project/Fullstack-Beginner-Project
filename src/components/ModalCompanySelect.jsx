@@ -6,7 +6,7 @@ import Search from "./Search";
 import CompanyLists from "../components/CompanyLists";
 import Pagination from "../components/Pagination";
 import Button from "../components/Button";
-import "../assets/css/ModalCompanySelect.css";
+import "../assets/css/modalCompanySelect.css";
 import {
   normalizeCompany,
   findCompanyById,

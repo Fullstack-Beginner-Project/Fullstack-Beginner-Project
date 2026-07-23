@@ -6,7 +6,7 @@ import Button from "../components/Button";
 import Pagination from "../components/Pagination";
 import ModalInvest from "../components/ModalInvest";
 import ModalConfirm from "../components/ModalConfirm";
-import "../assets/css/CompanyDetail.css";
+import "../assets/css/companyDetail.css";
 import FavoriteButton from "../components/FavoriteButton.jsx";
 import Section from "../components/Section.jsx";
 import Chart from "../components/Chart.jsx";
