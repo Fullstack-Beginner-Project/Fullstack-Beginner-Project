@@ -4,6 +4,8 @@ import Section from "../components/Section";
 import Table from "../components/Table.jsx";
 import Pagination from "../components/Pagination.jsx";
 import axios from "../api/axios.js";
+import { getFavoriteCompanyIds } from "../utils/common"
+
 
 const columnDefs = [
   { key: "rank", label: "순위", colClassName: "short" },
@@ -25,9 +27,7 @@ function WishList() {
     const fetchCompanies = async () => {
       setLoading(true);
       try {
-        const favoriteCompanyIds = JSON.parse(
-          localStorage.getItem("favoriteCompanyIds") || "[]"
-        );
+        const favoriteCompanyIds = getFavoriteCompanyIds();
 
         const response = await axios.get(
           `/api/companies/favorites?favoriteCompanyIds=${favoriteCompanyIds.join(",")}&page=${currentPage}&pageSize=${rowsPerPage}&sort=${sortOption}`
@@ -92,5 +92,7 @@ function WishList() {
     </div>
   );
 }
+
+
 
 export default WishList

@@ -3,8 +3,8 @@ import { useState } from "react";
 import Modal from "../components/Modal";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import "../assets/css/ModalInput.css";
-import "../assets/css/ModalInvest.css";
+import "../assets/css/modalInput.css";
+import "../assets/css/modalInvest.css";
 import DefaultLogo from '../assets/images/logo_default.png';
 
 function ModalEditInvest({
@@ -87,6 +87,9 @@ function ModalEditInvest({
             initialValue={form.amount}
             placeholder="투자 금액을 입력해 주세요"
             onValueChange={handleValueChange('amount')}
+            onKeyDown={(e) =>
+            ["e", "E", "+", "-"].includes(e.key) && e.preventDefault()
+          }
           />
         </div>
 

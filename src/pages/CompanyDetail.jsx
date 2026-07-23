@@ -6,7 +6,7 @@ import Button from "../components/Button";
 import Pagination from "../components/Pagination";
 import ModalInvest from "../components/ModalInvest";
 import ModalConfirm from "../components/ModalConfirm";
-import "../assets/css/CompanyDetail.css";
+import "../assets/css/companyDetail.css";
 import FavoriteButton from "../components/FavoriteButton.jsx";
 import Section from "../components/Section.jsx";
 import Chart from "../components/Chart.jsx";
@@ -150,7 +150,7 @@ function CompanyDetail() {
 
     try {
       await axios.patch("/api/investments", {
-        investmentsId: selectedInvestment.id,
+        investmentId: selectedInvestment.id,
         investorName: form.investorName,
         amount: Number(String(form.amount).replaceAll(",", "")),
         comment: form.comment,
@@ -205,7 +205,7 @@ function CompanyDetail() {
     try {
       await axios.delete("/api/investments", {
         data: {
-          investmentsId: selectedInvestment.id,
+          investmentId: selectedInvestment.id,
           password: password,
         },
       });

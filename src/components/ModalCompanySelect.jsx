@@ -6,7 +6,7 @@ import Search from "./Search";
 import CompanyLists from "../components/CompanyLists";
 import Pagination from "../components/Pagination";
 import Button from "../components/Button";
-import "../assets/css/ModalCompanySelect.css";
+import "../assets/css/modalCompanySelect.css";
 import {
   normalizeCompany,
   findCompanyById,
@@ -45,11 +45,15 @@ function ModalCompanySelect({
   const [searchCompanies, setSearchCompanies] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
 
+  // 로딩중 추가
+  const [loading, setLoading] = useState(true);
+
   const excludedIdSet = new Set(excludedIds);
 
   // API 연결
   useEffect(() => {
   const fetchCompanies = async () => {
+    setLoading(true);
     try {
       if (multiple) {
         const { myCompanyId, compareCompanyIds } = readLastCompareSession();
@@ -116,6 +120,8 @@ function ModalCompanySelect({
       }
     } catch (error) {
       console.error("기업 목록 불러오기 실패:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -195,25 +201,12 @@ function ModalCompanySelect({
       title={multiple ? "비교할 기업 선택하기" : "나의 기업 선택하기"}
       onClose={onClose}
       footer={
-        multiple ? (
-          <>
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />
-            <div className="modal_footer_btns">
-              <Button size="large" variant="primary" selected onClick={handleConfirm}>
-                확인
-              </Button>
-            </div>
-          </>
-        ) : (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
+        multiple && (
+          <div className="modal_footer_btns">
+            <Button size="large" variant="primary" selected onClick={handleConfirm}>
+              확인
+            </Button>
+          </div>
         )
       }
     >
@@ -222,37 +215,51 @@ function ModalCompanySelect({
         onSubmit={handleKeywordChange}
       />
       <div className='company_select_list_wrap'>
-        <CompanyLists
-          title={topListTitle}
-          totalCount={multiple ? topCompanies.length : favoriteTotalCount}
-          companies={withSelectedFlag(
-            topCompanies,
-            checkedIds,
-            excludedIdSet
-          )}
-          onSelect={handleSelect}
-          emptyMessage={topEmptyMessage}
-        />
+        {loading ? (
+          <div className="in_loading">
+            로딩 중...
+          </div>
+        ) : (
+          <>
+            <CompanyLists
+              title={topListTitle}
+              totalCount={multiple ? topCompanies.length : favoriteTotalCount}
+              companies={withSelectedFlag(
+                topCompanies,
+                checkedIds,
+                excludedIdSet
+              )}
+              onSelect={handleSelect}
+              emptyMessage={topEmptyMessage}
+            />
 
-          {!multiple && favoriteTotalPages > 1 && (
-            <Pagination
-              currentPage={favoritePage}
-              totalPages={favoriteTotalPages}
-              onPageChange={setFavoritePage}
+            {!multiple && favoriteTotalPages > 1 && (
+              <Pagination
+                currentPage={favoritePage}
+                totalPages={favoriteTotalPages}
+                onPageChange={setFavoritePage}
               />
-          )}
+            )}
 
-        <CompanyLists
-          title="검색 결과"
-          totalCount={searchTotalCount}
-          companies={withSelectedFlag(
-            searchCompanies,
-            checkedIds,
-            excludedIdSet
-          )}
-          onSelect={handleSelect}
-          emptyMessage="검색 결과가 없습니다."
-        />
+            <CompanyLists
+              title="검색 결과"
+              totalCount={searchTotalCount}
+              companies={withSelectedFlag(
+                searchCompanies,
+                checkedIds,
+                excludedIdSet
+              )}
+              onSelect={handleSelect}
+              emptyMessage="검색 결과가 없습니다."
+            />
+
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+          </>
+        )}
       </div>
     </Modal>
   );

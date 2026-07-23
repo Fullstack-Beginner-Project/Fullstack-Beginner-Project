@@ -1,5 +1,5 @@
 import ModalClose from "../assets/images/icon_delete.png";
-import "../assets/css/Modal.css";
+import "../assets/css/modal.css";
 
 function Modal({
     title,
@@ -22,13 +22,12 @@ function Modal({
             </button>
           </div>
 
-          {/* 모달 콘텐츠 */}
+          {/* 모달 콘텐츠 + 페이지네이션 */}
           <div className="modal_content">
             {children}
           </div>
 
           {/* 모달 하단 */}
-          {/* 버튼이 있는 경우와 페이지네이션이 있는 경우를 고려 */}
           { footer && (
             <div className="modal_footer">
               {footer}
