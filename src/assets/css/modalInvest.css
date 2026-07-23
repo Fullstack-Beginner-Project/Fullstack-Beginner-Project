@@ -12,6 +12,13 @@
     align-items: center;
     gap: 0 12px;
 }
+
+.invest_company .img_logo_wrap{
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+}
 .invest_company div {
     display: flex;
     gap: 0 8px;
