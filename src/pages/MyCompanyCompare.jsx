@@ -219,6 +219,7 @@ function MyCompanyCompare() {
 
       {openSlot === SLOT.MY && (
         <ModalCompanySelect
+          excludedIds={targetCompanies.map((company) => company.id)}
           onClose={handleCloseModal}
           onSelectCompany={handleSelectCompany}
         />

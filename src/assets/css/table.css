@@ -1,5 +1,4 @@
-
-.table_conatiner{
+.table_conatiner {
     position: relative;
     /* border-radius: 12px; */
     overflow: hidden;
@@ -7,21 +6,21 @@
 }
 
 .table_wrap {
-  display: inline-block;
-  min-width: 100%;
+    display: inline-block;
+    min-width: 100%;
 }
 
 .table_head_wrap,
 .table_body_wrap {
-  width: min-content;
-  min-width: 100%;
-  overflow: hidden;
+    width: min-content;
+    min-width: 100%;
+    overflow: hidden;
 }
 
 .table_wrap table {
-  table-layout: fixed;
-  border-collapse: collapse;
-  border-spacing: 0;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
 .table_head_wrap {
@@ -29,7 +28,7 @@
     overflow: hidden;
 }
 
-.table_wrap table{
+.table_wrap table {
     border-collapse: collapse;
     border-spacing: 0
 }
@@ -37,75 +36,85 @@
 
 
 /* table col width */
-.table_wrap table col.short{
+.table_wrap table col.short {
     width: 68px;
 }
-.table_wrap table col.title{
+
+.table_wrap table col.title {
     width: 213px;
 }
-.table_wrap table col.content{
+
+.table_wrap table col.content {
     width: auto;
     min-width: 180px;
 }
-.table_wrap table col.etc{
+
+.table_wrap table col.etc {
     width: 153px;
 }
-.table_wrap table col.etc_2{
+
+.table_wrap table col.etc_2 {
     width: 90px;
 }
-.table_wrap table col.etc_3{
+
+.table_wrap table col.etc_3 {
     width: 200px;
 }
-/* 
-.table_wrap table col.etc_2{
-    width: ;
-} */
+
 /* table col width end */
 
 
 
 .table_wrap th {
+    text-align: center;
+    background-color: var(--black_100);
+}
+
+.table_wrap th .th_inner {
     padding: 10px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     font-size: 14px;
     font-weight: 500;
     color: #fff;
-    background-color: var(--black_100);
-    background-color: #2E2E2E;
 }
 
 
-.table_wrap .table_body_wrap{
+.table_wrap .table_body_wrap {
     display: block;
     margin-top: 16px;
     border-radius: 4px;
     overflow: hidden;
 }
 
-.company_detail_wrap .overflow_x{
+.company_detail_wrap .overflow_x {
     padding-bottom: 0;
 }
 
-.company_detail_wrap .table_body{
+.company_detail_wrap .table_body {
     border-radius: 4px;
     overflow: hidden;
 }
 
-.table_wrap td{
+.table_wrap td {
     padding: 0;
     vertical-align: middle;
     background-color: var(--black_200);
 }
 
-.table_wrap tr:nth-child(n+2) td{
+.table_wrap tr:nth-child(n+2) td {
     border-top: 1px solid var(--gray_300);
 }
 
-.table_wrap tr.selection td{
+.table_wrap tr.selection td {
     background: var(--black_300);
 }
 
-.table_wrap .table_body .td_inner{
+.table_wrap .table_body .td_inner {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -121,50 +130,53 @@
     color: var(--gray_100);
 }
 
-.table_wrap td.title *{
+.table_wrap td.title * {
     font-weight: 500;
     color: #fff;
 }
 
-.table_wrap .table_body td.title .td_inner{
-    padding:  11px 24px 11px 33px;
+.table_wrap .table_body td.title .td_inner {
+    padding-left: 24px;
+    padding-right: 33px;
     justify-content: flex-start;
     gap: 12px;
 }
 
-.table_wrap .table_body tr:has(td.title:hover) > td,
-.table_wrap .table_body td.title:hover ~ td{
+.table_wrap .table_body tr:has(td.title:hover)>td,
+.table_wrap .table_body td.title:hover~td {
     background-color: var(--black_300);
 }
 
 
 
 
-.table_wrap .table_body td.content .td_inner{
-    padding: 15px 11px;
+.table_wrap .table_body td.content .td_inner {
+    padding-top: 15px;
+    padding-bottom: 15px;
     text-align: left;
     justify-content: flex-start;
 }
 
-.table_wrap .table_body td.content.overflow .text{
+.table_wrap .table_body td.content.overflow .text {
     /* 두줄 ...처리 */
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2; /* 보여줄 줄 수 */
+    -webkit-line-clamp: 2;
+    /* 보여줄 줄 수 */
     overflow: hidden;
     text-align: left;
     text-overflow: ellipsis;
 }
 
-.table_wrap .table_body td.content.comment{
+.table_wrap .table_body td.content.comment {
     justify-content: space-between;
 }
 
-.table_wrap .table_body td.content.comment .text{
+.table_wrap .table_body td.content.comment .text {
     width: 100%;
 }
 
-.table_wrap .table_body td.content.comment .comment_wrap{
+.table_wrap .table_body td.content.comment .comment_wrap {
     position: relative;
     flex-shrink: 0;
     padding-left: 15px;
@@ -173,12 +185,12 @@
 }
 
 
-.table_wrap .table_body td.content.comment form button .no_text{
+.table_wrap .table_body td.content.comment form button .no_text {
     width: 100%;
     height: 100%;
 }
 
-.table_wrap .table_body td.content.comment form .btn_comment_menu{
+.table_wrap .table_body td.content.comment form .btn_comment_menu {
     width: 100%;
     height: 100%;
     background: url('/src/assets/images/icon_table_menu.svg') center no-repeat;
@@ -187,10 +199,10 @@
 
 
 /* comment_menu 위치 */
-.comment_menu{
+.comment_menu {
     position: absolute;
     z-index: 10;
-    
+
     display: none;
     top: calc(50% - 20px);
     right: calc(100% - 17px);
@@ -201,34 +213,35 @@
 }
 
 /* comment_menu 위치 */
-.comment_menu li{
+.comment_menu li {
     width: 100%;
 }
 
-.comment_menu li + li{
+.comment_menu li+li {
     border-left: 1px solid var(--gray_200);
 }
 
-.comment_menu li .text{
+.comment_menu li .text {
     text-align: center;
 }
 
-.comment_menu li button{
+.comment_menu li button {
     width: 100%;
     padding: 12px;
     text-align: center;
 }
-.btn_comment_menu.clicked + .comment_menu{
+
+.btn_comment_menu.clicked+.comment_menu {
     display: flex;
 }
 
-.table_wrap .table_body td.title{
+.table_wrap .table_body td.title {
     padding: 0;
     height: 1px;
     vertical-align: middle;
 }
 
-.table_wrap .table_body .company_link .img_wrap{
+.table_wrap .table_body .company_link .img_wrap {
     display: block;
     width: 32px;
     height: 32px;
@@ -236,11 +249,11 @@
     overflow: hidden;
 }
 
-.table_wrap .table_body .company_link .img_wrap{
+.table_wrap .table_body .company_link .img_wrap {
     background: url('/src/assets/images/img_thm_noimg.png') center/cover no-repeat;
 }
 
-.table_wrap .table_body .company_link .c_nm{
+.table_wrap .table_body .company_link .c_nm {
     display: flex;
     align-items: center;
     width: 100%;
@@ -256,15 +269,57 @@
     flex-shrink: 0;
 }
 
-@media screen and (max-width: 768px) {
-    .table_wrap td *{
-        font-size: 14px;
-    }
-}
-
 .table_wrap .table_body .company_link .favorite_icon {
     width: 18px;
     height: 18px;
     margin-left: 8px;
     flex-shrink: 0;
+}
+
+@media screen and (max-width: 768px) {
+
+    /* table col width */
+    .table_wrap table col.short {
+        width: 48px;
+    }
+
+    .table_wrap table col.title {
+        width: 152px;
+    }
+
+    .table_wrap table col.content {
+        width: auto;
+        min-width: 110px;
+    }
+
+    .table_wrap table col.etc {
+        width: 130px;
+    }
+
+    .table_wrap table col.etc_2 {
+        width: 80px;
+    }
+
+    .table_wrap table col.etc_3 {
+        width: 150px;
+    }
+    /* table col width end */
+
+
+
+    .table_wrap td * {
+        font-size: 14px;
+    }
+
+    .table_wrap td * {
+        font-size: 14px;
+    }
+
+    .table_wrap .table_body .td_inner {
+        padding: 5px;
+    }
+
+    .table_wrap .table_body td.title .td_inner {
+        padding: 5px 14px 5px 21px;
+    }
 }
