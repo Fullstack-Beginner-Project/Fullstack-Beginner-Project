@@ -268,7 +268,8 @@
 }
 
 @media screen and (max-width: 1023px) {
-    .content_wrap{
+    #body .content_wrap{
+        padding-top: 24px;
         padding-bottom: 24px;
     }
 }
