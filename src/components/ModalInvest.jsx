@@ -29,6 +29,7 @@ function ModalInvest({
     return (
       form.investor.trim() !== "" &&
       form.investor.length <= 6 &&
+      form.investor.length >= 2 &&
       form.amount !== "" &&
       !isNaN(Number(form.amount)) &&
       Number(form.amount) >= 10 &&
@@ -103,8 +104,8 @@ function ModalInvest({
           type="text"
           placeholder="투자자 이름을 입력해 주세요"
           onValueChange={handleValueChange('investor')}
-          condition={form.investor.length <= 6}
-          message="이름은 6자 이내로 입력해주세요."
+          condition={form.investor.length <= 6 && form.investor.length >= 2}
+          message="이름은 2글자 이상, 6자 이내로 입력해주세요."
         />
       </div>
 
