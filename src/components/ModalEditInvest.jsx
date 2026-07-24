@@ -6,6 +6,7 @@ import Input from "../components/Input";
 import "../assets/css/modalInput.css";
 import "../assets/css/modalInvest.css";
 import DefaultLogo from '../assets/images/logo_default.png';
+import LogoImg from "./LogoImg";
 
 function ModalEditInvest({
   company,
@@ -21,8 +22,6 @@ function ModalEditInvest({
     comment: initialData.comment,
     password: '',
   });
-
-  console.log(form.amount)
 
   const handleValueChange = (key) => (value) => {
     setForm((prev) => ({
@@ -58,10 +57,9 @@ function ModalEditInvest({
           <p>투자 기업 정보</p>
 
           <div className="invest_company">
-            <img
-              src={company.logo ?? DefaultLogo}
-              alt={company.name}
-            />
+            <div className="img_logo_wrap">
+              <LogoImg cId={company.id} cNm={company.name} />
+            </div>
 
             <div>
               <p>{company.name}</p>

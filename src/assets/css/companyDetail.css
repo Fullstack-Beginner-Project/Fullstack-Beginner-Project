@@ -121,6 +121,10 @@
   display: block;
 }
 
+.invest_details .btn_primary {
+  background-color: var(--black_100);
+}
+
 @media (max-width: 1280px) {
     .company_detail_top {
         padding: 40px 0 24px 0;

@@ -4,12 +4,39 @@
 export function formatAmount(value) {
   const amount = Number(value);
 
-  if (!amount) return "0원";
-  if (amount >= 100_000_000) return `${Math.round(amount / 100_000_000).toLocaleString()}억 원`;
-  if (amount >= 10_000_000) return `${Math.round(amount / 10_000_000).toLocaleString()}천만 원`;
-  if (amount >= 1_000_000) return `${Math.round(amount / 1_000_000).toLocaleString()}백만 원`;
+  if (!amount) {
+    return "0원";
+  }
 
-  return `${amount.toLocaleString()}원`;
+  if (amount >= 950_000_000_000) {
+    return `${Math.round(amount / 1_000_000_000_000)}조원`;
+  }
+
+  if (amount >= 99_950_000_000) {
+    return `${Math.round(amount / 100_000_000_000)}천억원`;
+  }
+
+  if (amount >= 95_000_000) {
+    return `${Math.round(amount / 100_000_000)}억원`;
+  }
+
+  if (amount >= 9_500_000) {
+    return `${Math.round(amount / 10_000_000)}천만원`;
+  }
+
+  if (amount >= 950_000) {
+    return `${Math.round(amount / 1_000_000)}백만원`;
+  }
+
+  if (amount >= 9_500) {
+    return `${Math.round(amount / 10_000)}만원`;
+  }
+
+  if (amount >= 1_000) {
+    return `${Math.round(amount / 1_000)}천원`;
+  }
+
+  return `${amount}원`;
 };
 
 // 기업 데이터 id 통일

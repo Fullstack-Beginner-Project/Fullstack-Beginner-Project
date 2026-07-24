@@ -192,29 +192,21 @@
     z-index: 10;
     
     display: none;
-    top: calc(50% - 43px);
-    right: calc(100% - 10px);
-    width: 127px;
+    top: calc(50% - 20px);
+    right: calc(100% - 17px);
+    width: 142px;
     background-color: var(--black_400);
     border: 1px solid var(--gray_200);
     border-radius: 10px;
 }
 
 /* comment_menu 위치 */
-.table_wrap .table_body tr:first-child .comment_menu{
-    top: -10px;
-}
-.table_wrap .table_body tr:last-child .comment_menu,
-.table_wrap .table_body tr:nth-last-child(1) .comment_menu{
-    top: -60px;
-}
-
 .comment_menu li{
     width: 100%;
 }
 
 .comment_menu li + li{
-    border-top: 1px solid var(--gray_200);
+    border-left: 1px solid var(--gray_200);
 }
 
 .comment_menu li .text{
@@ -227,7 +219,7 @@
     text-align: center;
 }
 .btn_comment_menu.clicked + .comment_menu{
-    display: block;
+    display: flex;
 }
 
 .table_wrap .table_body td.title{
@@ -245,7 +237,7 @@
 }
 
 .table_wrap .table_body .company_link .img_wrap{
-    background: url('src/assets/images/img_noimg.webp') center/cover no-repeat;
+    background: url('/src/assets/images/img_thm_noimg.png') center/cover no-repeat;
 }
 
 .table_wrap .table_body .company_link .c_nm{

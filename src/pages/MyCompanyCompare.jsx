@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../api/axios.js";
 
-import Button from "../components/Button";
-import ModalCompanySelect from "../components/ModalCompanySelect";
+import Button from "../components/Button.jsx";
+import ModalCompanySelect from "../components/ModalCompanySelect.jsx";
 import LogoImg from "../components/LogoImg.jsx";
 import "../assets/css/myCompanyCompare.css";
 
@@ -130,11 +130,7 @@ function MyCompanyCompare() {
                 </Button>
               </div>
               <div className="company_slot_selected">
-                <img
-                  src={"/src/assets/images/company-logo-" + myCompany.id + ".webp"}
-                  alt={myCompany.name}
-                  onError={(e) => { e.currentTarget.src = DefaultLogo }}
-                />
+                <LogoImg cId={myCompany.id} cNm={myCompany.name}/>
                 <p>{myCompany.name}</p>
                 <span>{myCompany.category}</span>
               </div>

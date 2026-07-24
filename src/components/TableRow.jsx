@@ -9,10 +9,10 @@ import FilledHeartIcon from "../assets/images/icon_btn_filled_heart.png";
 
 function TableRow({ row, rowIndex, columnDefs, myCompany, currentPage, rowsPerPage, onEditInvestment, onDeleteInvestment }) {
 
-  const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0 });    
+  const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0 });
 
   const renderCell = (column) => {
-  
+
     const value = row[column.key];
 
     switch (column.key) {
@@ -65,10 +65,10 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, currentPage, rowsPerPa
                   {value}
                 </span>
                 {isFavoriteCompany(row.id) && (
-                <img
-                  src={FilledHeartIcon}
-                  alt="찜한 기업"
-                  className="favorite_icon"
+                  <img
+                    src={FilledHeartIcon}
+                    alt="찜한 기업"
+                    className="favorite_icon"
                   />
                 )}
               </span>
@@ -149,26 +149,49 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, currentPage, rowsPerPa
                 {value}
               </p>
               <form action="" className='comment_wrap'>
-                <button type="button" className='btn_comment_menu'
-                  onClick={(event) => {
+
+
+
+
+                <button type="button" className="btn_comment_menu" onClick={(event) => {
+                    event.stopPropagation();
+
                     const currentButton = event.currentTarget;
-                    const wasClicked = currentButton.classList.contains('clicked');
+                    const wasClicked = currentButton.classList.contains("clicked");
 
                     document
-                      .querySelectorAll('.btn_comment_menu.clicked')
+                      .querySelectorAll(".btn_comment_menu.clicked")
                       .forEach((button) => {
-                        button.classList.remove('clicked');
+                        button.classList.remove("clicked");
+
+                        if (button.closeMenuHandler) {
+                          document.removeEventListener("click", button.closeMenuHandler);
+                          button.closeMenuHandler = null;
+                        }
                       });
 
                     if (!wasClicked) {
-                      currentButton.classList.add('clicked');
+                      currentButton.classList.add("clicked");
+
+                      const closeMenu = () => {
+                        currentButton.classList.remove("clicked");
+                        document.removeEventListener("click", closeMenu);
+                        currentButton.closeMenuHandler = null;
+                      };
+
+                      currentButton.closeMenuHandler = closeMenu;
+
+                      setTimeout(() => {
+                        document.addEventListener("click", closeMenu);
+                      }, 0);
                     }
-                  }}>
+                  }}
+                >
                   <span className="no_text">코멘트 메뉴</span>
                 </button>
                 <ul className="comment_menu">
-                  <li><button type="button" onClick={() => onEditInvestment?.(row)}>수정하기</button></li>
-                  <li><button type="button" onClick={() => onDeleteInvestment?.(row)}>삭제하기</button></li>
+                  <li><button type="button" onClick={() => onEditInvestment?.(row)}>수정</button></li>
+                  <li><button type="button" onClick={() => onDeleteInvestment?.(row)}>삭제</button></li>
                 </ul>
               </form>
             </div>
@@ -185,10 +208,6 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, currentPage, rowsPerPa
         );
     }
   };
-
-  // console.log(myCompany)
-  // console.log('row.id******************')
-  // console.log(row.id)
 
   return (
     <>
@@ -213,10 +232,10 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, currentPage, rowsPerPa
               zIndex: 9999,
             }}
           >
-      {tooltip.text}
-    </div>,
-    document.body
-  )}
+            {tooltip.text}
+          </div>,
+          document.body
+        )}
     </>
   );
 }

@@ -396,13 +396,18 @@ companyRouter.get('/companies/:companyId/investments', async (req, res) => {
       },
     });
 
-    const totalCount = await prisma.investment.count({
+    const investmentSummary = await prisma.investment.aggregate({
       where,
+      _count: true,
+      _sum: {
+        amount: true,
+      },
     });
 
     return res.status(200).json({
       list: investments,
-      totalCount,
+      totalCount: investmentSummary._count,
+      totalAmount: investmentSummary._sum.amount ?? 0n,
     });
   } catch (error) {
     console.error(error);
