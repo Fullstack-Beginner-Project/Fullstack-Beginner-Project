@@ -6,6 +6,7 @@ import Input from "../components/Input";
 import "../assets/css/modalInput.css";
 import "../assets/css/modalInvest.css";
 import DefaultLogo from '../assets/images/logo_default.png';
+import LogoImg from "./LogoImg";
 
 function ModalInvest({
   company,
@@ -66,10 +67,9 @@ function ModalInvest({
         <p>투자 기업 정보</p>
 
         <div className="invest_company">
-          <img
-            src={company.logo ?? DefaultLogo}
-            alt={company.name}
-          />
+          <div className="img_logo_wrap">
+            <LogoImg cId={company.id} cNm={company.name} />
+          </div>
 
           <div>
             <p>{company.name}</p>
@@ -96,7 +96,9 @@ function ModalInvest({
           placeholder="투자 금액을 입력해 주세요"
           onValueChange={handleValueChange('amount')}
           condition={Number(form.amount) >= 10 && Number(form.amount) <= 10000000000}
-      
+          onKeyDown={(e) =>
+            ["e", "E", "+", "-"].includes(e.key) && e.preventDefault()
+          }
           message="투자 금액은 10원 이상 100억 이하로 입력해주세요."
         />
       </div>
