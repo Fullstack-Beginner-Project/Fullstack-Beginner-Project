@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import Modal from "../components/Modal";
 import Button from "../components/Button";
@@ -13,6 +13,9 @@ function ModalInvest({
   onClose,
   onInvest,
 }) {
+  const submittingRef = useRef(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const [nameCon, setNameCon] = useState()
   const [form, setForm] = useState({
     investor: '',
@@ -43,6 +46,22 @@ function ModalInvest({
     }));
   };
 
+  const handleInvestClick = async () => {
+    if (submittingRef.current) {
+      return;
+    }
+
+    submittingRef.current = true;
+    setIsSubmitting(true);
+
+    try {
+      await onInvest(form);
+    } finally {
+      submittingRef.current = false;
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <Modal
       title="기업에 투자하기"
@@ -54,10 +73,10 @@ function ModalInvest({
           </Button>
 
           <Button
-            onClick={() => onInvest(form)}
-            disabled={!isFormValid()}
+            onClick={handleInvestClick}
+            disabled={!isFormValid() || isSubmitting}
           >
-            투자하기
+            {isSubmitting ? "처리 중..." : "투자하기"}
           </Button>
         </div>
       }
