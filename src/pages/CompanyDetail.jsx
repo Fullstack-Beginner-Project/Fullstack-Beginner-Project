@@ -313,6 +313,7 @@ function CompanyDetail() {
                 <Button
                   size="medium"
                   variant="primary"
+                  subClassName="btn_invest"
                   onClick={() => setIsInvestOpen(true)}
                 >
                   기업투자하기
