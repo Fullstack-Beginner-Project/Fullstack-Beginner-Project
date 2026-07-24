@@ -53,8 +53,10 @@ function CustomTooltip({ active, payload, label, viewBox }) {
         visibility: pos ? "visible" : "hidden",
       }}
     >
-      <p className="chart_tooltip_date">{label}</p>
-      <p className="chart_tooltip_amount">{formatAmount(payload[0].value)}</p>
+      <p className="chart_tooltip_date"
+         style={{ color: "#D8D8D8", fontSize: "12px", marginTop: "4px" }}>{label}</p>
+      <p className="chart_tooltip_amount"
+         style={{ color: "#D8D8D8", fontSize: "12px", marginTop: "4px" }}>{formatAmount(payload[0].value)}</p>
     </div>
   );
 }
