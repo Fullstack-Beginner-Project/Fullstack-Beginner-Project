@@ -237,7 +237,7 @@
 }
 
 .table_wrap .table_body .company_link .img_wrap{
-    background: url('src/assets/images/img_noimg.webp') center/cover no-repeat;
+    background: url('/src/assets/images/img_thm_noimg.png') center/cover no-repeat;
 }
 
 .table_wrap .table_body .company_link .c_nm{
