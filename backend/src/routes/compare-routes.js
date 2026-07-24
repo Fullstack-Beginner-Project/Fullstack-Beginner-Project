@@ -34,18 +34,22 @@ function serializeCompareCompany(company) {
 }
 
 const COMPARE_STATUS_SORT_OPTIONS = {
-  selectCountDesc: {
-    myCompanySelectCount: 'desc',
-  },
-  selectCountAsc: {
-    myCompanySelectCount: 'asc',
-  },
-  compareCountDesc: {
-    compareCompanySelectCount: 'desc',
-  },
-  compareCountAsc: {
-    compareCompanySelectCount: 'asc',
-  },
+  selectCountDesc: [
+    {myCompanySelectCount: 'desc' },
+    {name: 'asc' },
+],
+  selectCountAsc: [
+    {myCompanySelectCount: 'asc' },
+    {name: 'asc' },
+  ],
+  compareCountDesc: [
+    {compareCompanySelectCount: 'desc' },
+    {name: 'asc' },
+],
+  compareCountAsc: [
+    {compareCompanySelectCount: 'asc' },
+    {name: 'asc' },
+],
 };
 
 const COMPARE_RESULT_SORT_OPTIONS = {
