@@ -14,24 +14,30 @@ import {
 
 //query로 들어온 문자열을 orderBy객체로 바꿔줌
 const SORT_OPTIONS = {
-  investmentDesc: {
-    actualInvestmentAmount: 'desc',
-  },
-  investmentAsc: {
-    actualInvestmentAmount: 'asc',
-  },
-  revenueDesc: {
-    revenue: 'desc',
-  },
-  revenueAsc: {
-    revenue: 'asc',
-  },
-  employeeDesc: {
-    employeeCount: 'desc',
-  },
-  employeeAsc: {
-    employeeCount: 'asc',
-  },
+  investmentDesc: [
+    {actualInvestmentAmount: 'desc' },
+    {name:'asc' },
+  ],
+  investmentAsc: [
+    {actualInvestmentAmount: 'asc' },
+    {name: 'asc' },
+  ],
+  revenueDesc: [
+    {revenue: 'desc' },
+    {name: 'asc' },
+  ],
+  revenueAsc: [
+    {revenue: 'asc' },
+    {name: 'asc' },
+  ],
+  employeeDesc: [
+    {employeeCount: 'desc' },
+    {name: 'asc' },
+  ],
+  employeeAsc: [
+    {employeeCount: 'asc' },
+    {name: 'asc' },
+  ],
 };
 
 //order option 값 
