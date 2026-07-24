@@ -103,3 +103,9 @@
     font-size: 11px;
   }
 }
+
+@media (max-width: 375px) {
+  .gnb_wrap .gnb_inner { padding: 0 15px; gap: 16px; }
+  .gnb_wrap .gnb_logo img { height: 20px; }
+  .gnb_wrap .gnb_link { font-size: 10px; }
+}

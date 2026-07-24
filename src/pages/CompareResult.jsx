@@ -142,7 +142,6 @@ function CompareResult() {
     };
     try {
       const response = await axios.post(`/api/investments`, payload);
-      console.log("투자 성공:", response.data);
       setConfirmModal({
         open: true,
         message: "투자가 완료되었습니다!",
@@ -190,8 +189,6 @@ function CompareResult() {
         setRankedCompanies(rankedCompanies);
       } catch (error) {
         console.error("기업 랭킹 조회 실패:", error);
-      } finally {
-        console.log(rankedCompanies);
       }
     };
 

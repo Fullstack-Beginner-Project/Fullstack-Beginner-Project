@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { formatAmount, isFavoriteCompany } from '/src/utils/common.js'
 import LogoImg from "../components/LogoImg.jsx";
-import FilledHeartIcon from "../assets/images/icon_btn_filled_heart.png";
+import FilledHeartIcon from "../assets/images/icon_btn_filled_heart.svg";
 
 
 
@@ -208,10 +208,6 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, currentPage, rowsPerPa
         );
     }
   };
-
-  // console.log(myCompany)
-  // console.log('row.id******************')
-  // console.log(row.id)
 
   return (
     <>
