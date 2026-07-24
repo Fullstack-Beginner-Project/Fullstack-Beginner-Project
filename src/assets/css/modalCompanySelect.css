@@ -3,3 +3,12 @@
     flex-direction: column;
     margin-top: 24px;
 }
+
+.company_select_list_wrap .company_list_wrap {
+    margin-bottom: 24px;
+}
+
+.company_select_list_wrap .pagination_wrap {
+    padding: 0 0 24px 0;
+}
+
