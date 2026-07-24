@@ -99,4 +99,14 @@
     .compay_chart.summary_box.company_description{
         padding: 0;
     }
+
+    /* 모바일에서는 최소 너비 제한을 풀어 화면 폭에 맞게 축소 (가로 스크롤 방지) */
+    .chart_wrap .investment_chart{
+        min-width: 0;
+    }
+
+    .chart_wrap,
+    .investment_chart {
+        height: 280px;
+    }
 }
