@@ -67,12 +67,7 @@ function CompanyDetail() {
       const chartResponse = await axios.get(
         `/api/companies/${companyId}/investments/chart`
       );
-
-
       setCartData(chartResponse.data.list);
-
-      console.log('chartData');
-      console.log(chartData);
 
     } catch (error) {
       console.error("데이터 불러오기 실패:", error);
@@ -319,7 +314,7 @@ function CompanyDetail() {
                   기업투자하기
                 </Button>
               </div>
-              <p>총 {Number(company.actualInvestmentAmount / 100000000).toLocaleString()}억 원</p>
+              <p>총 {Number(company.revenue / 100000000).toLocaleString()}억 원</p>
             </div>
 
             <Table

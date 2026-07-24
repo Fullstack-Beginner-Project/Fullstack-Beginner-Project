@@ -21,8 +21,6 @@ function CompareOverview() {
         const response = await axios.get(
           `/api/compare/status?page=${currentPage}&pageSize=${rowsPerPage}&sort=${sortOption}`
         );
-        console.log('responsedddddddddddddddddddddddddddddddddddddddddddddddd');
-        console.log(response);
         const list = response.data?.companies ?? [];
         setCompanies(list);
         setTotalPages(response.data?.totalPages ?? 1);

@@ -209,10 +209,6 @@ function TableRow({ row, rowIndex, columnDefs, myCompany, currentPage, rowsPerPa
     }
   };
 
-  // console.log(myCompany)
-  // console.log('row.id******************')
-  // console.log(row.id)
-
   return (
     <>
       <tr className={row.id === myCompany ? "selection" : undefined}>

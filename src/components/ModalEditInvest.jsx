@@ -23,8 +23,6 @@ function ModalEditInvest({
     password: '',
   });
 
-  console.log(form.amount)
-
   const handleValueChange = (key) => (value) => {
     setForm((prev) => ({
       ...prev,
