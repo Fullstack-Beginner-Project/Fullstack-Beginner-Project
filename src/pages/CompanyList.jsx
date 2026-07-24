@@ -16,7 +16,7 @@ function CompanyList() {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
   const [totalPages, setTotalPages] = useState(1);
-  const [sortOption, setSortOption] = useState("revenueDesc");
+  const [sortOption, setSortOption] = useState("investmentDesc");
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(true);
  

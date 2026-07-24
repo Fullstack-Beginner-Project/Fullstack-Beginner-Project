@@ -21,7 +21,7 @@ function InvestmentStatus() {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
   const [totalPages, setTotalPages] = useState(1);
-  const [orderBy, setOrderBy] = useState("actualInvestmentAmount");
+  const [orderBy, setOrderBy] = useState("userInvestmentAmount");
   const [order, setOrder] = useState("desc");
 
   useEffect(() => {
