@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import Modal from "../components/Modal";
 import Button from "../components/Button";
@@ -9,7 +9,25 @@ function ModalDelete({
   onClose,
   onDelete,
 }) {
+  const submittingRef = useRef(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const [password, setPassword] = useState('');
+  const handleDeleteClick = async () => {
+    if (submittingRef.current) {
+      return;
+    }
+
+    submittingRef.current = true;
+    setIsSubmitting(true);
+
+    try {
+      await onDelete(password);
+    } finally {
+      submittingRef.current = false;
+      setIsSubmitting(false);
+    }
+  }
 
   return (
     <Modal
@@ -17,8 +35,11 @@ function ModalDelete({
       onClose={onClose}
       footer={
         <div className="modal_footer_btns">
-          <Button onClick={() => onDelete(password)}>
-            삭제하기
+          <Button 
+            onClick={handleDeleteClick}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "처리 중..." : "삭제하기"}
           </Button>
         </div>
       }
@@ -26,8 +47,8 @@ function ModalDelete({
       <div className="modal_input">
         <label>비밀번호</label>  
         <Input type="password" 
-               placeholder="패스워드를 입력해주세요"
-               onValueChange={setPassword}/>
+              placeholder="패스워드를 입력해주세요"
+              onValueChange={setPassword}/>
       </div>
 
     </Modal>

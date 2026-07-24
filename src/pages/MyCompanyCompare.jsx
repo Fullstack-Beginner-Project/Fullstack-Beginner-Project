@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef ,useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../api/axios.js";
 
@@ -22,6 +22,9 @@ const MAX_TARGET_COMPANIES = 5;
 
 function MyCompanyCompare() {
   const navigate = useNavigate();
+  const compareRef = useRef(false);
+  const [isComparing, setIsComparing] = useState(false);
+
   const [myCompany, setMyCompany] = useState(null);
   const [targetCompanies, setTargetCompanies] = useState([]);
   const [openSlot, setOpenSlot] = useState(null);
@@ -56,7 +59,12 @@ function MyCompanyCompare() {
   };
 
   const handleCompare = async () => {
-    if (!isCompareReady) return;
+    if (!isCompareReady || compareRef.current) {
+      return;
+    }
+
+    compareRef.current = true;
+    setIsComparing(true);
 
     try {
       await axios.post(`/api/compare`, {
@@ -75,6 +83,9 @@ function MyCompanyCompare() {
       navigate("/compare-result", { state: { myCompany, targetCompanies } });
     } catch (error) {
       console.error("기업 비교 실행 실패:", error);
+    } finally {
+      compareRef.current = false;
+      setIsComparing(false);
     }
   };
 
@@ -199,10 +210,10 @@ function MyCompanyCompare() {
           size="large"
           variant="primary"
           selected={isCompareReady}
-          disabled={!isCompareReady}
+          disabled={!isCompareReady || isComparing}
           onClick={handleCompare}
         >
-          기업 비교하기
+          {isComparing ? "비교 중..." : "기업 비교하기"}
         </Button>
       </div>
 
