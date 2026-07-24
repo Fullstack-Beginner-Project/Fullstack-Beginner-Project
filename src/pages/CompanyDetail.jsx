@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { formatAmount } from "../utils/common.js";
 
 import Table from "../components/Table";
 import Button from "../components/Button";
@@ -24,6 +25,7 @@ function CompanyDetail() {
   const [investments, setInvestments] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalInvestmentAmount, setTotalInvestmentAmount] = useState(0);
   const [isInvestOpen, setIsInvestOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -51,6 +53,8 @@ function CompanyDetail() {
       );
 
       setInvestments(investmentResponse.data.list);
+
+      setTotalInvestmentAmount(investmentResponse.data.totalAmount)
 
       setTotalPages(
         Math.ceil(investmentResponse.data.totalCount / PAGE_SIZE)
@@ -277,12 +281,12 @@ function CompanyDetail() {
               <div className="company_summary">
                 <div className="summary_box">
                   <span>누적 투자 금액</span>
-                  <strong>{Number(company.actualInvestmentAmount / 100000000).toLocaleString()}억 원</strong>
+                  <strong>{formatAmount(company.actualInvestmentAmount)}</strong>
                 </div>
 
                 <div className="summary_box">
                   <span>매출액</span>
-                  <strong>{Number(company.revenue / 100000000).toLocaleString()}억 원</strong>
+                  <strong>{formatAmount(company.revenue)}</strong>
                 </div>
 
                 <div className="summary_box">
@@ -314,7 +318,7 @@ function CompanyDetail() {
                   기업투자하기
                 </Button>
               </div>
-              <p>총 {Number(company.revenue / 100000000).toLocaleString()}억 원</p>
+              <p>총 {formatAmount(totalInvestmentAmount)}</p>
             </div>
 
             <Table
