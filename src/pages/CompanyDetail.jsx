@@ -71,12 +71,7 @@ function CompanyDetail() {
       const chartResponse = await axios.get(
         `/api/companies/${companyId}/investments/chart`
       );
-
-
       setCartData(chartResponse.data.list);
-
-      console.log('chartData');
-      console.log(chartData);
 
     } catch (error) {
       console.error("데이터 불러오기 실패:", error);

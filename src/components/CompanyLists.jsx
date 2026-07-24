@@ -1,5 +1,5 @@
-import Button from "../components/Button";
-import DefaultLogo from "../assets/images/logo_default.png";
+import Button from "../components/Button.jsx";
+import LogoImg from "../components/LogoImg.jsx"
 
 import "../assets/css/companyLists.css";
 
@@ -31,11 +31,7 @@ function CompanyLists({
               className={company.isMyCompany ? "is_my_company" : undefined}
             >
               <div>
-                <img
-                  src={"/src/assets/images/company-logo-" + company.id + ".webp"}
-                  alt={company.name}
-                  onError={(e) => { e.currentTarget.src = DefaultLogo }}
-                />
+                <LogoImg cId={company.id} cNm={company.name} />
                 <p>{company.name}</p>
                 <span>{company.category}</span>
               </div>
@@ -45,9 +41,7 @@ function CompanyLists({
                 variant="primary"
                 selected={company.selected}
                 disabled={company.disabled}
-                onClick={() => {onSelect(company.id);
-                  console.log(company.id);
-                }}
+                onClick={() => onSelect(company.id)}
               >
                 {company.disabled
                   ? '선택불가'
