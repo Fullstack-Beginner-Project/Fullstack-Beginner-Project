@@ -6,6 +6,7 @@ import Table from "../components/Table.jsx";
 import Pagination from "../components/Pagination.jsx";
 import axios from "../api/axios.js";
 import { getFavoriteCompanyIds } from "../utils/common"
+import "../assets/css/wishlist.css";
 
 
 const columnDefs = [
