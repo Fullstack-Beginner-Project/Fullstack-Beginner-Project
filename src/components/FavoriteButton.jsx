@@ -4,8 +4,8 @@ import {
   toggleFavoriteCompany,
 } from "../utils/common";
 
-import FilledHeartIcon from "../assets/images/icon_btn_filled_heart.png";
-import EmptyHeartIcon from "../assets/images/icon_btn_empty_heart.png";
+import FilledHeartIcon from "../assets/images/icon_btn_filled_heart.svg";
+import EmptyHeartIcon from "../assets/images/icon_btn_empty_heart.svg";
 
 function FavoriteButton({ companyId }) {
   const [isFavorite, setIsFavorite] = useState(

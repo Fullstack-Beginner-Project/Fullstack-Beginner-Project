@@ -1,153 +1,67 @@
 # Fullstack_Beginner_Project
-풀스택 14기 3팀 초급 프로젝트 입니다.
+### View My Startup
 
+## 📌 소개
+이 프로젝트는 Codeit Fullstack Course 14기 3팀의 View My Startup 웹 페이지입니다.<br>
+프론트엔드와 백엔드의 기본적인 통합 과정을 주축으로 설계되었습니다.
 
-# 코딩 컨벤션
-코딩 컨벤션이란 내가 나의 코드를, 다른 사람이 나의 코드를 보고 원활하게 의사소통하고 해석하기 위한 규칙입니다.
-코딩 컨벤션을 규정하는 이유는 사람마다 코딩 스타일이 제각각이기 때문입니다. 다음은 자바스크립트에서 if문을 사용하는 세 가지 방식입니다.
+## 🚀 기능
+- 스타트업의 누적 투자금액, 투자 단계, 기업 정보를 한눈에 조회할 수 있는 웹 플랫폼
+- 흩어진 스타트업 투자 정보를 통합하여 누구나 쉽게 탐색할 수 있는 서비스
+- 고객 친화형 반응형 UI
 
-```
-if() {
-	return;
-}
-
-if()
-{
-	return;
-}
-
-if() return;
-```
-이처럼 사람마다 제각각인 코딩 스타일들을 하나로 통일해서 가독성과 유지보수성을 높이고,
-원만한 협업을 할 수 있게 미리 약속해둔 코딩 규칙을 코딩 컨벤션이라고 합니다.
-
-이번 초급 미션간 사용할 코딩 컨벤션은 아래와 같습니다.
-
-## 소스 파일
-소스 파일명은 알파벳 소문자, 하이픈-, 언더바_로만 작성한다.
-소스 파일의 확장자는 .js로 통일한다.
-소스 파일의 인코딩은 UTF-8을 사용한다.
-한 행에 하나의 명령만을 작성한다.
-1행 당 문자 수는 80자 이내로 작성한다.
-파일의 맨 끝은 개행한다.
-세미콜론;은 필수가 아닌 언어지만, 반드시 붙여준다.
-
-## 공백
-들여쓰기는 탭이 아닌 스페이스 2개를 사용한다.
-공백에 스페이스와 탭을 섞지 않는다.
-콤마,와 세미콜론;의 뒤에 공백을 넣는다.
-함수나 객체 등을 정의한 블록의 전후에 공백 행을 넣는다.
-공백 행을 연속으로 2개 이상 사용하지 않는다.
-
-## 구문
-# 명명규칙
-대문자와 소문자를 엄격하게 구분한다.
-변수명과 함수명은 CamelCase를 따른다. (예. getReady(), colorOfCar)
-상수명은 대문자의 언더 스코어방식을 이용한다. (예. PI, MAX_VERTEX)
-생성자와 클래스명은 PascalCase를 따른다. (예. Student, MyClass)
-프라이빗 멤버들은 언더바_로 시작한다. (예. _id, _name)
-이벤트 핸들러 함수는 on으로 시작한다. (예. onClick, onMove)
-명명할 때 축약보다는 의미를 알기 쉽게 풀어쓴다.
-
-# 변수와 함수명
-```
-const PI = 3.14;
-let number = 2;
-
-let getSquare = (number) => {
-  return number * number;
-};
+## 🛠️ 설치 방법
+```bash
+git clone https://github.com/username/Fullstack_Beginner_Project.git
+cd Fullstack_Beginner_Project
+npm install
 ```
 
-# 클래스 명명과 프라이빗 멤버
-```
-class StudentInfo {
-  let _name;
-  let _id;
- 
-  constructor(name, id) {
-    this._name = name;
-    this._id = id;
-  }
-}
+## ⚙️ 환경 변수 설정
+이 프로젝트는 환경 변수를 사용합니다.<br>
+레포지토리에는 `.env.example` 파일이 포함되어 있으며, 이를 기반으로 실제 `.env` 파일을 만들어야 합니다.
+
+```bash
+cp .env.example .env
 ```
 
-# 중괄호 블록 { }
-블록은 열기 전에 개행하지 않는다.
-중괄호 블록은 닫기 전에 개행한다.
-```
-if ()	//나쁜 작성
-{
-}
-
-if () {	//나쁜 작성
-  callFunction(); }
-  
-if () {	//좋은 작성
-  callFunction();
-}
+## 📖 실행 방법
+현재 프로젝트는 monorepo 구조를 사용하고 있으며,<br>
+백엔드(BE)는 이미 웹에 호스팅되어 있습니다.<br>
+따라서 로컬 개발 환경에서는 프론트엔드(Vite)만 실행하면 됩니다.
+```bash
+npm run dev
 ```
 
-# 제어문
-제어문 키워드 뒤에 한 칸의 공백을 가지고 괄호를 사용한다.
-중괄호는 모든 제어문에서 한 줄의 명령을 갖더라도 반드시 써야하낟.
-단, if문에서는 구문이 한 줄의 명령을 가지면, 같은 라인에 명령을 작성하고 중괄호를 생략할 수 있다.
-조건문의 조건부는 가급적이면 간단하게 작성한다.
-```
-for (let i=0; i<3; i++) callFunction();	//나쁜 작성
+### 🔧 백엔드를 로컬에서 실행하고 싶을 경우
+1. 백엔드는 `backend` 디렉토리 안에 있으며, 별도의 의존성 설치가 필요합니다.
 
-
-for (let i=0; i<3; i++) {	//종은 작성
-  callFunction();
-}
-
-//단, if문은 다음과 같은 작성을 허용
-if () callFunction();
-
-//조건부는 쓸데없이 길어지지 않도록 한다.
-if (foo === true)  //나쁜 작성
-if (foo)  //좋은 작성
+```bash
+cd backend
+npm install
 ```
 
-# 변수
-변수 선언에서 var대신 let, const를 사용한다.
-한 번의 선언에서 하나의 변수만을 선언한다.
-문자열은 큰 따옴표"대신 작은 따옴표'를 사용한다.
-```
-var num1;  //var 선언은 지양할 것. 블록 스코프와 관련한 문제가 있습니다.
-let num2;
-const num3;
-
-let a, b;  //한 번에 여러개의 선언보단,
-let c;
-let d;  //나눠서 이용하기
-
-//문자열은 작은 따옴표 이용하기
-let str = "문자열입니다.";
-let str = '문자열입니다.';
+2. `backend`디렉토리 내부에도 `.env.example` 파일이 포함되어 있으며, 이를 기반으로 실제 `.env` 파일을 만들어야 합니다.
+```bash
+cp .env.example .env
 ```
 
-# 기타 구문
-==과 !=대신 ===, !==를 사용한다.
-숫자는 2/8/10/16 진수로만 표기하며, 2진수의 b/8진수의 o/16진수의 x 이후 불필요한 0은 적지않는다.
-문자열에서 eval() 함수는 사용하지 않는다.
-return문을 위한 불필요한 변수 선언을 자제한다.
+3. PostgreSQL에 데이터베이스를 생성해야 합니다.
+```sql
+   CREATE DATABASE mydb;
 ```
-if (a==b)  //나쁜 작성
-if (a===b)  //좋은 작성
 
+4. 로컬이나 개인 DB를 이용하기 위해 `.env`의 `Database_URL`을 수정해야합니다.<br>
+또한 각 기업 ID 별로 seeding을 진행하기 위해 `changetopassword`를 DB password로 변경해야 합니다.
+```env
+DATABASE_URL="postgresql://postgres:비밀번호@localhost:5432/데이터베이스명"
+SEED_PASSWORD_기업ID="(DB비밀번호)"
+```
 
-//나쁜 작성
-function() {
-  let result;
-  
-  result = 1+1;
-  
-  return result;
-}
-
-//좋은 작성
-function() {
-  return 1+1;
-}
+5. 그 후 개발 모드로 실행해 주세요.
+```bash
+npx prisma generate
+npx prisma migrate dev
+npm run seed
+npm run dev
 ```

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import Modal from "../components/Modal";
 import Button from "../components/Button";
@@ -13,6 +13,9 @@ function ModalInvest({
   onClose,
   onInvest,
 }) {
+  const submittingRef = useRef(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const [nameCon, setNameCon] = useState()
   const [form, setForm] = useState({
     investor: '',
@@ -26,6 +29,7 @@ function ModalInvest({
     return (
       form.investor.trim() !== "" &&
       form.investor.length <= 6 &&
+      form.investor.length >= 2 &&
       form.amount !== "" &&
       !isNaN(Number(form.amount)) &&
       Number(form.amount) >= 10 &&
@@ -43,6 +47,22 @@ function ModalInvest({
     }));
   };
 
+  const handleInvestClick = async () => {
+    if (submittingRef.current) {
+      return;
+    }
+
+    submittingRef.current = true;
+    setIsSubmitting(true);
+
+    try {
+      await onInvest(form);
+    } finally {
+      submittingRef.current = false;
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <Modal
       title="기업에 투자하기"
@@ -54,10 +74,10 @@ function ModalInvest({
           </Button>
 
           <Button
-            onClick={() => onInvest(form)}
-            disabled={!isFormValid()}
+            onClick={handleInvestClick}
+            disabled={!isFormValid() || isSubmitting}
           >
-            투자하기
+            {isSubmitting ? "처리 중..." : "투자하기"}
           </Button>
         </div>
       }
@@ -84,8 +104,8 @@ function ModalInvest({
           type="text"
           placeholder="투자자 이름을 입력해 주세요"
           onValueChange={handleValueChange('investor')}
-          condition={form.investor.length <= 6}
-          message="이름은 6자 이내로 입력해주세요."
+          condition={form.investor.length <= 6 && form.investor.length >= 2}
+          message="이름은 2글자 이상, 6자 이내로 입력해주세요."
         />
       </div>
 

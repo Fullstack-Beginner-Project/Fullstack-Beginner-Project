@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useRef ,useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../api/axios.js";
 
-import Button from "../components/Button";
-import ModalCompanySelect from "../components/ModalCompanySelect";
+import Button from "../components/Button.jsx";
+import ModalCompanySelect from "../components/ModalCompanySelect.jsx";
 import LogoImg from "../components/LogoImg.jsx";
 import "../assets/css/myCompanyCompare.css";
 
@@ -22,6 +22,9 @@ const MAX_TARGET_COMPANIES = 5;
 
 function MyCompanyCompare() {
   const navigate = useNavigate();
+  const compareRef = useRef(false);
+  const [isComparing, setIsComparing] = useState(false);
+
   const [myCompany, setMyCompany] = useState(null);
   const [targetCompanies, setTargetCompanies] = useState([]);
   const [openSlot, setOpenSlot] = useState(null);
@@ -56,7 +59,12 @@ function MyCompanyCompare() {
   };
 
   const handleCompare = async () => {
-    if (!isCompareReady) return;
+    if (!isCompareReady || compareRef.current) {
+      return;
+    }
+
+    compareRef.current = true;
+    setIsComparing(true);
 
     try {
       await axios.post(`/api/compare`, {
@@ -75,6 +83,9 @@ function MyCompanyCompare() {
       navigate("/compare-result", { state: { myCompany, targetCompanies } });
     } catch (error) {
       console.error("기업 비교 실행 실패:", error);
+    } finally {
+      compareRef.current = false;
+      setIsComparing(false);
     }
   };
 
@@ -130,11 +141,7 @@ function MyCompanyCompare() {
                 </Button>
               </div>
               <div className="company_slot_selected">
-                <img
-                  src={"/src/assets/images/company-logo-" + myCompany.id + ".webp"}
-                  alt={myCompany.name}
-                  onError={(e) => { e.currentTarget.src = DefaultLogo }}
-                />
+                <LogoImg cId={myCompany.id} cNm={myCompany.name}/>
                 <p>{myCompany.name}</p>
                 <span>{myCompany.category}</span>
               </div>
@@ -203,15 +210,16 @@ function MyCompanyCompare() {
           size="large"
           variant="primary"
           selected={isCompareReady}
-          disabled={!isCompareReady}
+          disabled={!isCompareReady || isComparing}
           onClick={handleCompare}
         >
-          기업 비교하기
+          {isComparing ? "비교 중..." : "기업 비교하기"}
         </Button>
       </div>
 
       {openSlot === SLOT.MY && (
         <ModalCompanySelect
+          excludedIds={targetCompanies.map((company) => company.id)}
           onClose={handleCloseModal}
           onSelectCompany={handleSelectCompany}
         />

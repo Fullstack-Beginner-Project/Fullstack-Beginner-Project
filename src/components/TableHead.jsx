@@ -13,7 +13,9 @@ function TableHead({ columnDefs }) {
           <tr>
             {columnDefs.map((column) => (
               <th key={column.key}>
-                {column.label}
+                <div className="th_inner">
+                  {column.label}
+                </div>
               </th>
             ))}
           </tr>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import Modal from "../components/Modal";
 import Button from "../components/Button";
@@ -14,6 +14,9 @@ function ModalEditInvest({
   onClose,
   onInvest,
 }) {
+  const submittingRef = useRef(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [form, setForm] = useState({
     id: initialData.id,
     companyId: initialData.companyId,
@@ -23,8 +26,6 @@ function ModalEditInvest({
     password: '',
   });
 
-  console.log(form.amount)
-
   const handleValueChange = (key) => (value) => {
     setForm((prev) => ({
       ...prev,
@@ -32,9 +33,22 @@ function ModalEditInvest({
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onInvest(form);
+
+    if (submittingRef.current) {
+      return
+    }
+
+    submittingRef.current = true;
+    setIsSubmitting(true);
+
+    try{
+      await onInvest(form);
+    } finally {
+      submittingRef.current = false;
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -47,8 +61,11 @@ function ModalEditInvest({
             취소
           </Button>
 
-          <Button onClick={() => onInvest(form)}>
-            수정하기
+          <Button 
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "처리 중..." : "수정하기"}
           </Button>
         </div>
       }

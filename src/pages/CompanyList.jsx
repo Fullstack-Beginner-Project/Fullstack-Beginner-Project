@@ -16,7 +16,7 @@ function CompanyList() {
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
   const [totalPages, setTotalPages] = useState(1);
-  const [sortOption, setSortOption] = useState("revenueDesc");
+  const [sortOption, setSortOption] = useState("investmentDesc");
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(true);
  
@@ -58,8 +58,6 @@ function CompanyList() {
         const response = await axios.get(
           `/api/companies?page=${currentPage}&pageSize=${rowsPerPage}&sort=${sortOption}&keyword=${keyword}`
         );
-
-        console.log(response.data);
         setCompanies(response.data.list);
         setTotalPages(Math.ceil(response.data.totalCount / rowsPerPage));
       } catch (error) {
