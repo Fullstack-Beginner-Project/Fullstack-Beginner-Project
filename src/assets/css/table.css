@@ -17,6 +17,26 @@
     overflow: hidden;
 }
 
+.table_body_loading{
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--black_200);
+    color: var(--gray_200);
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.table_body_wrap.is_loading .table_body {
+    visibility: hidden;
+}
+
 .table_wrap table {
     table-layout: fixed;
     border-collapse: collapse;
@@ -86,6 +106,7 @@
 
 .table_wrap .table_body_wrap {
     display: block;
+    position: relative;
     margin-top: 16px;
     border-radius: 4px;
     overflow: hidden;

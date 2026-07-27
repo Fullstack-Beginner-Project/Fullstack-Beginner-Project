@@ -64,6 +64,13 @@ function Chart({ dataList }) {
   const totalCount = formmatteData.length;
 
   useEffect(() => {
+  setRange({
+    startIndex: 0,
+    endIndex: Math.max(0, totalCount - 1),
+  });
+}, [totalCount]);
+
+  useEffect(() => {
     const element = chartRef.current;
     if (!element) return;
 

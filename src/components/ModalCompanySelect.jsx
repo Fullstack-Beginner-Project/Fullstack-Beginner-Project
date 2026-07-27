@@ -47,86 +47,138 @@ function ModalCompanySelect({
 
   // 로딩중 추가
   const [loading, setLoading] = useState(true);
+  const [favoriteListLoading, setFavoriteListLoading] = useState(false);
+  const [searchListLoading, setSearchListLoading] = useState(false);
 
   const excludedIdSet = new Set(excludedIds);
 
-  // API 연결
-  useEffect(() => {
-  const fetchCompanies = async () => {
-    setLoading(true);
+  const fetchFavoriteCompanies = async (page) => {
+    setFavoriteListLoading(true);
+
     try {
-      if (multiple) {
-        const { myCompanyId, compareCompanyIds } = readLastCompareSession();
+      const favoriteCompanyIds = getFavoriteCompanyIds();
 
-        const [myCompanyResponse, compareResponse] = await Promise.all([
-          myCompanyId
-            ? axios
-                .get(`/api/companies/${myCompanyId}`)
-                .catch(() => null)
-            : Promise.resolve(null),
+      const response = await axios.get("/api/companies/favorites", {
+        params: {
+          page,
+          pageSize: PAGE_SIZE,
+          sort: "favoriteDesc",
+          favoriteCompanyIds: favoriteCompanyIds.join(",") || undefined,
+        },
+      });
 
-          axios.get(`/api/compare/companies`, {
-            params: {
-              page: currentPage,
-              pageSize: PAGE_SIZE,
-              keyword,
-              compareCompanyIds: compareCompanyIds.join(",") || undefined,
-            },
-          }),
-        ]);
-
-        setRecentMyCompany(myCompanyResponse?.data?.company ?? null);
-        setRecentTargetCompanies(
-          compareResponse.data.selectedCompanies.map(normalizeCompany)
-        );
-        setSearchCompanies(
-          compareResponse.data.companies.map(normalizeCompany)
-        );
-        setSearchTotalCount(compareResponse.data.total);
-        setTotalPages(compareResponse.data.totalPages);
-      } else {
-        const favoriteCompanyIds = getFavoriteCompanyIds();
-
-        const [favoriteResponse, response] = await Promise.all([
-          axios.get(`/api/companies/favorites`, {
-            params: {
-              page: favoritePage,
-              pageSize: PAGE_SIZE,
-              sort: "favoriteDesc",
-              favoriteCompanyIds: favoriteCompanyIds.join(",") || undefined,
-            },
-          }),
-
-          axios.get(`/api/companies/my-company`, {
-            params: {
-              page: currentPage,
-              pageSize: PAGE_SIZE,
-              keyword,
-            },
-          }),
-        ]);
-
-        setFavoriteCompanies(
-          favoriteResponse.data.companies.map(normalizeCompany)
-        );
-        setFavoriteTotalCount(favoriteResponse.data.total);
-        setFavoriteTotalPages(favoriteResponse.data.totalPages);
-
-        setSearchCompanies(
-          response.data.companies.map(normalizeCompany)
-        );
-        setSearchTotalCount(response.data.totalCount);
-        setTotalPages(Math.ceil(response.data.totalCount / PAGE_SIZE));
-      }
+      setFavoriteCompanies(
+        response.data.companies.map(normalizeCompany)
+      );
+      setFavoriteTotalCount(response.data.total);
+      setFavoriteTotalPages(response.data.totalPages);
     } catch (error) {
-      console.error("기업 목록 불러오기 실패:", error);
+      console.error("찜한 기업 목록 불러오기 실패", error);
     } finally {
-      setLoading(false);
+      setFavoriteListLoading(false);
     }
   };
 
-  fetchCompanies();
-}, [currentPage, favoritePage, keyword, multiple]);
+  const fetchSearchCompanies = async (page, searchKeyword) => {
+  setSearchListLoading(true);
+
+  try {
+    if (multiple) {
+      const response = await axios.get("/api/compare/companies", {
+        params: {
+          page,
+          pageSize: PAGE_SIZE,
+          keyword: searchKeyword,
+        },
+      });
+
+      setSearchCompanies(
+        response.data.companies.map(normalizeCompany)
+      );
+      setSearchTotalCount(response.data.total);
+      setTotalPages(response.data.totalPages);
+      return;
+    }
+
+    const response = await axios.get("/api/companies/my-company", {
+      params: {
+        page,
+        pageSize: PAGE_SIZE,
+        keyword: searchKeyword,
+      },
+    });
+
+    setSearchCompanies(
+      response.data.companies.map(normalizeCompany)
+    );
+    setSearchTotalCount(response.data.totalCount);
+    setTotalPages(
+      Math.ceil(response.data.totalCount / PAGE_SIZE)
+    );
+  } catch (error) {
+    console.error("검색 결과 불러오기 실패:", error);
+  } finally {
+    setSearchListLoading(false);
+  }
+};
+
+  const fetchRecentCompanies = async () => {
+  try {
+    const { myCompanyId, compareCompanyIds } =
+      readLastCompareSession();
+
+    const [myCompanyResponse, compareResponse] = await Promise.all([
+      myCompanyId
+        ? axios
+            .get(`/api/companies/${myCompanyId}`)
+            .catch(() => null)
+        : Promise.resolve(null),
+
+      axios.get("/api/compare/companies", {
+        params: {
+          page: 1,
+          pageSize: PAGE_SIZE,
+          compareCompanyIds:
+            compareCompanyIds.join(",") || undefined,
+        },
+      }),
+    ]);
+
+    setRecentMyCompany(
+      myCompanyResponse?.data?.company ?? null
+    );
+    setRecentTargetCompanies(
+      compareResponse.data.selectedCompanies.map(normalizeCompany)
+    );
+  } catch (error) {
+    console.error("최근 비교 기업 불러오기 실패:", error);
+  }
+};
+
+  // 모달을 처음 열 때 필요한 두 목록을 함께 조회
+  useEffect(() => {
+    const fetchInitialCompanies = async () => {
+      setLoading(true);
+
+      try {
+        if (multiple) {
+          await Promise.all([
+            fetchRecentCompanies(),
+            fetchSearchCompanies(1,""),
+          ]);
+        } else {
+          await Promise.all([
+            fetchFavoriteCompanies(1),
+            fetchSearchCompanies(1,""),
+          ]);
+        } 
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInitialCompanies();
+  }, [multiple]);
 
   const isCheckLimitReached =
   typeof maxSelectable === 'number' && checkedIds.size >= maxSelectable;
@@ -176,9 +228,20 @@ function ModalCompanySelect({
     onClose();
   };
 
+  const handleFavoritePageChange = (page) => {
+    setFavoritePage(page);
+    fetchFavoriteCompanies(page);
+  }
+
+  const handleSearchPageChange = (page) => {
+    setCurrentPage(page);
+    fetchSearchCompanies(page, keyword);
+  }
+
   const handleKeywordChange = (value) => {
     setKeyword(value);
     setCurrentPage(1);
+    fetchSearchCompanies(1, value);
   };
 
   const topCompanies = multiple
@@ -222,6 +285,7 @@ function ModalCompanySelect({
         ) : (
           <>
             <CompanyLists
+              loading={!multiple && favoriteListLoading}
               title={topListTitle}
               totalCount={multiple ? topCompanies.length : favoriteTotalCount}
               companies={withSelectedFlag(
@@ -237,11 +301,12 @@ function ModalCompanySelect({
               <Pagination
                 currentPage={favoritePage}
                 totalPages={favoriteTotalPages}
-                onPageChange={setFavoritePage}
+                onPageChange={handleFavoritePageChange}
               />
             )}
 
             <CompanyLists
+              loading={searchListLoading}
               title="검색 결과"
               totalCount={searchTotalCount}
               companies={withSelectedFlag(
@@ -256,7 +321,7 @@ function ModalCompanySelect({
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
-                onPageChange={setCurrentPage}
+                onPageChange={handleSearchPageChange}
               />
           </>
         )}

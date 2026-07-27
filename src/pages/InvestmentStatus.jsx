@@ -18,6 +18,7 @@ const columnDefs = [
 function InvestmentStatus() {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [listLoading, setListLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
   const [totalPages, setTotalPages] = useState(1);
@@ -26,7 +27,7 @@ function InvestmentStatus() {
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      setListLoading(true);
       try {
         const response = await axios.get(
           `/api/companies/investmentStatus?page=${currentPage}&pageSize=${rowsPerPage}&orderBy=${orderBy}&order=${order}`
@@ -37,6 +38,7 @@ function InvestmentStatus() {
         console.error("데이터 불러오기 실패:", error);
       } finally {
         setLoading(false);
+        setListLoading(false);
       }
     };
 
@@ -90,6 +92,7 @@ function InvestmentStatus() {
         ) : (
           <>
             <Table
+              loading = {listLoading}
               columnDefs={columnDefs}
               rows={companies}
               currentPage={currentPage}

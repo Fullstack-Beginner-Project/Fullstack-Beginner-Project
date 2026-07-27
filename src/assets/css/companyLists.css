@@ -15,6 +15,29 @@
     flex-direction: column;
     gap: 12px 0;
 }
+
+.company_list_body{
+    position: relative;
+}
+
+.company_list_body.is_loading .company_list,
+.company_list_body.is_loading .empty_message {
+    visibility: hidden;
+}
+
+.company_list_loading {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray_200);
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+}
+
 .company_list li {
     display: flex;
     align-items: center;
