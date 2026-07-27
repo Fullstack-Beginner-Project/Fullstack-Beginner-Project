@@ -9,6 +9,7 @@ function CompanyLists({
   companies, 
   onSelect,
   emptyMessage,
+  loading = false,
 }) {
   const resolveEmpthMesssage =
     title === "검색결과" 
@@ -20,6 +21,14 @@ function CompanyLists({
       <h4>
         {title} ({totalCount ?? companies.length})
       </h4>
+
+      <div className={`company_list_body${loading ? " is_loading" : ""}`}>
+        {loading && (
+          <div className="company_list_loading">
+            로딩 중...
+          </div>
+        )}
+      
       {/* 리스트 검색 결과가 있는 경우와 없는 경우 고려 */}
       {companies.length === 0 ? (
         <p className="empty_message">{resolveEmpthMesssage}</p>
@@ -53,6 +62,7 @@ function CompanyLists({
           ))}
         </ul>
       )}
+      </div>
     </div>
     
   )

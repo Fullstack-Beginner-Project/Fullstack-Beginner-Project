@@ -20,6 +20,7 @@ const columnDefs = [
 function WishList() {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [listLoading, setListLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
   const [totalPages, setTotalPages] = useState(1);
@@ -27,7 +28,7 @@ function WishList() {
 
   useEffect(() => {
     const fetchCompanies = async () => {
-      setLoading(true);
+      setListLoading(true);
       try {
         const favoriteCompanyIds = getFavoriteCompanyIds();
 
@@ -41,6 +42,7 @@ function WishList() {
         setCompanies([]);
       } finally {
         setLoading(false);
+        setListLoading(false);
       }
     };
 
@@ -78,6 +80,7 @@ function WishList() {
         ) : (
           <>
             <Table
+              loading={listLoading}
               columnDefs={columnDefs}
               rows={companies}
               currentPage={currentPage}

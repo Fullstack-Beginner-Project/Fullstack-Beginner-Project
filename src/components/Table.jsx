@@ -3,7 +3,7 @@ import '../assets/css/table.css'
 import TableHead from './TableHead';
 import TableBody from './TableBody';
 
-function Table({ columnDefs, rows, myCompany, currentPage, rowsPerPage, onEditInvestment, onDeleteInvestment, ...rowProps }) {
+function Table({ columnDefs, rows, loading = false, myCompany, currentPage, rowsPerPage, onEditInvestment, onDeleteInvestment, ...rowProps }) {
 
   return (
     <div className="table_conatiner">
@@ -13,6 +13,7 @@ function Table({ columnDefs, rows, myCompany, currentPage, rowsPerPage, onEditIn
           <TableHead columnDefs={columnDefs}></TableHead>
 
           <TableBody
+            loading = {loading}
             columnDefs={columnDefs}
             rows={rows}
             myCompany={myCompany}

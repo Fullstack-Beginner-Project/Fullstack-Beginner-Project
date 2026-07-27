@@ -19,6 +19,7 @@ function CompanyList() {
   const [sortOption, setSortOption] = useState("investmentDesc");
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(true);
+  const [listLoading, setListLoading] = useState(false);
  
   // keyword 받기
   const handleSearch = (keyword) => {
@@ -53,7 +54,7 @@ function CompanyList() {
 
   useEffect(() => {
     const fetchCompanies = async () => {
-      setLoading(true); // 호출 시작 시 로딩 켜기
+      setListLoading(true); // 호출 시작 시 로딩 켜기
       try {
         const response = await axios.get(
           `/api/companies?page=${currentPage}&pageSize=${rowsPerPage}&sort=${sortOption}&keyword=${keyword}`
@@ -64,6 +65,7 @@ function CompanyList() {
         console.error("데이터 불러오기 실패:", error);
       } finally {
         setLoading(false); // 호출 끝나면 로딩 끄기
+        setListLoading(false);
       }
     };
     fetchCompanies();
@@ -159,6 +161,7 @@ function CompanyList() {
           ) : (
             <>
               <Table
+                loading={listLoading}
                 columnDefs={columnDefs}
                 rows={companies}
                 currentPage={currentPage}

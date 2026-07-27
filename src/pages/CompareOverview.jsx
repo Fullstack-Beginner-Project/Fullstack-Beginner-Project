@@ -9,6 +9,7 @@ import axios from "../api/axios.js";
 function CompareOverview() {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [listLoading, setListLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
   const [totalPages, setTotalPages] = useState(1);
@@ -16,7 +17,7 @@ function CompareOverview() {
 
   useEffect(() => {
     const fetchCompanies = async () => {
-      setLoading(true); // 호출 시작 시 로딩 켜기
+      setListLoading(true); // 호출 시작 시 로딩 켜기
       try {
         const response = await axios.get(
           `/api/compare/status?page=${currentPage}&pageSize=${rowsPerPage}&sort=${sortOption}`
@@ -29,6 +30,7 @@ function CompareOverview() {
         setCompanies([]);
       } finally {
         setLoading(false); // 호출 끝나면 로딩 끄기
+        setListLoading(false);
       }
     };
     fetchCompanies();
@@ -84,7 +86,7 @@ function CompareOverview() {
           <p className="no_data">아직 투자 현황이 없어요</p>
         ) : (
           <>
-            <Table columnDefs={columnDefs} rows={companies} currentPage={currentPage} rowsPerPage={rowsPerPage} />
+            <Table loading={listLoading} columnDefs={columnDefs} rows={companies} currentPage={currentPage} rowsPerPage={rowsPerPage} />
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
