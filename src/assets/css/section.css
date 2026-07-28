@@ -46,4 +46,10 @@
   }
 }
 
+@media screen and (max-width: 650px) {
+    .section_head {
+    flex-wrap: wrap;
+  }
+}
+
 /* 반응형 end */

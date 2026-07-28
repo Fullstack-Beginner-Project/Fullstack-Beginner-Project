@@ -124,3 +124,13 @@ input[type='number'] {
 .modal_content::-webkit-scrollbar-button {
   display: none;
 }
+
+@media screen and (max-width: 768px) {
+  .modal_wrap .modal{
+    width: 100%;
+  }
+
+  .modal_wrap .btn_wrap .btn_small{
+    flex-shrink: 0;
+  }
+}
