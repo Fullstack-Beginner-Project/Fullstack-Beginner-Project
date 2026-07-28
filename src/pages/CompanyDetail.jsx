@@ -29,6 +29,7 @@ function CompanyDetail() {
   const [isInvestOpen, setIsInvestOpen] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [listLoading, setListLoading] = useState(false);
   const [confirmModal, setConfirmModal] = useState({
     open: false,
     message: "",
@@ -48,21 +49,30 @@ function CompanyDetail() {
 
       setCompany(companyResponse.data.company);
 
-      const investmentResponse = await axios.get(
-        `/api/companies/${companyId}/investments?page=${currentPage}&pageSize=${PAGE_SIZE}`
-      );
-
-      setInvestments(investmentResponse.data.list);
-
-      setTotalInvestmentAmount(investmentResponse.data.totalAmount)
-
-      setTotalPages(
-        Math.ceil(investmentResponse.data.totalCount / PAGE_SIZE)
-      );
     } catch (error) {
       console.error("데이터 불러오기 실패:", error);
     } finally {
       setLoading(false); // 호출 시작 시 로딩 켜기
+    }
+  };
+
+  const fetchInvestments = async () => {
+    setListLoading(true);
+
+    try{
+      const investmentResponse = await axios.get(
+        `/api/companies/${companyId}/investments?page=${currentPage}&pageSize=${PAGE_SIZE}`
+    );
+
+    setInvestments(investmentResponse.data.list);
+    setTotalInvestmentAmount(investmentResponse.data.totalAmount)
+    setTotalPages(
+        Math.ceil(investmentResponse.data.totalCount / PAGE_SIZE)
+    );
+  } catch (error) {
+      console.error("투자내역 불러오기 실패:", error);
+    } finally {
+      setListLoading(false); // 호출 시작 시 로딩 켜기
     }
   };
 
@@ -75,19 +85,21 @@ function CompanyDetail() {
 
     } catch (error) {
       console.error("데이터 불러오기 실패:", error);
-    } finally {
-      setLoading(false); // 호출 시작 시 로딩 켜기
     }
   };
 
   useEffect(() => {
     setLoading(true); // 호출 시작 시 로딩 켜기
     fetchData();
+  }, [companyId]);
+
+  useEffect(() => {
+    fetchInvestments();
   }, [companyId, currentPage]);
 
   useEffect(() => {
     fetcCharthData();
-  }, [])
+  }, [companyId]);
 
   const columnDefs = [
     {
@@ -132,7 +144,7 @@ function CompanyDetail() {
       });
 
       // 투자내역 새로고침
-      fetchData();
+      fetchInvestments();
     } catch (error) {
       console.error("투자 실패", error);
       setConfirmModal({
@@ -164,7 +176,7 @@ function CompanyDetail() {
         message: "투자 내역이 수정되었어요!",
       });
 
-      await fetchData();
+      fetchInvestments();
     } catch (error) {
       console.error("투자 수정 실패:", error);
 
@@ -217,7 +229,7 @@ function CompanyDetail() {
         message: "투자 내역이 삭제되었어요!",
       });
 
-      await fetchData();
+      fetchInvestments();
     } catch (error) {
       console.error("투자 삭제 실패:", error);
       console.log("삭제 오류 응답:", error.response?.data);
@@ -323,6 +335,7 @@ function CompanyDetail() {
             </div>
 
             <Table
+              loading={listLoading}
               columnDefs={columnDefs}
               rows={investments}
               rowsPerPage={rowsPerPage}
