@@ -57,6 +57,11 @@
   .companylist_page .section_right {
       width: 100%;
   }
+
+  .companylist_page .search_wrap{
+    min-width: 100px;
+  }
+  
   .companylist_page .search_wrap_parent {
     gap: 8px;
   }
