@@ -231,6 +231,10 @@
   #root>.wrap * .my_company_compare_wrap .company_slot_selected span {
     font-size: 12px;
   }
+
+  .my_company_compare_wrap .section_head{
+    height: auto;
+  }
 }
 
 /* 스크롤 영역 */
